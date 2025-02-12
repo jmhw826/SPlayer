@@ -389,4 +389,5 @@
 
 ## ⭐ Star History
 
+
 [![Star History Chart](https://api.star-history.com/svg?repos=IamFurina/SPlayer&type=Date)](https://star-history.com/#IamFurina/SPlayer&Date)
