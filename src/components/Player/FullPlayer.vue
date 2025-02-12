@@ -104,7 +104,7 @@
                         }"
                         round
                       >
-                        其他音源
+                        解灰模式
                       </n-tag>
                     </template>
                     <div
@@ -115,7 +115,7 @@
                       }"
                       class="title-tip"
                     >
-                      <span>该歌曲暂时无法播放，为您采用其他音源，可能会与原曲存在差别</span>
+                      <span>已为您使用PYNCMD音源，受限歌曲随心播</span>
                     </div>
                   </n-popover>
                 </div>
