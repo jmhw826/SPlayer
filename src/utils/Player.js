@@ -185,7 +185,7 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     console.log(response);
     let musicUrl = response?.data?.url;
     console.log(musicUrl);
-    $message.info("获取链接成功, 正在播放...");
+    $message.info("获取链接成功, 正在播放喵~");
     if (!musicUrl) {
       status.playLoading = false;
       return null;
