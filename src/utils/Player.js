@@ -58,7 +58,7 @@ export const initPlayer = async (playNow = false) => {
     // 在线歌曲
     if (!isLocalSong) {
       // 获取歌曲 ID
-      $message.info("不是本地歌曲");
+      $message.info("不是当前为在线歌曲");
       let songId = playSongData?.id;
       if (!songId) {
         return false;
