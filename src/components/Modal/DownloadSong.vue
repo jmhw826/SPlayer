@@ -59,10 +59,9 @@ import { storeToRefs } from "pinia";
 import { isLogin } from "@/utils/auth";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyric, getSongDownload, getMusicNumUrl } from "@/api/song";
+import { getSongDetail, getSongLyric, getSongDownload } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
-import { getSongUrl } from "../../api/song";
 
 const router = useRouter();
 const data = siteData();
@@ -101,8 +100,7 @@ const toSongDownload = async (song, lyric, br) => {
     console.log(song, lyric, br);
     downloadStatus.value = true;
     // 获取下载数据
-    // const result = await getSongDownload(song?.id, br);
-    const result = await getMusicNumUrl(song?.id);
+    const result = await getSongDownload(song?.id, br);
     // 开始下载
     if (!downloadPath.value && checkPlatform.electron()) {
       $notification["warning"]({
@@ -205,7 +203,7 @@ const openDownloadModal = (data) => {
     downloadSongShow.value = true;
     getMusicDetailData(songId.value);
   };
-  if (isLogin()) {
+  if (isLogin() || !isLogin()) {
     // 普通歌曲或为云盘歌曲
     if (
       router.currentRoute.value.name === "cloud" ||
@@ -216,7 +214,7 @@ const openDownloadModal = (data) => {
       return toDownload();
     }
     // 权限不足
-    if (!isLogin()) {//data?.fee == 0 && userData.value.detail?.profile?.vipType == 11 && data?.pc) {
+    if (!isLogin()) {
       return $message.warning("账号会员等级不足，请提升权限");
     }
     $message.warning("账号会员等级不足，请提升权限");
