@@ -59,7 +59,7 @@ const createPlaylistBtn = async (name, privacy = false) => {
     $message.success("新建歌单成功");
     await data.setUserLikePlaylists();
   } else {
-    $message.error("新建歌单失败，请重试");
+    $message.error("新建歌单失败，请重试(っ °Д °;)っ");
   }
 };
 
