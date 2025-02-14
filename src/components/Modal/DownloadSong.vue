@@ -59,7 +59,8 @@ import { storeToRefs } from "pinia";
 import { isLogin } from "@/utils/auth";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongDownload, getSongLyric } from "@/api/song";
+import { getSongDetail, getSongLyric } from "@/api/song";
+import { getSongDownload } from "@/api/songdownload";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
 
