@@ -48,7 +48,7 @@
       </n-flex>
       <!-- 搜索框 -->
       <SearchInp />
-      <!-- GitHub -->
+      <!-- GitHub
       <Transition name="fade" mode="out-in">
         <n-button
           v-if="showGithub"
@@ -67,6 +67,7 @@
       </Transition>
     </div>
     <div class="right">
+    -->
       <!-- 全局菜单 -->
       <n-dropdown
         :show="mainMenuShow"
