@@ -167,7 +167,7 @@
                         : music.getPlaySongData.album.name
                     }}
                   </span>
-                  <span v-else class="album">未知专辑</span>
+                  <span v-else class="album">可莉也不知道专辑是什么~(误)</span>
                 </div>
                 <div
                   v-if="playMode === 'dj'"

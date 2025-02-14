@@ -2,7 +2,7 @@
 <template>
   <div :class="{ setting: true, 'use-cover': themeAutoCover }">
     <n-h1 class="title">
-      <n-text>全局设置</n-text>
+      <n-text>站点设置</n-text>
     </n-h1>
     <!-- 导航栏 -->
     <n-tabs

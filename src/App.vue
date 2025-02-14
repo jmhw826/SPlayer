@@ -137,7 +137,7 @@ if ("serviceWorker" in navigator) {
       });
     } else {
       console.info("站点资源有更新，请刷新以应用更新");
-      $message.info("站点资源有更新，请刷新以应用更新", {
+      $message.info("Github已推送更新到Vercel喵，请刷新以应用更新喵~", {
         closable: true,
         duration: 0,
       });
@@ -167,8 +167,8 @@ const canNotConnect = (error) => {
   console.error("网络连接错误：", error.message);
   $dialog.destroyAll();
   $dialog.error({
-    title: "站点报错",
-    content: "如果是源代码出现问题, 请练习开发者解决; 如果是您的网络出现问题, 请检查您的网络适配器后重试",
+    title: "呃, 好像出了点问题(っ °Д °;)っ",
+    content: "如果是源代码出现问题, 请联系开发者解决; 如果是您的网络出现问题, 请检查您的网络适配器后重试",
     positiveText: "刷新网页",
     negativeText: "关闭弹窗",
     onPositiveClick: () => {

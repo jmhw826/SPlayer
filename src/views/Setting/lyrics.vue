@@ -11,7 +11,7 @@
       <div class="name">
         歌词文本大小
         <n-text :style="{ fontSize: lyricsFontSize + 'px', fontWeight: 'bold' }" class="tip">
-          我是一句歌词
+          歌词显示测试
         </n-text>
       </div>
       <n-slider
@@ -107,7 +107,7 @@
         <div class="dev">
           显示逐字歌词动画
           <n-tag :bordered="false" round size="small" type="warning">
-            开发中
+            可能与实际效果不符
             <template #icon>
               <n-icon>
                 <SvgIcon icon="code" />
@@ -115,7 +115,7 @@
             </template>
           </n-tag>
         </div>
-        <n-text class="tip">可能会造成卡顿等性能问题，请确保您的设备具有独立显卡</n-text>
+        <n-text class="tip">可能会造成卡顿等性能问题，手机端建议关闭</n-text>
       </div>
       <n-switch v-model:value="showYrcAnimation" :disabled="!showYrc" :round="false" />
     </n-card>
@@ -136,7 +136,7 @@
     <n-card class="set-item">
       <div class="name">
         歌词自动聚焦
-        <n-text class="tip">是否聚焦显示当前播放行，其他行将模糊显示</n-text>
+        <n-text class="tip">是否聚焦显示当前播放行，其他行将模糊显示, 手机端建议关闭</n-text>
       </div>
       <n-switch v-model:value="lyricsBlur" :round="false" />
     </n-card>

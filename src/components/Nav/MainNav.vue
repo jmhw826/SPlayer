@@ -48,7 +48,6 @@
       </n-flex>
       <!-- 搜索框 -->
       <SearchInp />
-      <!-- GitHub -->
       <Transition name="fade" mode="out-in">
         <n-button
           v-if="showGithub"

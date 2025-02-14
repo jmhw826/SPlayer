@@ -118,7 +118,7 @@ const toSearch = (val, type = "song") => {
 const delSearchHistory = () => {
   $dialog.warning({
     title: "删除历史",
-    content: "确认删除全部的搜索历史？这将无法恢复！",
+    content: "确认删除全部的搜索历史？这将无法恢复！(っ °Д °;)っ",
     positiveText: "确认",
     negativeText: "取消",
     onPositiveClick: () => {

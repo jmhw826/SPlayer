@@ -53,7 +53,7 @@
     <n-card class="set-item">
       <div class="name">
         自动签到
-        <n-text class="tip">在每日首次开启软件时自动签到</n-text>
+        <n-text class="tip">在每日首次加载网站时自动签到</n-text>
       </div>
       <n-switch v-model:value="autoSignIn" :round="false" />
     </n-card>
@@ -62,7 +62,7 @@
         <div class="dev">
           全局动态取色
           <n-tag :bordered="false" round size="small" type="warning">
-            开发中
+            可能网站取色与实际预期效果不同
             <template #icon>
               <n-icon>
                 <SvgIcon icon="code" />
@@ -70,7 +70,7 @@
             </template>
           </n-tag>
         </div>
-        <n-text class="tip">主题色是否跟随封面，目前感觉不好看</n-text>
+        <n-text class="tip">主题色是否跟随封面</n-text>
       </div>
       <n-switch
         v-model:value="themeAutoCover"
@@ -92,7 +92,7 @@
             </template>
           </n-tag>
         </div>
-        <n-text class="tip">将在下一首播放或刷新时生效，不建议更改</n-text>
+        <n-text class="tip">将在下一首播放或刷新时生效</n-text>
       </div>
       <n-select
         v-model:value="themeAutoCoverType"

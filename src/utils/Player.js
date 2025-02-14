@@ -45,7 +45,7 @@ export const initPlayer = async (playNow = false) => {
     const playSongData = music.getPlaySongData;
     // 是否为本地歌曲
     const isLocalSong = playSongData?.path ? true : false;
-    console.log("当前为本地歌曲");
+    console.log("当前为本地歌曲喵~");
     // 获取封面
     if (isLocalSong) {
       music.playSongData.localCover = await getLocalCoverData(playSongData?.path);
@@ -58,7 +58,7 @@ export const initPlayer = async (playNow = false) => {
     // 在线歌曲
     if (!isLocalSong) {
       // 获取歌曲 ID
-      $message.info("不是当前为在线歌曲");
+      $message.info("当前为在线歌曲喵~");
       let songId = playSongData?.id;
       if (!songId) {
         return false;
@@ -70,26 +70,26 @@ export const initPlayer = async (playNow = false) => {
       // 获取播放地址
       const url = await getNormalSongUrl(songId, status, playNow);
       // 正常播放地址
-      if (url == null) {
+      if (!settings.useUnmServer) {
         status.playUseOtherSource = false;
         createPlayer(url);
       }
       // 无法正常获取播放地址
-      else if (playMode !== "dj") {
+      else if (playMode !== "dj" && settings.useUnmServer) {
         const unblockUrl = await getFromUnblockMusic(playSongData, status, playNow);
         if (unblockUrl) {
           status.playUseOtherSource = true;
           createPlayer(unblockUrl);
         } else {
-          $message.warning("获取失败, 跳过操作");
+          $message.warning("获取失败, 跳过操作喵~");
           isPlayEnd = true;
           status.playUseOtherSource = false;
           // 是否为最后一首
           if (playIndex === playList.length - 1) {
             status.playState = false;
-            $message.warning("当前列表歌曲无法播放，请更换歌曲");
+            $message.warning("当前列表歌曲无法播放，请更换歌曲喵~");
           } else {
-            $message.error("该歌曲暂无音源，跳至下一首");
+            $message.error("该歌曲暂无音源，跳至下一首喵~");
             changePlayIndex("next", true);
           }
         }
@@ -101,7 +101,7 @@ export const initPlayer = async (playNow = false) => {
         } else {
           status.playLoading = false;
           status.playState = false;
-          $message.warning("列表中暂无可播放歌曲", { closable: true, duration: 5000 });
+          $message.warning("列表中暂无可播放歌曲喵~", { closable: true, duration: 5000 });
         }
       }
     }
@@ -185,7 +185,7 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     console.log(response);
     let musicUrl = response?.data?.url;
     console.log(musicUrl);
-    $message.info("获取链接成功, 正在播放...");
+    $message.info("获取链接成功, 正在播放喵~");
     if (!musicUrl) {
       status.playLoading = false;
       return null;

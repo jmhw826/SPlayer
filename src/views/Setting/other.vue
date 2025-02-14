@@ -96,7 +96,7 @@
     <n-card class="set-item">
       <div class="name">
         默认加载数量
-        <n-text class="tip">在部分列表页面显示几条数据</n-text>
+        <n-text class="tip">在部分列表页面显示几条数据, 过多数据可能会造成响应过慢</n-text>
       </div>
       <n-select
         v-model:value="loadSize"
@@ -141,7 +141,7 @@ const { themeAuto, loadSize, showGithub, proxyProtocol, proxyServe, proxyPort, u
 // 程序重置
 const resetApp = () => {
   $dialog.warning({
-    title: "程序重置",
+    title: "网站重置",
     content: "确认重置为默认状态？你的登录状态以及自定义设置都将丢失！",
     positiveText: "重置",
     negativeText: "取消",
