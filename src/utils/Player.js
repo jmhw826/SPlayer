@@ -68,10 +68,9 @@ export const initPlayer = async (playNow = false) => {
       // 开启加载状态
       status.playLoading = true;
       // 获取播放地址
-      const res = await getSongUrl(id, settings.songLevel);
       const url = await getNormalSongUrl(songId, status, playNow);
       // 正常播放地址
-      if (!settings.useUnmServer && res.data?.[0]?.freeTrialInfo == null) {
+      if (!settings.useUnmServer) {
         status.playUseOtherSource = false;
         createPlayer(url);
       }
@@ -152,6 +151,7 @@ export const initPlayer = async (playNow = false) => {
 const getNormalSongUrl = async (id, status, playNow) => {
   try {
     const settings = siteSettings();
+    const res = await getSongUrl(id, settings.songLevel);
     // 检查是否有有效的响应数据
     if (!res.data?.[0] || !res.data?.[0]?.url) return null;
     // 检查是否只能试听
