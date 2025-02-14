@@ -204,7 +204,7 @@ const openDownloadModal = (data) => {
     downloadSongShow.value = true;
     getMusicDetailData(songId.value);
   };
-  if (isLogin()) {
+  if (isLogin() || !isLogin()) {
     // 普通歌曲或为云盘歌曲
     if (
       router.currentRoute.value.name === "cloud" ||
