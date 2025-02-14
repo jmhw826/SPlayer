@@ -70,7 +70,7 @@ export const initPlayer = async (playNow = false) => {
       // 获取播放地址
       const url = await getNormalSongUrl(songId, status, playNow);
       // 正常播放地址
-      if (url == null) {
+      if (!settings.useUnmServer && res.data?.[0]?.freeTrialInfo == null) {
         status.playUseOtherSource = false;
         createPlayer(url);
       }
