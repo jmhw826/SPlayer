@@ -59,9 +59,10 @@ import { storeToRefs } from "pinia";
 import { isLogin } from "@/utils/auth";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyric, getSongDownload } from "@/api/song";
+import { getSongDetail, getSongLyric, getSongDownload, getMusicNumUrl } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
+import { getSongUrl } from "../../api/song";
 
 const router = useRouter();
 const data = siteData();
@@ -100,7 +101,8 @@ const toSongDownload = async (song, lyric, br) => {
     console.log(song, lyric, br);
     downloadStatus.value = true;
     // 获取下载数据
-    const result = await getSongDownload(song?.id, br);
+    // const result = await getSongDownload(song?.id, br);
+    const result = await getMusicNumUrl(song?.id);
     // 开始下载
     if (!downloadPath.value && checkPlatform.electron()) {
       $notification["warning"]({
@@ -203,7 +205,7 @@ const openDownloadModal = (data) => {
     downloadSongShow.value = true;
     getMusicDetailData(songId.value);
   };
-  if (isLogin() || !isLogin()) {
+  if (isLogin()) {
     // 普通歌曲或为云盘歌曲
     if (
       router.currentRoute.value.name === "cloud" ||
