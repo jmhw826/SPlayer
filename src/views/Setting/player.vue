@@ -122,10 +122,10 @@
       <div class="name">
         尝试替换无法播放的歌曲
         <n-text class="tip">
-          {{ checkPlatform.electron() ? "可能会造成音乐与原曲不符" : "客户端独占功能" }}
+          {{ !checkPlatform.electron() ? "替换无法播放的歌曲链接, 如VIP和受限歌曲等; 注意:可能会造成音乐与原曲不符" : "客户端独占功能" }}
         </n-text>
       </div>
-      <n-switch v-model:value="useUnmServer" :disabled="!checkPlatform.electron()" :round="false" />
+      <n-switch v-model:value="useUnmServer" :disabled="checkPlatform.electron()" :round="false" />
     </n-card>
     <n-card class="set-item">
       <div class="name">

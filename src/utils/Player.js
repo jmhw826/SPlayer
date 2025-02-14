@@ -75,7 +75,7 @@ export const initPlayer = async (playNow = false) => {
         createPlayer(url);
       }
       // 无法正常获取播放地址
-      else if (playMode !== "dj") {
+      else if (playMode !== "dj" && settings.useUnmServer) {
         const unblockUrl = await getFromUnblockMusic(playSongData, status, playNow);
         if (unblockUrl) {
           status.playUseOtherSource = true;
