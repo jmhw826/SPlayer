@@ -5,8 +5,8 @@
   "main": "./out/main/index.js",
   "author": "imsyy",
   "home": "https://focalors.ltd",
-  "github": "https://github.com/Focalors-Ltd/SPlayer",
-  "repository": "github:Focalors-Ltd/SPlayer",
+  "github": "https://github.com/IamFurina/SPlayer",
+  "repository": "github:IamFurina/SPlayer",
   "license": "AGPL-3.0",
   "license-file": "LICENSE",
   "engines": {
