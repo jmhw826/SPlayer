@@ -71,7 +71,6 @@ export const initPlayer = async (playNow = false) => {
       const url = await getNormalSongUrl(songId, status, playNow);
       // 正常播放地址
       if (url) {
-        status.playUseOtherSource = false;
         $message.info("获取链接成功, 开始播放喵~");
         createPlayer(url);
       }
@@ -169,6 +168,7 @@ const getNormalSongUrl = async (id, status, playNow) => {
     const url = res.data[0].url.replace(/^http:/, "https:");
     // 更改状态
     if (playNow && url) status.playState = true;
+    status.playUseOtherSource = false;
     return url;
   } catch (error) {
     status.playLoading = false;
