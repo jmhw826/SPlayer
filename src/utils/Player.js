@@ -72,6 +72,7 @@ export const initPlayer = async (playNow = false) => {
       // 正常播放地址
       if (!settings.useUnmServer) {
         status.playUseOtherSource = false;
+        $message.info("获取链接成功, 开始播放喵~");
         createPlayer(url);
       }
       // 无法正常获取播放地址
@@ -155,7 +156,15 @@ const getNormalSongUrl = async (id, status, playNow) => {
     // 检查是否有有效的响应数据
     if (!res.data?.[0] || !res.data?.[0]?.url) return null;
     // 检查是否只能试听
-    if (res.data?.[0]?.freeTrialInfo !== null && checkPlatform.electron()) return null;
+    if (res.data?.[0]?.freeTrialInfo !== null) {
+      // 调用解灰
+      const unblockUrl = await getFromUnblockMusic({ id }, status, playNow);
+      if (unblockUrl) {
+        return unblockUrl;
+      } else {
+        return null;
+      }
+    }
     // 返回歌曲地址，将 http 转换为 https
     const url = res.data[0].url.replace(/^http:/, "https:");
     // 更改状态
