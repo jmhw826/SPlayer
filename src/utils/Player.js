@@ -160,6 +160,7 @@ const getNormalSongUrl = async (id, status, playNow) => {
       // 调用解灰
       const unblockUrl = await getFromUnblockMusic({ id }, status, playNow);
       if (unblockUrl) {
+        status.playUseOtherSource = true;
         return unblockUrl;
       } else {
         return null;
