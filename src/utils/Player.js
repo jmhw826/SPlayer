@@ -58,7 +58,6 @@ export const initPlayer = async (playNow = false) => {
     // 在线歌曲
     if (!isLocalSong) {
       // 获取歌曲 ID
-      $message.info("当前为在线歌曲喵~");
       let songId = playSongData?.id;
       if (!songId) {
         return false;
@@ -129,7 +128,7 @@ export const initPlayer = async (playNow = false) => {
       $dialog.error({
         title: "致命性错误",
         content: "歌曲播放中出现错误次数过多，请刷新后重试",
-        positiveText: "刷新",
+        positiveText: "刷新窗口",
         onPositiveClick: () => {
           location.reload();
         },
@@ -190,7 +189,6 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     console.info("🎵 开始解灰：", data);
     // 调用解灰
     let response = await getMusicNumUrl(data.id);
-    $message.info("正在获取Unblock歌曲Url, 已经输出在控制台");
     console.log(response);
     let musicUrl = response?.data?.url;
     console.log(musicUrl);
