@@ -189,18 +189,29 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     console.info("🎵 开始解灰：", data);
     // 调用解灰
     let response = await getMusicNumUrl(data.id);
+    $message.info("正在获取Unblock歌曲Url, 已经输出在控制台");
     console.log(response);
-    let musicUrl = response?.data?.url;
+    let musicUrl = null;
+    if (response?.code === 200 && response?.data) {
+      if (response.data.source === "pyncmd") {
+        musicUrl = response.data.url;
+      } else if (response.data.source === "kuwo") {
+        musicUrl = response.data.proxyUrl;
+      }
+    }
     console.log(musicUrl);
-    $message.info("获取链接成功, 正在播放喵~");
-    status.playUseOtherSource = true;
-    if (!musicUrl) {
+    if (musicUrl) {
+      // 将 http 替换为 https
+      musicUrl = musicUrl.replace(/^http:/, "https:");
+      $message.info("获取链接成功, 正在播放喵~");
+      status.playUseOtherSource = true;
+      if (playNow) status.playState = true;
+      status.playLoading = false;
+      return musicUrl;
+    } else {
       status.playLoading = false;
       return null;
     }
-    if (playNow) status.playState = true;
-    status.playLoading = false;
-    return musicUrl;
   } catch (error) {
     status.playLoading = false;
     console.error("歌曲解灰遇到错误：" + error.message);
