@@ -154,7 +154,7 @@ const getNormalSongUrl = async (id, status, playNow) => {
     // 检查是否有有效的响应数据
     if (!res.data?.[0] || !res.data?.[0]?.url) return null;
     // 检查是否只能试听
-    if (res.data?.[0]?.freeTrialInfo !== null) {
+    if (res.data?.[0]?.freeTrialInfo !== null && settings.useUnmServer) {
       // 调用解灰
       const unblockUrl = await getFromUnblockMusic({ id }, status, playNow);
       if (unblockUrl) {
