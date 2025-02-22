@@ -30,6 +30,7 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "@material/material-color-utilities": "^0.2.7",
+    "@UnblockNeteaseMusic/server": "latest",
     "NeteaseCloudMusicApi": "^4.19.9",
     "axios": "^1.7.2",
     "colorthief": "^2.4.0",
