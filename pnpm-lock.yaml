@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@unblocknetesemusic/server':
+    specifier: latest
+    version: latest
   '@electron-toolkit/preload':
     specifier: ^3.0.1
     version: 3.0.1(electron@28.3.3)
