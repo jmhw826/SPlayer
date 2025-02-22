@@ -45,7 +45,7 @@ export const getMusicNumUrl = async (id) => {
   //   process.env.NODE_ENV === "development"
   //     ? "kuwo,qq,pyncmd,kugou"
   //     : "qq,pyncmd,kugou";
-  const server = "pyncmd";
+  const server = "pyncmd,kuwo";
   const url = `${import.meta.env.VITE_UNM_API}match?id=${id}&server=${server}`;
   const response = await fetch(url, {
     method: "GET",

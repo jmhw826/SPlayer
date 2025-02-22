@@ -58,7 +58,6 @@ export const initPlayer = async (playNow = false) => {
     // 在线歌曲
     if (!isLocalSong) {
       // 获取歌曲 ID
-      $message.info("当前为在线歌曲喵~");
       let songId = playSongData?.id;
       if (!songId) {
         return false;
@@ -129,7 +128,7 @@ export const initPlayer = async (playNow = false) => {
       $dialog.error({
         title: "致命性错误",
         content: "歌曲播放中出现错误次数过多，请刷新后重试",
-        positiveText: "刷新",
+        positiveText: "刷新窗口",
         onPositiveClick: () => {
           location.reload();
         },
@@ -155,7 +154,7 @@ const getNormalSongUrl = async (id, status, playNow) => {
     // 检查是否有有效的响应数据
     if (!res.data?.[0] || !res.data?.[0]?.url) return null;
     // 检查是否只能试听
-    if (res.data?.[0]?.freeTrialInfo !== null) {
+    if (res.data?.[0]?.freeTrialInfo !== null && settings.useUnmServer) {
       // 调用解灰
       const unblockUrl = await getFromUnblockMusic({ id }, status, playNow);
       if (unblockUrl) {
@@ -192,17 +191,28 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     let response = await getMusicNumUrl(data.id);
     $message.info("正在获取Unblock歌曲Url, 已经输出在控制台");
     console.log(response);
-    let musicUrl = response?.data?.url;
+    let musicUrl = null;
+    if (response?.code === 200 && response?.data) {
+      if (response.data.source === "pyncmd") {
+        musicUrl = response.data.url;
+      } else if (response.data.source === "kuwo") {
+        musicUrl = response.data.proxyUrl;
+        // musicUrl = response.data.url;
+      }
+    }
     console.log(musicUrl);
-    $message.info("获取链接成功, 正在播放喵~");
-    status.playUseOtherSource = true;
-    if (!musicUrl) {
+    if (musicUrl) {
+      // 将 http 替换为 https
+      musicUrl = musicUrl.replace(/^http:/, "https:");
+      $message.info("获取链接成功, 正在播放喵~");
+      status.playUseOtherSource = true;
+      if (playNow) status.playState = true;
+      status.playLoading = false;
+      return musicUrl;
+    } else {
       status.playLoading = false;
       return null;
     }
-    if (playNow) status.playState = true;
-    status.playLoading = false;
-    return musicUrl;
   } catch (error) {
     status.playLoading = false;
     console.error("歌曲解灰遇到错误：" + error.message);
