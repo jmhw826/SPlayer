@@ -88,7 +88,7 @@ const toSongDownload = async (song, lyric) => {
         duration: 3000,
       });
     }
-    if (!result) {
+    if (!result.data?.url) {
       downloadStatus.value = false;
       return $message.error("下载失败，请重试");
     }
