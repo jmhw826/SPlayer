@@ -1,5 +1,15 @@
+/* 视口安全区域处理 */
+@supports (height: 100dvh) {
+  :root {
+    --safe-area-inset-top: env(safe-area-inset-top);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 :root {
   --main-font-family: "HarmonyOS Sans", "HarmonyOS_Regular", system-ui, -apple-system, sans-serif;
+  --dynamic-vh: 100dvh;
+  --static-vh: 100vh;
 }
 
 * {
@@ -7,16 +17,43 @@
   padding: 0;
   user-select: none !important;
   -webkit-user-drag: none !important;
+  box-sizing: border-box;
 }
 
-html,
-body,
+html {
+  /* 禁用默认缩放 */
+  touch-action: manipulation;
+  /* 防止字体缩放 */
+  -webkit-text-size-adjust: 100%;
+
+}
+body {
+  font-family: var(--main-font-family) !important;
+  padding-top: var(--safe-area-inset-top, 0);
+  padding-bottom: var(--safe-area-inset-bottom, 0);
+  display: flex;
+  flex-direction: column;
+  /* 防止滚动条跳动 */
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
+}
 #app {
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: var(--dynamic-vh);
+
+  @supports not (height: 100dvh) {
+    min-height: var(--static-vh);
+  }
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* 处理键盘弹出 */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* 原有组件样式 */
 body {
   font-family: var(--main-font-family) !important;
 }
@@ -122,10 +159,10 @@ body {
 
 // n-result
 .n-result {
-  min-height: calc(100vh - 178px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  min-height: calc(var(--dynamic-vh) - 178px);
+  @supports not (height: 100dvh) {
+      min-height: calc(var(--static-vh) - 178px);
+    }
 }
 
 // n-popover
@@ -179,4 +216,39 @@ body {
   .n-layout-toggle-bar__bottom {
     top: 20px !important;
   }
+}
+/* 新增关键修复 */
+@media (hover: none) and (pointer: coarse) {
+
+  /* 移动端优化 */
+  input,
+  textarea,
+  select,
+  button {
+    font-size: 16px;
+    /* 禁用iOS字体缩放 */
+    min-height: 44px;
+    /* Apple推荐最小点击区域 */
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%
+  }
+
+  100% {
+    background-position: 0 50%
+  }
+}
+
+/* 固定定位元素处理 */
+.fixed-top-element {
+  position: fixed;
+  top: var(--safe-area-inset-top, 0);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  /* 防止地址栏隐藏时的抖动 */
+  transition: top 0.3s ease;
 }
