@@ -81,6 +81,12 @@ const toSongDownload = async (song, lyric) => {
     // 获取下载数据
     const result = await getMusicNumUrl(song?.id);
     console.log("下载数据：", result);
+    // 检查 result.data 和 result.data.url 是否存在
+    if (!result.data || !result.data.url) {
+      downloadStatus.value = false;
+      console.error("下载数据无效：", result);
+      return $message.error("下载失败，请重试");
+    }
     // 开始下载
     if (!downloadPath.value && checkPlatform.electron()) {
       $notification["warning"]({
@@ -89,12 +95,11 @@ const toSongDownload = async (song, lyric) => {
         duration: 3000,
       });
     }
-    if (!result.data?.url) {
-      downloadStatus.value = false;
-      return $message.error("下载失败，请重试");
-    }
     // 获取下载结果
-    const isDownloaded = await downloadFile(result.data, song, lyric, {
+    const isDownloaded = await downloadFile({
+      type: 'mp3',
+      url: result.data.url
+    }, song, lyric, {
       path: downloadPath.value,
       downloadMeta: downloadMeta.value,
       downloadCover: downloadCover.value,
