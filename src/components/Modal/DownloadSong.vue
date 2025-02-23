@@ -80,6 +80,7 @@ const toSongDownload = async (song, lyric) => {
     downloadStatus.value = true;
     // 获取下载数据
     const result = await getMusicNumUrl(song?.id);
+    console.log("下载数据：", result);
     // 开始下载
     if (!downloadPath.value && checkPlatform.electron()) {
       $notification["warning"]({
@@ -93,7 +94,7 @@ const toSongDownload = async (song, lyric) => {
       return $message.error("下载失败，请重试");
     }
     // 获取下载结果
-    const isDownloaded = await downloadFile(result.data.url, song, lyric, {
+    const isDownloaded = await downloadFile(result.data, song, lyric, {
       path: downloadPath.value,
       downloadMeta: downloadMeta.value,
       downloadCover: downloadCover.value,
