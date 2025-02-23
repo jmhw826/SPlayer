@@ -93,7 +93,7 @@ const toSongDownload = async (song, lyric) => {
       return $message.error("下载失败，请重试");
     }
     // 获取下载结果
-    const isDownloaded = await downloadFile(result.data, song, lyric, {
+    const isDownloaded = await downloadFile(result.data.url, song, lyric, {
       path: downloadPath.value,
       downloadMeta: downloadMeta.value,
       downloadCover: downloadCover.value,
