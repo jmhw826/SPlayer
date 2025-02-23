@@ -42,14 +42,17 @@ body {
     padding-bottom: 100%;
     background-color: var(--n-color);
     border-radius: 8px;
+
     .n-spin-body {
       position: absolute;
       height: 100%;
       top: 0;
     }
+
     &.mv {
       padding-bottom: 56%;
     }
+
     .loading-img {
       position: absolute;
       top: 0;
@@ -71,6 +74,7 @@ body {
 // n-message
 .n-message-container {
   bottom: 90px !important;
+
   .n-message-wrapper {
     .n-message {
       border-radius: 12px;
@@ -90,12 +94,10 @@ body {
 
 // n-skeleton
 .n-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--n-color-end) 25%,
-    var(--n-color-start) 37%,
-    var(--n-color-end) 63%
-  );
+  background: linear-gradient(90deg,
+      var(--n-color-end) 25%,
+      var(--n-color-start) 37%,
+      var(--n-color-end) 63%);
   background-size: 400% 100%;
   animation: skeleton-loading 1.4s ease infinite;
 }
@@ -104,6 +106,7 @@ body {
 .n-tabs {
   width: 100%;
   --n-tab-border-radius: 6px !important;
+
   .n-tabs-nav {
     position: relative;
   }
@@ -116,6 +119,7 @@ body {
   min-width: min(24rem, 100vw);
   border-radius: 8px;
 }
+
 .n-modal-mask {
   backdrop-filter: blur(16px);
 }
@@ -141,6 +145,7 @@ body {
     box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
   &:active {
     transform: scale(0.9);
   }
@@ -154,6 +159,7 @@ body {
   --n-merged-th-color-hover: transparent !important;
   --n-merged-td-color-hover: transparent !important;
   --n-merged-td-color-striped: transparent !important;
+
   .n-data-table__pagination {
     margin-top: 40px;
     margin-bottom: 30px;
@@ -172,10 +178,12 @@ body {
 .n-layout-toggle-bar {
   height: 44px !important;
   top: calc(50% - 22px) !important;
+
   .n-layout-toggle-bar__top,
   .n-layout-toggle-bar__bottom {
     height: 24px !important;
   }
+
   .n-layout-toggle-bar__bottom {
     top: 20px !important;
   }

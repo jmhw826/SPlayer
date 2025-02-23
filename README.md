@@ -1,6 +1,10 @@
-# SPlayer
+# [重构中] SPlayer
 
-> 一个简约的音乐播放器
+> [!WARNING]
+>
+> **该分支为`dev`分支, 建议不要fork分支, 其内置的不稳定因素是不可控的!**
+
+#### 一个简约的音乐播放器
 
 ![main](/screenshots/SPlayer.jpg)
 
@@ -37,6 +41,7 @@
 - 🌚 Light / Dark 模式自动切换
 - 📁 本地歌曲管理及分类（建议先使用 [音乐标签](https://www.cnblogs.com/vinlxc/p/11347744.html) 进行匹配后再使用）
 - 🎵 **支持播放部分无版权歌曲（可能会与原曲不匹配）**
+> 此功能将会重构, 即将上线!
 - ⬇️ 下载歌曲（最高支持 Hi-Res）
 - ➕ 新建歌单及歌单编辑
 - ❤️ 收藏 / 取消收藏歌单或歌手
@@ -110,12 +115,14 @@
 
 ## ⚙️ Vercel 部署
 
-> 其他部署平台大致相同，在此不做说明
+> [!IMPORTANT]
+>
+> 项目即将进行重构, 重构成功后无需部署`UNM-Server`并填入, 而是内置在`SPlayer`里面 (网易云API仍然需要部署)
 
 1. 本程序依赖 [NeteaseCloudMusicApi](https://github.com/IamFurina/NeteaseCloudMusicApi) 运行以及[UNM-Server](https://act.focalors.ltd/unm-server)，请确保您已成功部署该项目，并成功取得在线访问地址
 2. 点击本仓库右上角的 `Fork`，复制本仓库到你的 `GitHub` 账号
 3. 复制 `/.env.example` 文件并重命名为 `/.env`
-4. 将 `.env` 文件中的 `RENDERER_VITE_SERVER_URL` 改为第一步得到的 API 地址
+4. 将 `.env` 文件中的 `RENDERER_VITE_SERVER_URL` 和 `VITE_UNM_API` 改为第一步得到的 API 地址
 
    ```js
    RENDERER_VITE_SERVER_URL = "https://api.example.com";
