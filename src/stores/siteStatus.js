@@ -5,7 +5,7 @@ const useSiteStatusStore = defineStore("siteStatus", {
   state: () => {
     return {
       // 菜单折叠状态
-      asideMenuCollapsed: true,
+      asideMenuCollapsed: false,
       // 搜索框状态
       searchInputFocus: false,
       // 是否展示播放控制条
