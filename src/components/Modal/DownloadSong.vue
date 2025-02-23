@@ -42,7 +42,7 @@ import { storeToRefs } from "pinia";
 import { isLogin } from "@/utils/auth";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyric, getSongDownload } from "@/api/song";
+import { getSongDetail, getSongLyric, getMusicNumUrl } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
 
@@ -79,7 +79,7 @@ const toSongDownload = async (song, lyric) => {
     console.log(song, lyric);
     downloadStatus.value = true;
     // 获取下载数据
-    const result = await getSongDownload(song?.id);
+    const result = await getMusicNumUrl(song?.id);
     // 开始下载
     if (!downloadPath.value && checkPlatform.electron()) {
       $notification["warning"]({
@@ -88,7 +88,7 @@ const toSongDownload = async (song, lyric) => {
         duration: 3000,
       });
     }
-    if (!result.data?.url) {
+    if (!result) {
       downloadStatus.value = false;
       return $message.error("下载失败，请重试");
     }

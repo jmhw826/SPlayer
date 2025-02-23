@@ -189,7 +189,6 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     console.info("🎵 开始解灰：", data);
     // 调用解灰
     let response = await getMusicNumUrl(data.id);
-    $message.info("正在获取Unblock歌曲Url, 已经输出在控制台");
     console.log(response);
     let musicUrl = null;
     if (response?.code === 200 && response?.data) {
