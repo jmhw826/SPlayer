@@ -204,7 +204,7 @@ const openDownloadModal = (data) => {
     getMusicDetailData(songId.value);
   };
   if (isLogin() || !isLogin()) {
-    // 普通歌曲或为云盘歌曲
+    /* 普通歌曲或为云盘歌曲
     if (
       router.currentRoute.value.name === "cloud" ||
       data?.fee === 0 ||
@@ -213,7 +213,10 @@ const openDownloadModal = (data) => {
     ) {
       return toDownload();
     }
-    // 权限不足
+    */
+   return toDownload();
+  }
+    /* 权限不足
     if (!isLogin()) {
       return $message.warning("账号会员等级不足，请提升权限");
     }
@@ -221,6 +224,7 @@ const openDownloadModal = (data) => {
   } else {
     $message.warning("请登录后使用");
   }
+    */
 };
 
 // 关闭歌曲下载
