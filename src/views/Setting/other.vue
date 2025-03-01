@@ -125,6 +125,13 @@
       </div>
       <n-button strong secondary type="error" @click="resetApp"> 重置 </n-button>
     </n-card>
+    <n-card class="set-item">
+      <div class="name">
+        获取最新页面
+        <n-text class="tip">获取网页最新页面, 适用于Vercel更新推送无法正常接收</n-text>
+      </div>
+      <n-button strong secondary type="error" @click="getNewPage"> 获取 </n-button>
+    </n-card>
   </div>
 </template>
 
@@ -156,6 +163,31 @@ const resetApp = () => {
           electron.ipcRenderer.send("window-relaunch");
         } else {
           location.replace("/");
+          // window.location.href = "/";
+        }
+      }, 1000);
+    },
+  });
+};
+
+// 从服务器获取最新页面
+const getNewPage = () => {
+  $dialog.warning({
+    title: "确定要获取最新页面吗?",
+    content: "此操作将会清除本地缓存，重新获取最新页面",
+    positiveText: "确定",
+    negativeText: "取消",
+    onPositiveClick: () => { 
+      if (typeof $cleanAll === "undefined") {
+        return $message.error("重置操作出现错误，请重试");
+      }
+      $cleanAll(false);
+      $message.success("获取成功，正在重启");
+      setTimeout(() => {
+        if (checkPlatform.electron()) {
+          electron.ipcRenderer.send("window-relaunch");
+        } else {
+          location.reload(true);
           // window.location.href = "/";
         }
       }, 1000);
