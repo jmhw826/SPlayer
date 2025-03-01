@@ -51,7 +51,6 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       lyricsBlock: "start", // 歌词滚动位置
       showTransl: true, // 是否显示歌词翻译
       showRoma: true, // 是否显示歌词音译
-      lyricsStyle: 'original', // 默认歌词样式
       // 下载部分
       downloadPath: null, // 默认下载路径
       downloadMeta: true, // 同时下载元信息
