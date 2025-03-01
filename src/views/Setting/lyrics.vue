@@ -140,6 +140,17 @@
       </div>
       <n-switch v-model:value="lyricsBlur" :round="false" />
     </n-card>
+    <n-card class="set-item">
+      <div class="name">歌词样式</div>
+      <n-select
+        v-model:value="lyricsStyle"
+        :options="[
+          { label: '默认样式', value: 'default' },
+          { label: 'Apple Music 样式', value: 'applemusic' },
+        ]"
+        class="set"
+      />
+    </n-card>
   </div>
 </template>
 
@@ -159,5 +170,6 @@ const {
   lyricsFontSize,
   lyricsBlur,
   lyricsBold,
+  lyricsStyle,
 } = storeToRefs(settings);
 </script>
