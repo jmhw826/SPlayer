@@ -205,7 +205,8 @@ const cleanPlaylists = () => {
   showFullPlayer.value = false;
   $message.success("已清空播放列表");
   if (useMusicCache.value && playLoading.value) { 
-    location.reload(); // 针对歌曲缓存刷新页面
+    // location.reload(); // 针对歌曲缓存刷新页面
+    window.location.href = "/";
   }
   
 };
