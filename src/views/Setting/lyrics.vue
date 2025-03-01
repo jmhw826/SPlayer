@@ -107,7 +107,7 @@
         <div class="dev">
           显示逐字歌词动画
           <n-tag :bordered="false" round size="small" type="warning">
-            可能与实际效果不符
+            开发中
             <template #icon>
               <n-icon>
                 <SvgIcon icon="code" />
@@ -126,7 +126,7 @@
         v-model:value="lyricsStyle"
         :options="[
           { label: '默认样式', value: 'default' },
-          { label: 'Apple Music 样式', value: 'applemusic' },
+          { label: 'Apple Music Like Lyrics 样式', value: 'applemusic' },
         ]"
         class="set"
       />

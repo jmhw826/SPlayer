@@ -17,6 +17,7 @@
       <n-tab name="setTab4"> 歌词 </n-tab>
       <n-tab name="setTab5"> 下载 </n-tab>
       <n-tab name="setTab6"> 其他 </n-tab>
+      <n-tab name="setTab7"> TestOptions </n-tab>
     </n-tabs>
     <!-- 设置项 -->
     <n-scrollbar
@@ -39,6 +40,8 @@
       <Download />
       <!-- 其他 -->
       <Other />
+      <!--TestOptions-->
+      <TestOptions />
     </n-scrollbar>
   </div>
 </template>
@@ -55,6 +58,7 @@ import Player from "@/views/Setting/player.vue";
 import Lyrics from "@/views/Setting/lyrics.vue";
 import Download from "@/views/Setting/download.vue";
 import Other from "@/views/Setting/other.vue";
+import TestOptions from "@/views/Setting/testOptions.vue";
 
 const music = musicData();
 const status = siteStatus();
