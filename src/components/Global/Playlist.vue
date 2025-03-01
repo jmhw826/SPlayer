@@ -196,7 +196,7 @@ const playSong = debounce(async (song, index) => {
 // 清空列表
 const cleanPlaylists = () => {
   if (useMusicCache.value && playLoading.value) {
-    soundStop(); // 调用弹窗关闭音乐
+    soundStop();// 调用弹窗关闭音乐
   }
   playIndex.value = 0;
   playList.value = [];
@@ -204,9 +204,8 @@ const cleanPlaylists = () => {
   playListShow.value = false;
   showFullPlayer.value = false;
   $message.success("已清空播放列表");
-  if (useMusicCache.value && playLoading.value) { 
-    // location.reload(); // 针对歌曲缓存刷新页面
-    window.location.href = "/";
+  if (useMusicCache.value) { 
+    location.reload(true); // 针对歌曲缓存刷新页面
   }
   
 };

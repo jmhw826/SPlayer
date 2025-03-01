@@ -155,7 +155,8 @@ const resetApp = () => {
         if (checkPlatform.electron()) {
           electron.ipcRenderer.send("window-relaunch");
         } else {
-          window.location.href = "/";
+          location.replace("/");
+          // window.location.href = "/";
         }
       }, 1000);
     },
