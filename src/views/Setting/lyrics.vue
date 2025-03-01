@@ -120,6 +120,18 @@
       <n-switch v-model:value="showYrcAnimation" :disabled="!showYrc" :round="false" />
     </n-card>
     <n-card class="set-item">
+      <div class="name">歌词样式</div>
+      <n-text class="tip">选择歌词的显示样式</n-text>
+      <n-select
+        v-model:value="lyricsStyle"
+        :options="[
+          { label: '默认样式', value: 'default' },
+          { label: 'Apple Music 样式', value: 'applemusic' },
+        ]"
+        class="set"
+      />
+    </n-card>
+    <n-card class="set-item">
       <div class="name">
         显示歌词翻译
         <n-text class="tip">是否在具有翻译歌词时显示</n-text>
@@ -139,17 +151,6 @@
         <n-text class="tip">是否聚焦显示当前播放行，其他行将模糊显示, 手机端建议关闭</n-text>
       </div>
       <n-switch v-model:value="lyricsBlur" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">歌词样式</div>
-      <n-select
-        v-model:value="lyricsStyle"
-        :options="[
-          { label: '默认样式', value: 'default' },
-          { label: 'Apple Music 样式', value: 'applemusic' },
-        ]"
-        class="set"
-      />
     </n-card>
   </div>
 </template>
