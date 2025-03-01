@@ -117,7 +117,7 @@
 
 > [!IMPORTANT]
 >
-> 项目即将进行重构, 重构成功后无需部署`UNM-Server`并填入, 而是内置在`SPlayer`里面 (网易云API仍然需要部署)
+> API项目即将进行重构, 重构成功后无需部署`UNM-Server`并填入, 而是内置在`网易云API`里面
 
 1. 本程序依赖 [NeteaseCloudMusicApi](https://github.com/IamFurina/NeteaseCloudMusicApi) 运行以及[UNM-Server](https://act.focalors.ltd/unm-server)，请确保您已成功部署该项目，并成功取得在线访问地址
 2. 点击本仓库右上角的 `Fork`，复制本仓库到你的 `GitHub` 账号
