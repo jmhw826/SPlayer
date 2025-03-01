@@ -58,7 +58,7 @@ import Player from "@/views/Setting/player.vue";
 import Lyrics from "@/views/Setting/lyrics.vue";
 import Download from "@/views/Setting/download.vue";
 import Other from "@/views/Setting/other.vue";
-import TestOptions from "@/views/Setting/testOptions.vue";
+import TestOptions from "@/views/Setting/testoptions.vue";
 
 const music = musicData();
 const status = siteStatus();
