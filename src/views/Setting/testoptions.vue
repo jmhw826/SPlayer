@@ -90,7 +90,7 @@
     </div>
     <n-card class="set-item">
       <div class="name">
-        默认加载数量
+        列表选项Lists
         <n-text class="tip">在部分列表页面显示几条数据, 过多数据可能会造成响应过慢</n-text>
       </div>
       <n-select
