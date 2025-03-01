@@ -1,6 +1,9 @@
 <!-- 播放器 - 歌词 -->
 <template>
   <div
+    :style="{
+      cursor: cursorShow ? 'pointer' : 'none',
+    }"
     :class="[
       'lyric',
       `lyric-${lyricsPosition}`,
@@ -18,21 +21,118 @@
         @after-enter="lyricsScroll(playSongLyricIndex)"
         @after-leave="lyricsScroll(playSongLyricIndex)"
       >
-        <div v-if="lyricsStyle === 'default'">
-          <!-- 默认样式的歌词 -->
-          <div v-for="(line, index) in playSongLyric.lrc" :key="index" :id="'lrc' + index">
-            <n-text :depth="index === playSongLyricIndex ? 3 : 1">{{ line.content }}</n-text>
-          </div>
-        </div>
-        <div v-else-if="lyricsStyle === 'applemusic'">
-          <!-- Apple Music 样式的歌词 -->
-          <LyricPlayer 
-            ref="lyricPlayerRef" 
-            :lyricLines="currentLyrics" 
-            :currentTime="currentTime"
-            @line-click="handleLineClick" 
-          />
-        </div>
+        <n-scrollbar ref="lyricScroll" style="width: 100%">
+          <!-- 普通歌词 -->
+          <template v-if="!showYrc || !playSongLyric.hasYrc">
+            <div class="placeholder">
+              <!-- 倒计时 -->
+              <CountDown
+                v-if="countDownShow"
+                :start="0"
+                :duration="playSongLyric.lrc[0]?.time || 0"
+                :seek="playSeek"
+                isFirst
+              />
+            </div>
+            <div
+              v-for="(item, index) in playSongLyric.lrc"
+              :id="'lrc' + index"
+              :key="index"
+              :class="{ 'lrc-line': true, on: Number(playSongLyricIndex) === index, islrc: true }"
+              :style="{
+                filter: lyricsBlur
+                  ? `blur(${Math.min(Math.abs(Number(playSongLyricIndex) - index) * 1.5, 10)}px)`
+                  : 'blur(0)',
+              }"
+              @click.stop="jumpSeek(item?.time)"
+            >
+              <!-- 歌词 -->
+              <span
+                :style="{
+                  fontSize: lyricsFontSize + 'px',
+                  fontWeight: lyricsBold ? 'bold' : 'normal',
+                }"
+                class="lrc-content"
+              >
+                {{ item.content }}
+              </span>
+              <!-- 翻译 -->
+              <span
+                v-if="showTransl && playSongLyric.hasLrcTran && item.tran"
+                :style="{ fontSize: lyricsFontSize - (lyricsFontSize < 40 ? 10 : 16) + 'px' }"
+                class="lrc-fy"
+              >
+                {{ item.tran }}
+              </span>
+              <!-- 音译 -->
+              <span v-if="showRoma && playSongLyric.hasLrcRoma && item.roma" class="lrc-roma">
+                {{ item.roma }}
+              </span>
+            </div>
+          </template>
+          <!-- 逐字歌词 -->
+          <template v-else-if="playSongLyric.yrc?.[0]">
+            <div class="placeholder">
+              <!-- 倒计时 -->
+              <CountDown
+                v-if="countDownShow"
+                :start="0"
+                :duration="playSongLyric.yrc[0].time || 0"
+                :seek="playSeek"
+                isFirst
+              />
+            </div>
+            <div
+              v-for="(item, index) in playSongLyric.yrc"
+              :id="'lrc' + index"
+              :key="index"
+              :class="{ 'lrc-line': true, on: Number(playSongLyricIndex) === index, isyrc: true }"
+              :style="{
+                filter: lyricsBlur
+                  ? `blur(${Math.min(Math.abs(Number(playSongLyricIndex) - index) * 1.5, 10)}px)`
+                  : 'blur(0)',
+              }"
+              @click.stop="jumpSeek(item?.time)"
+            >
+              <!-- 歌词 -->
+              <div
+                :style="{
+                  fontSize: lyricsFontSize + 'px',
+                  fontWeight: lyricsBold ? 'bold' : 'normal',
+                }"
+                class="lrc-content"
+              >
+                <div
+                  v-for="(text, textIndex) in item.content"
+                  :key="textIndex"
+                  :class="{
+                    'lrc-text': true,
+                    'lrc-long': text.duration >= 1.5,
+                    'end-with-space': text.endsWithSpace,
+                  }"
+                >
+                  <span class="word">{{ text.content }}</span>
+                  <span class="filler" :style="getYrcStyle(text, index)">
+                    {{ text.content }}
+                  </span>
+                </div>
+              </div>
+              <!-- 翻译 -->
+              <span
+                v-if="showTransl && playSongLyric.hasLrcTran && item.tran"
+                :style="{ fontSize: lyricsFontSize - (lyricsFontSize < 40 ? 10 : 16) + 'px' }"
+                class="lrc-fy"
+              >
+                {{ item.tran }}
+              </span>
+              <!-- 音译 -->
+              <span v-if="showRoma && playSongLyric.hasLrcRoma && item.roma" class="lrc-roma">
+                {{ item.roma }}
+              </span>
+            </div>
+          </template>
+          <div class="placeholder" />
+        </n-scrollbar>
       </div>
     </Transition>
   </div>
@@ -42,7 +142,15 @@
 import { storeToRefs } from "pinia";
 import { musicData, siteSettings, siteStatus } from "@/stores";
 import { setSeek, fadePlayOrPause } from "@/utils/Player";
-import { LyricPlayer } from 'applemusic-like-lyrics';
+
+// eslint-disable-next-line no-unused-vars
+const props = defineProps({
+  // 鼠标显示
+  cursorShow: {
+    type: Boolean,
+    default: true,
+  },
+});
 
 const music = musicData();
 const settings = siteSettings();
@@ -63,7 +171,6 @@ const {
   playCoverType,
   justLyricArea,
   lyricsBold,
-  lyricsStyle,
 } = storeToRefs(settings);
 
 // 歌词滚动数据
@@ -161,29 +268,6 @@ onMounted(() => {
     lyricsScroll(playSongLyricIndex.value);
   });
 });
-
-// 处理歌词点击
-const handleLineClick = (e) => {
-  const time = e.line.getLine().startTime;
-  if (time != null) {
-    setSeek(time);
-    fadePlayOrPause();
-  }
-};
-
-// 获取当前歌词
-const currentLyrics = computed(() => {
-  const songLyric = music.playSongLyric || { lrcAMData: [], yrcAMData: [] };
-  return createLyricsProcessor(songLyric, {
-    showYrc: showYrc.value,
-    showRoma: showRoma.value,
-    showTransl: showTransl.value,
-  });
-});
-
-// 计算当前播放时间
-const currentTime = computed(() => status.playSeek * 1000);
-
 </script>
 
 <style lang="scss" scoped>
