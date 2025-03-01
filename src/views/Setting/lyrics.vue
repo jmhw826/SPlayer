@@ -107,7 +107,7 @@
         <div class="dev">
           显示逐字歌词动画
           <n-tag :bordered="false" round size="small" type="warning">
-            可能与实际效果不符
+            开发中
             <template #icon>
               <n-icon>
                 <SvgIcon icon="code" />
@@ -118,6 +118,18 @@
         <n-text class="tip">可能会造成卡顿等性能问题，手机端建议关闭</n-text>
       </div>
       <n-switch v-model:value="showYrcAnimation" :disabled="!showYrc" :round="false" />
+    </n-card>
+    <n-card class="set-item">
+      <div class="name">歌词样式</div>
+      <n-text class="tip">选择歌词的显示样式</n-text>
+      <n-select
+        v-model:value="lyricsStyle"
+        :options="[
+          { label: '默认样式', value: 'default' },
+          { label: 'Apple Music Like Lyrics 样式', value: 'applemusic' },
+        ]"
+        class="set"
+      />
     </n-card>
     <n-card class="set-item">
       <div class="name">
@@ -159,5 +171,6 @@ const {
   lyricsFontSize,
   lyricsBlur,
   lyricsBold,
+  lyricsStyle,
 } = storeToRefs(settings);
 </script>

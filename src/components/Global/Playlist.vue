@@ -1,4 +1,3 @@
-<!-- 全局播放列表 -->
 <template>
   <n-drawer
     v-model:show="playListShow"
@@ -105,7 +104,7 @@
           </n-gi>
           <n-gi>
             <!-- 清空列表 -->
-            <n-button size="large" tag="div" strong secondary @click="cleanPlaylists">
+            <n-button size="large" tag="div" strong secondary @click="showClearModal = true">
               <template #icon>
                 <n-icon>
                   <SvgIcon icon="delete-sweep" />
@@ -118,10 +117,21 @@
       </Transition>
     </n-drawer-content>
   </n-drawer>
+
+  <!-- 清空列表确认弹窗 -->
+  <n-modal v-model:show="showClearModal" title="确认清空" preset="dialog">
+    <template #default>
+      <n-text>这将会刷新网页, 确定要清空播放列表吗？</n-text>
+    </template>
+    <template #action>
+      <n-button @click="showClearModal = false">取消操作</n-button>
+      <n-button type="primary" @click="confirmClearPlaylists">清空列表</n-button>
+    </template>
+  </n-modal>
 </template>
 
 <script setup>
-import { NText, NIcon } from "naive-ui";
+import { NText, NIcon, NModal, NButton } from "naive-ui";
 import { storeToRefs } from "pinia";
 import { musicData, siteStatus, siteSettings } from "@/stores";
 import { initPlayer, fadePlayOrPause, changePlayIndex, soundStop } from "@/utils/Player";
@@ -137,6 +147,7 @@ const { coverTheme, showFullPlayer, playListShow, playIndex, playMode, playLoadi
   storeToRefs(status);
 
 const playListRef = ref(null);
+const showClearModal = ref(false);
 
 // 播放列表数据
 const playListData = computed(() => {
@@ -184,13 +195,20 @@ const playSong = debounce(async (song, index) => {
 
 // 清空列表
 const cleanPlaylists = () => {
-  soundStop();
+  soundStop();// 调用弹窗关闭音乐
   playIndex.value = 0;
   playList.value = [];
   playSongData.value = {};
   playListShow.value = false;
   showFullPlayer.value = false;
   $message.success("已清空播放列表");
+  location.reload(true); // 针对歌曲缓存刷新页面
+};
+
+// 确认清空列表
+const confirmClearPlaylists = () => {
+  cleanPlaylists();
+  showClearModal.value = false;
 };
 
 // 移除歌曲

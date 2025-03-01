@@ -1,34 +1,33 @@
 <template>
   <div class="set-type">
-    <n-h3 prefix="bar"> 其他 </n-h3>
+    <n-h3 prefix="bar"> 测试标题Test Title </n-h3>
     <n-card class="set-item">
       <div class="name">
-        使用真实 IP 地址
-        <n-text class="tip">在海外或部分地区可能会受到限制，可开启此处尝试解决</n-text>
+        Button Switch
+        <n-text class="tip">Tips are inputted here</n-text>
       </div>
-      <n-switch v-model:value="useRealIP" :round="false" />
+      <n-switch round="false" />
     </n-card>
     <n-card class="set-item">
       <div class="name">
-        真实 IP 地址
-        <n-text class="tip">可在此处输入国内 IP</n-text>
+        Input field
+        <n-text class="tip">Tips are inputted here</n-text>
       </div>
       <n-input
-        v-model:value="realIP"
         :disabled="!useRealIP"
         class="set"
         type="text"
-        placeholder="请填写真实 IP 地址"
+        placeholder="Input..."
       >
         <template #prefix>
-          <n-text depth="3">IP</n-text>
+          <n-text depth="3">内容</n-text>
         </template>
       </n-input>
     </n-card>
     <div v-if="checkPlatform.electron()" class="all-porxy" style="margin-bottom: 12px">
       <n-card class="set-item">
         <div class="name">
-          网络代理
+          Electron测试选项
           <n-text class="tip">修改后请点击保存或重启软件以应用</n-text>
         </div>
         <n-flex>
@@ -90,28 +89,20 @@
       </n-card>
     </div>
     <n-card class="set-item">
-      <div class="name">显示 GitHub 仓库按钮</div>
-      <n-switch v-model:value="showGithub" :round="false" />
-    </n-card>
-    <n-card class="set-item">
       <div class="name">
-        默认加载数量
+        列表选项Lists
         <n-text class="tip">在部分列表页面显示几条数据, 过多数据可能会造成响应过慢</n-text>
       </div>
       <n-select
-        v-model:value="loadSize"
         :options="[
           {
-            label: '少一点（ 30 条 ）',
-            value: 30,
+            label: '1',
           },
           {
-            label: '差不多刚刚好（ 50 条 ）',
-            value: 50,
+            label: '2',
           },
           {
-            label: '我要很多（ 100 条 ）',
-            value: 100,
+            label: '3',
           },
         ]"
         class="set"
@@ -120,17 +111,10 @@
     </n-card>
     <n-card class="set-item">
       <div class="name">
-        程序重置
-        <n-text class="tip">若程序显示异常或出现问题时可尝试此操作</n-text>
+        Button
+        <n-text class="tip">Tips</n-text>
       </div>
-      <n-button strong secondary type="error" @click="resetApp"> 重置 </n-button>
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        获取最新页面
-        <n-text class="tip">获取网页最新页面, 适用于Vercel更新推送无法正常接收</n-text>
-      </div>
-      <n-button strong secondary type="error" @click="getNewPage"> 获取 </n-button>
+      <n-button strong secondary type="error"> Click </n-button>
     </n-card>
   </div>
 </template>
@@ -162,29 +146,7 @@ const resetApp = () => {
         if (checkPlatform.electron()) {
           electron.ipcRenderer.send("window-relaunch");
         } else {
-          location.replace("/");
-          // window.location.href = "/";
-        }
-      }, 1000);
-    },
-  });
-};
-
-// 从服务器获取最新页面
-const getNewPage = () => {
-  $dialog.warning({
-    title: "确定要获取最新页面吗?",
-    content: "此操作将会清除本地缓存，重新获取最新页面",
-    positiveText: "确定",
-    negativeText: "取消",
-    onPositiveClick: () => { 
-      $message.success("获取成功，正在重启");
-      setTimeout(() => {
-        if (checkPlatform.electron()) {
-          electron.ipcRenderer.send("window-relaunch");
-        } else {
-          location.reload(true);
-          // window.location.href = "/";
+          window.location.href = "/";
         }
       }, 1000);
     },

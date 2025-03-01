@@ -46,6 +46,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       lyricsBlur: false, // 歌词模糊
       lyricsBold: true, // 歌词加粗
       showYrc: true, // 是否显示逐字歌词
+      lyricsStyle: "default", // 歌词样式 {default | applemusic}
       showYrcAnimation: true, // 是否显示逐字歌词动画
       lyricsPosition: "left", // 歌词位置
       lyricsBlock: "start", // 歌词滚动位置
