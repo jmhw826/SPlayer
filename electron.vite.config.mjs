@@ -144,7 +144,6 @@ export default defineConfig(async ({ mode }) => {
         minify: "terser",
         publicDir: resolve(__dirname, "public"),
         rollupOptions: {
-          external: ['applemusic-like-lyrics'],
           input: {
             index: resolve(__dirname, "index.html"),
           },
