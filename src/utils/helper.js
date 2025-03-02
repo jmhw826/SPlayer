@@ -359,13 +359,28 @@ export const downloadFile = async (data, song, lyric, options) => {
         songFileName = `${songName}.zip`;
       }
       lastDownloadBlobUrl = URL.createObjectURL(blob);
-      // 下载数据
+      // 下载歌曲文件
       const a = document.createElement("a");
       a.href = lastDownloadBlobUrl;
       a.download = songFileName;
       document.body.appendChild(a);
       a.click();
       a.remove();
+
+      // 下载歌词文件
+      if (options.downloadLyrics && lyric) {
+        const lrcContent = lyric.lrc.lyric;
+        const lrcBlob = new Blob([lrcContent], { type: "text/plain" });
+        const lrcUrl = URL.createObjectURL(lrcBlob);
+        const lrcLink = document.createElement("a");
+        lrcLink.href = lrcUrl;
+        lrcLink.download = `${songName}.lrc`;
+        document.body.appendChild(lrcLink);
+        lrcLink.click();
+        lrcLink.remove();
+        URL.revokeObjectURL(lrcUrl);
+      }
+
       return true;
     }
   } catch (error) {
