@@ -45,9 +45,9 @@
     </Transition>
     <template #footer>
       <n-flex justify="end" :class="{ setting: true }">
-        <div class="name">以文件形式保存歌词</div>
+        <div class="name">保存歌词</div>
         <n-switch v-model:value="downloadLyricsToFile" :round="false" :disabled="!checkPlatform.electron()" />
-        <div class="name">以文件形式保存封面</div>
+        <div class="name">保存封面</div>
         <n-switch v-model:value="downloadCoverToFile" :round="false" :disabled="checkPlatform.electron()"/>
         <n-button @click="closeDownloadModal"> 关闭 </n-button>
         <n-button
