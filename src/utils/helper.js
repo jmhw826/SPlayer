@@ -369,7 +369,7 @@ export const downloadFile = async (data, song, lyric, options) => {
 
       // 下载歌词文件
       if (options.downloadLyrics && lyric) {
-        const lrcContent = lyric.lrc.lyric;
+        const lrcContent = lyric?.lrc?.lyric || '';
         const lrcBlob = new Blob([lrcContent], { type: "text/plain" });
         const lrcUrl = URL.createObjectURL(lrcBlob);
         const lrcLink = document.createElement("a");
