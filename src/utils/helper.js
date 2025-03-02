@@ -336,7 +336,7 @@ export const downloadFile = async (data, song, lyric, options) => {
     } else {
       // 清理过期的 Blob 链接
       if (lastDownloadBlobUrl) URL.revokeObjectURL(lastDownloadBlobUrl);
-      const songRes = await fetch(data?.url.replace(/^http:/, "https:"));
+      const songRes = await fetch(data.url.replace(/^http:/, "https:"));
       if (!songRes.ok) throw new Error("下载出错，请重试");
       let blob = await songRes.blob();
       let songFileName = `${songName}.${songType}`;
