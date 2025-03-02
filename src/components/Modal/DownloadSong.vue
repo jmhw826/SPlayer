@@ -116,7 +116,7 @@ const toSongDownload = async (song, lyric) => {
     const result = await getMusicNumUrl(song?.id);
     console.log("下载数据：", result);
     // 检查 result.data 和 result.data.url 是否存在
-    if (!result.data || !result.data.url) {
+    if (!result.data) {
       downloadStatus.value = false;
       console.error("下载数据无效：", result);
       return $message.error("下载失败，请重试");

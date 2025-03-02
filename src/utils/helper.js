@@ -336,7 +336,7 @@ export const downloadFile = async (data, song, lyric, options) => {
     } else {
       // 清理过期的 Blob 链接
       if (lastDownloadBlobUrl) URL.revokeObjectURL(lastDownloadBlobUrl);
-      const songRes = await fetch(data?.url.replace(/^http:/, "https:"));
+      const songRes = await fetch(data.url.replace(/^http:/, "https:"));
       if (!songRes.ok) throw new Error("下载出错，请重试");
       let blob = await songRes.blob();
       let songFileName = `${songName}.${songType}`;
@@ -367,9 +367,9 @@ export const downloadFile = async (data, song, lyric, options) => {
       a.click();
       a.remove();
 
-      // 下载歌词文件
+      /* 下载歌词文件
       if (options.downloadLyrics && lyric) {
-        const lrcContent = lyric.lrc.lyric;
+        const lrcContent = lyric?.lrc?.lyric || '';
         const lrcBlob = new Blob([lrcContent], { type: "text/plain" });
         const lrcUrl = URL.createObjectURL(lrcBlob);
         const lrcLink = document.createElement("a");
@@ -380,7 +380,7 @@ export const downloadFile = async (data, song, lyric, options) => {
         lrcLink.remove();
         URL.revokeObjectURL(lrcUrl);
       }
-
+*/
       return true;
     }
   } catch (error) {
