@@ -20,6 +20,14 @@
     <n-card class="set-item">
       <div class="name">
         同时下载歌曲元信息
+        <n-tag :bordered="false" round size="small" type="warning">
+            开发中
+            <template #icon>
+              <n-icon>
+                <SvgIcon icon="code" />
+              </n-icon>
+            </template>
+          </n-tag>
         <n-text class="tip">为当前下载歌曲附加封面及歌词等元信息</n-text>
       </div>
       <n-switch v-model:value="downloadMeta" :round="false" />
