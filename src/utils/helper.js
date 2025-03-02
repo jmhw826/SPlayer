@@ -367,7 +367,7 @@ export const downloadFile = async (data, song, lyric, options) => {
       a.click();
       a.remove();
 
-      // 下载歌词文件
+      /* 下载歌词文件
       if (options.downloadLyrics && lyric) {
         const lrcContent = lyric?.lrc?.lyric || '';
         const lrcBlob = new Blob([lrcContent], { type: "text/plain" });
@@ -380,7 +380,7 @@ export const downloadFile = async (data, song, lyric, options) => {
         lrcLink.remove();
         URL.revokeObjectURL(lrcUrl);
       }
-
+*/
       return true;
     }
   } catch (error) {
