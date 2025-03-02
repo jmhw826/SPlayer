@@ -17,7 +17,21 @@
           <n-text class="name">{{ songData.name }}</n-text>
           <n-text class="artist">{{ songData.artists.map(artist => artist.name).join(', ') }}</n-text>
         </div>
-        <n-switch v-model:value="downloadLyrics.value">同时下载歌词</n-switch>
+    <n-card class="set-item">
+      <div class="name">
+        同时下载歌曲元信息
+        <n-text class="tip">为当前下载歌曲附加封面及歌词等元信息</n-text>
+      </div>
+      <n-switch v-model:value="downloadMeta" :round="false" />
+    </n-card>
+    <n-card class="set-item">
+      <div class="name">下载歌曲时同时下载封面</div>
+      <n-switch v-model:value="downloadCover" :disabled="!downloadMeta" :round="false" />
+    </n-card>
+    <n-card class="set-item">
+      <div class="name">下载歌曲时同时下载歌词</div>
+      <n-switch v-model:value="downloadLyrics" :disabled="!downloadMeta" :round="false" />
+    </n-card>
       </div>
       <n-text v-else>歌曲信息获取中</n-text>
     </Transition>
