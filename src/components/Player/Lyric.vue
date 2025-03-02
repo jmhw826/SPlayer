@@ -136,26 +136,6 @@
       </div>
     </Transition>
   </div>
-  <n-card class="set-item">
-    <div class="name">
-      歌词样式
-      <n-text class="tip">选择歌词显示样式</n-text>
-    </div>
-    <n-select
-      v-model:value="lyricsStyle"
-      :options="[
-        {
-          label: '原版',
-          value: 'original',
-        },
-        {
-          label: 'Apple Music',
-          value: 'apple-music',
-        },
-      ]"
-      class="set"
-    />
-  </n-card>
 </template>
 
 <script setup>
@@ -548,23 +528,6 @@ onMounted(() => {
       }
       .lrc-roma {
         font-size: 4vw !important;
-      }
-    }
-  }
-  &.apple-music {
-    .lrc-line {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      .lrc-content {
-        font-size: 24px;
-        font-weight: bold;
-      }
-      .lrc-fy,
-      .lrc-roma {
-        font-size: 20px;
-        opacity: 0.6;
       }
     }
   }
