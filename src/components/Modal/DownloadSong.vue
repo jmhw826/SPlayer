@@ -132,10 +132,6 @@ const toSongDownload = async (song, lyric) => {
     if (isDownloaded) {
       $message.success("下载完成");
       closeDownloadModal();
-      // 下载歌词为 lrc 文件
-      if (downloadLyrics.value && lyric) {
-        downloadLyricsAsLrc(lyric, song.name);
-      }
     } else {
       downloadStatus.value = false;
       $message.error("下载失败，请重试");
@@ -144,19 +140,6 @@ const toSongDownload = async (song, lyric) => {
     console.error("歌曲下载出错：", error);
     $message.error("歌曲下载失败，请重试");
   }
-};
-
-// 下载歌词为 lrc 文件
-const downloadLyricsAsLrc = (lyric, songName) => {
-  const blob = new Blob([lyric], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${songName}.lrc`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 };
 
 // 开启歌曲下载

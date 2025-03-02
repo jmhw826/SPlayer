@@ -358,6 +358,21 @@ export const downloadFile = async (data, song, lyric, options) => {
         lrcLink.click();
         lrcLink.remove();
         URL.revokeObjectURL(lrcUrl);
+      }
+
+      return true;
+    }
+  } catch (error) {
+    console.error("下载出错：", error);
+    return false;
+  }
+};
+
+/**
+ * 将字节数格式化为可读的大小字符串。
+ * @param {number} bytes - 要格式化的字节数
+ * @param {number} [decimals=2] - 小数点位数
+ * @returns {string} - 格式化后的大小字符串（"10 KB"）
  */
 export const formatBytes = (bytes, decimals = 2) => {
   if (bytes === 0) return "0 K";
