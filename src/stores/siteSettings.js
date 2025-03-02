@@ -58,6 +58,8 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       downloadMeta: true, // 同时下载元信息
       downloadCover: true, // 同时下载封面
       downloadLyrics: true, // 同时下载歌词
+      downloadLyricsToFile: true,
+      downloadCoverToFile: true,
       // 网络部分
       useRealIP: true, // 是否使用真实IP地址
       realIP: "116.25.146.177", // 真实IP地址
