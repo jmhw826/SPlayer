@@ -17,34 +17,38 @@
           <n-text class="name">{{ songData.name }}</n-text>
           <n-text class="artist">{{ songData.artists.map(artist => artist.name).join(', ') }}</n-text>
         </div>
-    <n-card class="set-item">
-      <div class="name">
-        同时下载歌曲元信息
-        <n-tag :bordered="false" round size="small" type="warning">
-            开发中
-            <template #icon>
-              <n-icon>
-                <SvgIcon icon="code" />
-              </n-icon>
-            </template>
-          </n-tag>
-        <n-text class="tip">为当前下载歌曲附加封面及歌词等元信息</n-text>
-      </div>
-      <n-switch v-model:value="downloadMeta" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">下载歌曲时同时下载封面</div>
-      <n-switch v-model:value="downloadCover" :disabled="!downloadMeta" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">下载歌曲时同时下载歌词</div>
-      <n-switch v-model:value="downloadLyrics" :disabled="!downloadMeta" :round="false" />
-    </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            同时下载歌曲元信息
+            <n-tag :bordered="false" round size="small" type="warning">
+              开发中
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="code" />
+                </n-icon>
+              </template>
+            </n-tag>
+            <n-text class="tip">为当前下载歌曲附加封面及歌词等元信息</n-text>
+          </div>
+          <n-switch v-model:value="downloadMeta" :round="false" />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">下载歌曲时同时下载封面</div>
+          <n-switch v-model:value="downloadCover" :disabled="!downloadMeta" :round="false" />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">下载歌曲时同时下载歌词</div>
+          <n-switch v-model:value="downloadLyrics" :disabled="!downloadMeta" :round="false" />
+        </n-card>
       </div>
       <n-text v-else>歌曲信息获取中</n-text>
     </Transition>
     <template #footer>
-      <n-flex justify="end">
+      <n-flex justify="end" :class="{ setting: true }">
+        <div class="name">以文件形式保存歌词</div>
+        <n-switch v-model:value="downloadLyricsToFile" :round="false" :disabled="!checkPlatform.electron()" />
+        <div class="name">以文件形式保存封面</div>
+        <n-switch v-model:value="downloadCoverToFile" :round="false" :disabled="checkPlatform.electron()"/>
         <n-button @click="closeDownloadModal"> 关闭 </n-button>
         <n-button
           :disabled="!songData"
@@ -73,7 +77,14 @@ const router = useRouter();
 const data = siteData();
 const settings = siteSettings();
 const { userData } = storeToRefs(data);
-const { downloadPath, downloadMeta, downloadCover, downloadLyrics } = storeToRefs(settings);
+const {
+  downloadPath,
+  downloadMeta,
+  downloadCover,
+  downloadLyrics,
+  downloadLyricsToFile,
+  downloadCoverToFile,
+} = storeToRefs(settings);
 
 // 歌曲下载数据
 const songId = ref(null);
@@ -127,6 +138,8 @@ const toSongDownload = async (song, lyric) => {
       downloadMeta: downloadMeta.value,
       downloadCover: downloadCover.value,
       downloadLyrics: downloadLyrics.value,
+      downloadCoverToFile: downloadCoverToFile.value,
+      downloadLyricsToFile: downloadLyricsToFile.value,
     });
     console.log(lyric);
     if (isDownloaded) {
@@ -181,6 +194,10 @@ defineExpose({
       font-size: 14px;
       color: #666;
     }
+  }
+  .tip {
+    border-radius: 8px;
+    margin-bottom: 20px;
   }
 }
 </style>
