@@ -17,6 +17,7 @@
           <n-text class="name">{{ songData.name }}</n-text>
           <n-text class="artist">{{ songData.artists.map(artist => artist.name).join(', ') }}</n-text>
         </div>
+        <n-switch v-model:value="downloadLyrics.value">同时下载歌词</n-switch>
       </div>
       <n-text v-else>歌曲信息获取中</n-text>
     </Transition>
