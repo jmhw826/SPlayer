@@ -7,7 +7,6 @@ import { getSongPlayTime } from "@/utils/timeTools";
 import { getCoverGradient } from "@/utils/cover-color";
 import { isLogin } from "@/utils/auth";
 import { parseLyric, parseLocalLrc } from "@/utils/parseLyric";
-import getNeteaseMusicUrl from "@/utils/getNeteaseMusicUrl"; // 引入 getNeteaseMusicUrl
 
 // 全局播放器
 let player;
@@ -201,10 +200,6 @@ const getFromUnblockMusic = async (data, status, playNow) => {
       }
     }
     console.log(musicUrl);
-    if (!musicUrl) {
-      // 使用酷我解灰
-      musicUrl = await getNeteaseMusicUrl(data.name);
-    }
     if (musicUrl) {
       // 将 http 替换为 https
       musicUrl = musicUrl.replace(/^http:/, "https:");
