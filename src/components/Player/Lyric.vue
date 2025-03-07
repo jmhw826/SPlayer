@@ -22,125 +22,114 @@
         @after-leave="lyricsScroll(playSongLyricIndex)"
       >
         <n-scrollbar ref="lyricScroll" style="width: 100%">
-          <!-- 根据 lyricsStyle 切换歌词样式 -->
-          <template v-if="lyricsStyle === 'apple-music'">
-            <div class="apple-music-lyrics">
-              <!-- Apple Music 歌词内容 -->
-              <div v-for="(item, index) in appleMusicLyrics" :key="index">
-                {{ item }}
-              </div>
+          <!-- 普通歌词 -->
+          <template v-if="!showYrc || !playSongLyric.hasYrc">
+            <div class="placeholder">
+              <!-- 倒计时 -->
+              <CountDown
+                v-if="countDownShow"
+                :start="0"
+                :duration="playSongLyric.lrc[0]?.time || 0"
+                :seek="playSeek"
+                isFirst
+              />
+            </div>
+            <div
+              v-for="(item, index) in playSongLyric.lrc"
+              :id="'lrc' + index"
+              :key="index"
+              :class="{ 'lrc-line': true, on: Number(playSongLyricIndex) === index, islrc: true }"
+              :style="{
+                filter: lyricsBlur
+                  ? `blur(${Math.min(Math.abs(Number(playSongLyricIndex) - index) * 1.5, 10)}px)`
+                  : 'blur(0)',
+              }"
+              @click.stop="jumpSeek(item?.time)"
+            >
+              <!-- 歌词 -->
+              <span
+                :style="{
+                  fontSize: lyricsFontSize + 'px',
+                  fontWeight: lyricsBold ? 'bold' : 'normal',
+                }"
+                class="lrc-content"
+              >
+                {{ item.content }}
+              </span>
+              <!-- 翻译 -->
+              <span
+                v-if="showTransl && playSongLyric.hasLrcTran && item.tran"
+                :style="{ fontSize: lyricsFontSize - (lyricsFontSize < 40 ? 10 : 16) + 'px' }"
+                class="lrc-fy"
+              >
+                {{ item.tran }}
+              </span>
+              <!-- 音译 -->
+              <span v-if="showRoma && playSongLyric.hasLrcRoma && item.roma" class="lrc-roma">
+                {{ item.roma }}
+              </span>
             </div>
           </template>
-          <template v-else>
-            <!-- 普通歌词 -->
-            <template v-if="!showYrc || !playSongLyric.hasYrc">
-              <div class="placeholder">
-                <!-- 倒计时 -->
-                <CountDown
-                  v-if="countDownShow"
-                  :start="0"
-                  :duration="playSongLyric.lrc[0]?.time || 0"
-                  :seek="playSeek"
-                  isFirst
-                />
-              </div>
+          <!-- 逐字歌词 -->
+          <template v-else-if="playSongLyric.yrc?.[0]">
+            <div class="placeholder">
+              <!-- 倒计时 -->
+              <CountDown
+                v-if="countDownShow"
+                :start="0"
+                :duration="playSongLyric.yrc[0].time || 0"
+                :seek="playSeek"
+                isFirst
+              />
+            </div>
+            <div
+              v-for="(item, index) in playSongLyric.yrc"
+              :id="'lrc' + index"
+              :key="index"
+              :class="{ 'lrc-line': true, on: Number(playSongLyricIndex) === index, isyrc: true }"
+              :style="{
+                filter: lyricsBlur
+                  ? `blur(${Math.min(Math.abs(Number(playSongLyricIndex) - index) * 1.5, 10)}px)`
+                  : 'blur(0)',
+              }"
+              @click.stop="jumpSeek(item?.time)"
+            >
+              <!-- 歌词 -->
               <div
-                v-for="(item, index) in playSongLyric.lrc"
-                :id="'lrc' + index"
-                :key="index"
-                :class="{ 'lrc-line': true, on: Number(playSongLyricIndex) === index, islrc: true }"
                 :style="{
-                  filter: lyricsBlur
-                    ? `blur(${Math.min(Math.abs(Number(playSongLyricIndex) - index) * 1.5, 10)}px)`
-                    : 'blur(0)',
+                  fontSize: lyricsFontSize + 'px',
+                  fontWeight: lyricsBold ? 'bold' : 'normal',
                 }"
-                @click.stop="jumpSeek(item?.time)"
+                class="lrc-content"
               >
-                <!-- 歌词 -->
-                <span
-                  :style="{
-                    fontSize: lyricsFontSize + 'px',
-                    fontWeight: lyricsBold ? 'bold' : 'normal',
-                  }"
-                  class="lrc-content"
-                >
-                  {{ item.content }}
-                </span>
-                <!-- 翻译 -->
-                <span
-                  v-if="showTransl && playSongLyric.hasLrcTran && item.tran"
-                  :style="{ fontSize: lyricsFontSize - (lyricsFontSize < 40 ? 10 : 16) + 'px' }"
-                  class="lrc-fy"
-                >
-                  {{ item.tran }}
-                </span>
-                <!-- 音译 -->
-                <span v-if="showRoma && playSongLyric.hasLrcRoma && item.roma" class="lrc-roma">
-                  {{ item.roma }}
-                </span>
-              </div>
-            </template>
-            <!-- 逐字歌词 -->
-            <template v-else-if="playSongLyric.yrc?.[0]">
-              <div class="placeholder">
-                <!-- 倒计时 -->
-                <CountDown
-                  v-if="countDownShow"
-                  :start="0"
-                  :duration="playSongLyric.yrc[0].time || 0"
-                  :seek="playSeek"
-                  isFirst
-                />
-              </div>
-              <div
-                v-for="(item, index) in playSongLyric.yrc"
-                :id="'lrc' + index"
-                :key="index"
-                :class="{ 'lrc-line': true, on: Number(playSongLyricIndex) === index, isyrc: true }"
-                :style="{
-                  filter: lyricsBlur
-                    ? `blur(${Math.min(Math.abs(Number(playSongLyricIndex) - index) * 1.5, 10)}px)`
-                    : 'blur(0)',
-                }"
-                @click.stop="jumpSeek(item?.time)"
-              >
-                <!-- 歌词 -->
                 <div
-                  :style="{
-                    fontSize: lyricsFontSize + 'px',
-                    fontWeight: lyricsBold ? 'bold' : 'normal',
+                  v-for="(text, textIndex) in item.content"
+                  :key="textIndex"
+                  :class="{
+                    'lrc-text': true,
+                    'lrc-long': text.duration >= 1.5,
+                    'end-with-space': text.endsWithSpace,
                   }"
-                  class="lrc-content"
                 >
-                  <div
-                    v-for="(text, textIndex) in item.content"
-                    :key="textIndex"
-                    :class="{
-                      'lrc-text': true,
-                      'lrc-long': text.duration >= 1.5,
-                      'end-with-space': text.endsWithSpace,
-                    }"
-                  >
-                    <span class="word">{{ text.content }}</span>
-                    <span class="filler" :style="getYrcStyle(text, index)">
-                      {{ text.content }}
-                    </span>
-                  </div>
+                  <span class="word">{{ text.content }}</span>
+                  <span class="filler" :style="getYrcStyle(text, index)">
+                    {{ text.content }}
+                  </span>
                 </div>
-                <!-- 翻译 -->
-                <span
-                  v-if="showTransl && playSongLyric.hasLrcTran && item.tran"
-                  :style="{ fontSize: lyricsFontSize - (lyricsFontSize < 40 ? 10 : 16) + 'px' }"
-                  class="lrc-fy"
-                >
-                  {{ item.tran }}
-                </span>
-                <!-- 音译 -->
-                <span v-if="showRoma && playSongLyric.hasLrcRoma && item.roma" class="lrc-roma">
-                  {{ item.roma }}
-                </span>
               </div>
-            </template>
+              <!-- 翻译 -->
+              <span
+                v-if="showTransl && playSongLyric.hasLrcTran && item.tran"
+                :style="{ fontSize: lyricsFontSize - (lyricsFontSize < 40 ? 10 : 16) + 'px' }"
+                class="lrc-fy"
+              >
+                {{ item.tran }}
+              </span>
+              <!-- 音译 -->
+              <span v-if="showRoma && playSongLyric.hasLrcRoma && item.roma" class="lrc-roma">
+                {{ item.roma }}
+              </span>
+            </div>
           </template>
           <div class="placeholder" />
         </n-scrollbar>
@@ -153,7 +142,6 @@
 import { storeToRefs } from "pinia";
 import { musicData, siteSettings, siteStatus } from "@/stores";
 import { setSeek, fadePlayOrPause } from "@/utils/Player";
-import { ref, watch, onMounted, nextTick } from 'vue';
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
@@ -185,11 +173,6 @@ const {
   lyricsBold,
   lyricsStyle,
 } = storeToRefs(settings);
-
-// Apple Music 歌词数据
-const appleMusicLyrics = ref([
-  // Apple Music 歌词数据
-]);
 
 // 歌词滚动数据
 const lyricScroll = ref(null);
