@@ -1,10 +1,78 @@
 import { encryptQuery } from "@/utils/kwDES";
 import axios from "axios";
-import buffer from "buffer";
 
 /**
  * 网易云音乐解灰
  */
+
+// 咪咕音乐请求头
+const requestHeader = {
+  Origin: "http://music.migu.cn/",
+  Referer: "http://m.music.migu.cn/v3/",
+  aversionid: import.meta.env.MAIN_VITE_MIGU_COOKIE || null,
+  channel: "0146921",
+};
+
+/**
+ * 获取咪咕音乐歌曲 ID
+ * @param {string} keyword - 搜索关键字
+ * @returns {Promise<any>}
+ */
+const getMiguSongId = async (keyword) => {
+  try {
+    const url =
+      "https://m.music.migu.cn/migu/remoting/scr_search_tag?keyword=" +
+      keyword.toString() +
+      "&type=2&rows=20&pgc=1";
+    const result = await axios.get(url, {
+      headers: requestHeader,
+    });
+    if (result.data?.musics?.length) {
+      // 是否与原曲吻合
+      const originalName = keyword.split("-");
+      const songName = result.data.musics[0]?.songName;
+      if (songName && !songName?.includes(originalName[0])) {
+        return null;
+      }
+      return result.data.musics[0].id;
+    }
+    return null;
+  } catch (error) {
+    console.error("获取咪咕音乐歌曲 ID 失败：", error);
+    return null;
+  }
+};
+
+/**
+ * 获取咪咕音乐歌曲 URL
+ * @param {string} keyword - 搜索关键字
+ * @returns {Promise<any>}
+ */
+const getMiguSongUrl = async (keyword) => {
+  try {
+    const songId = await getMiguSongId(keyword);
+    if (!songId) return null;
+    console.info("咪咕解灰歌曲 ID：", songId);
+    const soundQuality = "PQ";
+    const url =
+      "https://app.c.nf.migu.cn/MIGUM2.0/strategy/listen-url/v2.4?netType=01&resourceType=2&songId=" +
+      songId.toString() +
+      "&toneFlag=" +
+      soundQuality;
+    const result = await axios.get(url, {
+      headers: requestHeader,
+    });
+    if (result.data?.data?.url) {
+      const songUrl = result.data.data.url;
+      console.info("咪咕解灰歌曲 URL：", songUrl);
+      return songUrl;
+    }
+    return null;
+  } catch (error) {
+    console.error("获取咪咕音乐歌曲 URL 失败：", error);
+    return null;
+  }
+};
 
 /**
  * 获取酷我音乐歌曲 ID
