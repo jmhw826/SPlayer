@@ -53,6 +53,24 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       showTransl: true, // 是否显示歌词翻译
       showRoma: true, // 是否显示歌词音译
       lyricsStyle: 'apple-music', // 默认歌词样式
+      // 弹簧动画参数
+      springParams: {
+        posX: {
+          mass: 1,
+          damping: 10,
+          stiffness: 100
+        },
+        posY: {
+          mass: 1,
+          damping: 15,
+          stiffness: 100
+        },
+        scale: {
+          mass: 1,
+          damping: 20,
+          stiffness: 100
+        }
+      },
       // 下载部分
       downloadPath: null, // 默认下载路径
       downloadMeta: true, // 同时下载元信息
