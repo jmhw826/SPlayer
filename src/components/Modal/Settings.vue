@@ -1,5 +1,5 @@
 <template>
-  <n-modal v-model:show="showModal" title="设置" size="large" style="width:800px; max-width: 90vw; background-color: var(--main-color)">
+  <n-modal v-model:show="showModal" title="设置" size="large" style="width:800px; max-width: 90vw; background-color: var(--main-second-color)">
     <div class="settings-modal">
       <div class="tabs-container">
         <n-tabs
