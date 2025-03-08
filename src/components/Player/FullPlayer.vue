@@ -59,7 +59,7 @@
             </n-icon>
             <!-- 设置按钮 -->
             <n-icon size="28" @click="showSettings" class="settings-icon">
-              <SvgIcon icon="settings" />
+              <SvgIcon icon="round-settings" />
             </n-icon>
           </div>
           <div class="center" />
@@ -503,7 +503,7 @@ onUnmounted(() => {
         }
       }
       .settings-icon {
-        margin-left: 24px; // 增加间隔
+        margin-left: 20px; // 增加间隔
       }
     }
   }
