@@ -57,6 +57,10 @@
             >
               <SvgIcon icon="lrc-text" />
             </n-icon>
+            <!-- 设置按钮 -->
+            <n-icon size="28" @click="showSettings">
+              <SvgIcon icon="settings" />
+            </n-icon>
           </div>
           <div class="center" />
           <div class="right">
@@ -260,16 +264,21 @@
       <PlayerControl />
       <!-- 音乐频谱 -->
       <Spectrum v-if="showSpectrums" :show="!playerControlShow" :height="60" />
+      <!-- 设置弹窗 -->
+      <Settings ref="settingsRef" />
     </div>
   </Transition>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { musicData, siteStatus, siteSettings } from "@/stores";
 import screenfull from "screenfull";
 import throttle from "@/utils/throttle";
+import SvgIcon from "@/components/Global/SvgIcon";
+import Settings from "@/components/Modal/Settings.vue";
 
 const router = useRouter();
 const music = musicData();
@@ -321,6 +330,12 @@ const controlShowChange = throttle(() => {
     playerControlShow.value = false;
   }, 2000);
 }, 300);
+
+// 打开设置弹窗
+const settingsRef = ref(null);
+const showSettings = () => {
+  settingsRef.value.showModal = true;
+};
 
 // 监听播放器开启
 watch(
