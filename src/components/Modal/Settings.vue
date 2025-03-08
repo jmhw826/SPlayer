@@ -7,22 +7,21 @@
           v-model:value="setTabsValue"
           type="line"
           @update:value="settingTabChange"
-          vertical
         >
-          <n-tab name="setTab1"> 常规 </n-tab>
-          <n-tab name="setTab2"> 系统 </n-tab>
-          <n-tab name="setTab3"> 播放 </n-tab>
-          <n-tab name="setTab4"> 歌词 </n-tab>
-          <n-tab name="setTab5"> 下载 </n-tab>
-          <n-tab name="setTab6"> 其他 </n-tab>
-          <n-tab name="setTab7"> TestOptions </n-tab>
+          <n-tab name="setTab1">常规</n-tab>
+          <n-tab name="setTab2">系统</n-tab>
+          <n-tab name="setTab3">播放</n-tab>
+          <n-tab name="setTab4">歌词</n-tab>
+          <n-tab name="setTab5">下载</n-tab>
+          <n-tab name="setTab6">其他</n-tab>
+          <n-tab name="setTab7">TestOptions</n-tab>
         </n-tabs>
       </div>
       <div class="settings-content">
         <n-scrollbar
           ref="setScrollRef"
           :style="{
-            height: `calc(100vh - ${music.getPlaySongData?.id && showPlayBar ? 328 : 248}px)`,
+            height: `calc(100vh - ${music.getPlaySongData?.id && showPlayBar ? 368 : 288}px)`,
           }"
           class="all-set"
           @scroll="allSetScroll"
