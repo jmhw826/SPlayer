@@ -339,7 +339,9 @@ const controlShowChange = throttle(() => {
 // 打开设置弹窗
 const settingsRef = ref(null);
 const showSettings = () => {
-  settingsRef.value.showModal = true;
+  if (settingsRef.value) {
+    settingsRef.value.showModal();
+  }
 };
 
 // 监听播放器开启
@@ -503,7 +505,7 @@ onUnmounted(() => {
         }
       }
       .settings-icon {
-        margin-left: 20px; // 增加间隔
+        margin-left: 15px; // 增加间隔
       }
     }
   }
