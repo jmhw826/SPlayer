@@ -54,13 +54,13 @@ import { siteSettings, siteStatus, musicData } from "@/stores";
 import debounce from "@/utils/debounce";
 import packageJson from "@/../package.json";
 // 设置子项
-import General from "@/views/Setting/general.vue";
-import System from "@/views/Setting/system.vue";
-import Player from "@/views/Setting/player.vue";
-import Lyrics from "@/views/Setting/lyrics.vue";
-import Download from "@/views/Setting/download.vue";
-import Other from "@/views/Setting/other.vue";
-import TestOptions from "@/views/Setting/testoptions.vue";
+import General from "@/components/Model/Settings/general.vue";
+import System from "@/components/Model/Settings/system.vue";
+import Player from "@/components/Model/Settings/player.vue";
+import Lyrics from "@/components/Model/Settings/lyrics.vue";
+import Download from "@/components/Model/Settings/download.vue";
+import Other from "@/components/Model/Settings/other.vue";
+import TestOptions from "@/components/Model/Settings/testoptions.vue";
 
 const music = musicData();
 const status = siteStatus();
