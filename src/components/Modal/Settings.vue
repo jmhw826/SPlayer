@@ -1,11 +1,11 @@
 <template>
-  <n-modal v-model:show="showModal" title="设置" size="large">
+  <n-modal v-model:show="showModal" title="设置" size="large" style="background-color: var(--theme-background-color)">
     <div class="settings-modal">
       <div class="tabs-container">
         <n-tabs
           ref="setTabsRef"
           v-model:value="setTabsValue"
-          type="segment"
+          type="line"
           @update:value="settingTabChange"
           vertical
         >
