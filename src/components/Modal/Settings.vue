@@ -107,14 +107,26 @@ defineExpose({ showModal: openModal });
 <style lang="scss" scoped>
 .settings-modal {
   display: flex;
-  flex-direction: warp;
+  flex-direction: column;
+  height: 70vh;
+
   .tabs-container {
-    width: 200px;
-    border-right: 1px solid #e0e0e0;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--divider-color);
+
+    :deep(.n-tabs-nav) {
+      padding: 0 20px;
+    }
   }
+
   .settings-content {
     flex: 1;
-    padding: 20px;
+    overflow: hidden;
+    padding: 16px 24px;
+    
+    .n-scrollbar {
+      padding-right: 12px;
+    }
   }
 }
 </style>
