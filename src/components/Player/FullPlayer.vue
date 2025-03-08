@@ -297,11 +297,6 @@ const {
   playMode,
 } = storeToRefs(status);
 
-// 图标渲染
-const renderIcon = (icon, size) => {
-  return () => h(NIcon, { size }, { default: () => h(SvgIcon, { icon }, null) });
-};
-
 // 是否有歌词
 const isHasLrc = computed(() => {
   return playSongLyric.value.lrc?.[0] && playSongLyric.value.lrc?.length > 4;

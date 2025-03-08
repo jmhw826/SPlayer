@@ -96,6 +96,13 @@ const allSetScroll = debounce((e) => {
 const jump = () => {
   window.open(packageJson.github);
 };
+
+// 方法：显示弹窗
+const openModal = () => {
+  showModal.value = true;
+};
+
+defineExpose({ showModal: openModal });
 </script>
 
 <style lang="scss" scoped>
