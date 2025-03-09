@@ -52,7 +52,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       lyricsBlock: "start", // 歌词滚动位置
       showTransl: true, // 是否显示歌词翻译
       showRoma: true, // 是否显示歌词音译
-      lyricsStyle: 'apple-music', // 默认歌词样式
+      lyricsStyle: 'classic', // 默认歌词样式 classic | apple-music
       // 下载部分
       downloadPath: null, // 默认下载路径
       downloadMeta: true, // 同时下载元信息
@@ -75,6 +75,12 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       this.themeType = value;
       this.themeAuto = false;
       $message.info(`已切换至${value === "light" ? "浅色" : "深色"}模式`, { showIcon: false });
+    },
+    setLyricStyle(style) { 
+      this.lyricsStyle = style;
+      if (style === 'apple-music') { 
+        this.justLyricArea = true;
+      }
     },
     // 更改系统字体
     changeSystemFonts(font = this.systemFonts) {

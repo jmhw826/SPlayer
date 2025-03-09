@@ -132,6 +132,13 @@
       </div>
       <n-button strong secondary type="error" @click="getNewPage"> 获取 </n-button>
     </n-card>
+    <n-card class="set-item">
+      <div class="name">
+        打开完整设置页
+        <n-text class="tip">打开完整设置页面，可在此处查看更多设置</n-text>
+      </div>
+      <n-button strong secondary type="error" @click="toSettingsPage"> 打开 </n-button>
+    </n-card>
   </div>
 </template>
 
@@ -140,6 +147,7 @@ import { storeToRefs } from "pinia";
 import { siteSettings } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import debounce from "@/utils/debounce";
+import { siteStatus } from "@/stores";
 
 const settings = siteSettings();
 const { themeAuto, loadSize, showGithub, proxyProtocol, proxyServe, proxyPort, useRealIP, realIP } =
@@ -190,7 +198,11 @@ const getNewPage = () => {
     },
   });
 };
-
+// 打开完整设置页面
+const toSettingsPage = () => {
+  showFullPlayer.value = false;
+  window.location.href = "/#/setting";
+}
 // 应用代理
 const setProxy = debounce(() => {
   if (proxyProtocol.value === "off" || !proxyServe.value || !proxyPort.value) {

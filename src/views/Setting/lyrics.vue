@@ -125,8 +125,8 @@
       <n-select
         v-model:value="lyricsStyle"
         :options="[
-          { label: '默认样式', value: 'default' },
-          { label: 'Apple Music Like Lyrics 样式', value: 'applemusic' },
+          { label: '默认样式', value: 'classic' },
+          { label: 'Apple Music Like Lyrics 样式', value: 'apple-music' },
         ]"
         class="set"
       />
