@@ -1,4 +1,4 @@
-# [重构中] SPlayer
+# SPlayer
 
 #### 一个简约的音乐播放器
 
@@ -37,7 +37,7 @@
 - 🌚 Light / Dark 模式自动切换
 - 📁 本地歌曲管理及分类（建议先使用 [音乐标签](https://www.cnblogs.com/vinlxc/p/11347744.html) 进行匹配后再使用）
 - 🎵 **支持播放部分无版权歌曲（可能会与原曲不匹配）**
-> 此功能将会重构, 即将上线!
+  > 此功能将会重构, 即将上线!
 - ⬇️ 下载歌曲（最高支持 Hi-Res）
 - ➕ 新建歌单及歌单编辑
 - ❤️ 收藏 / 取消收藏歌单或歌手
@@ -104,10 +104,15 @@
 
 </details>
 
-
 ### 本地构建
-
+> [!WARNING]
+>
+> 由于本项目破坏了一些electron的框架, 故本项目不提供安装版, 仅提供可部署的网页版本
 > 请尽量拉取最新分支后使用本地构建方式，在线部署的仓库可能更新不及时
+
+## 🐋 Docker 部署
+
+现版本暂不支持`Docker`部署, 预计将会在版本后期计划
 
 ## ⚙️ Vercel 部署
 
@@ -122,7 +127,7 @@
 
    ```js
    RENDERER_VITE_SERVER_URL = "https://api.example.com";
-   VITE_UNM_API = "https://unm.example.com"
+   VITE_UNM_API = "https://unm.example.com";
    ```
 
 5. 将 `Build and Output Settings` 中的 `Output Directory` 改为 `out/renderer`
@@ -391,6 +396,5 @@
 </details>
 
 ## ⭐ Star History
-
 
 [![Star History Chart](https://api.star-history.com/svg?repos=IamFurina/SPlayer&type=Date)](https://star-history.com/#IamFurina/SPlayer&Date)

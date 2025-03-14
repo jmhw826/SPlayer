@@ -342,16 +342,18 @@ export const downloadFile = async (data, song, lyric, options) => {
       let songFileName = `${songName}.${songType}`;
       let zipFile = null;
       if (options.downloadCoverToFile || options.downloadLyricsToFile) {
-        zipFile = new JSZip();
-        zipFile.file(songFileName, blob);
+        if (options.downloadMeta && (options.downloadLyrics || options.downloadCover)) { 
+          zipFile = new JSZip();
+          zipFile.file(songFileName, blob);
+        }
       }
-      if (options.downloadCover && options.downloadCoverToFile) {
+      if (options.downloadCover && options.downloadCoverToFile && options.downloadMeta) {
         const coverRes = await fetch(song.cover);
         if (!coverRes.ok) throw new Error("下载出错，请重试");
         const coverBlob = await coverRes.blob();
         zipFile.file(songName + ".jpg", coverBlob);
       }
-      if (options.downloadLyrics && options.downloadLyricsToFile) {
+      if (options.downloadLyrics && options.downloadLyricsToFile && options.downloadMeta) {
         zipFile.file(songName + ".lrc", lyric);
       }
       if (zipFile) {

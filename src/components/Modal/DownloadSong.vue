@@ -28,9 +28,26 @@
                 </n-icon>
               </template>
             </n-tag>
-            <n-text class="tip">为当前下载歌曲附加封面及歌词等元信息</n-text>
+            <n-text class="tip">下载歌曲的同时下载歌曲元信息, 注意要给两个都开启</n-text>
           </div>
-          <n-switch v-model:value="downloadMeta" :round="false" />
+          <n-switch v-model:value="downloadMeta" :disabled="!checkPlatform.electron" :round="false" />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            音质选择
+            <n-tag v-if="qualityOptions.find(q => q.value === selectedQuality)?.lossless" :bordered="false" round
+              size="small" type="success">
+              无损音质
+            </n-tag>
+          </div>
+          <n-select v-model:value="selectedQuality" :options="qualityOptions" :disabled="downloadStatus"
+            placeholder="选择音质" />
+          <n-text class="tip" depth="3">
+            当前选择：{{ selectedQuality }}kbps{{ selectedQuality >= 740 ? ' (FLAC)' : '' }}
+          </n-text>
+          <n-text class="tip" depth="3">
+            音源来自UnblockNeteaseMusic的pyncmd音源
+          </n-text>  
         </n-card>
         <n-card class="set-item">
           <div class="name">下载歌曲时同时下载封面</div>
@@ -45,18 +62,13 @@
     </Transition>
     <template #footer>
       <n-flex justify="end" :class="{ setting: true }">
-        <div class="name">保存歌词</div>
-        <n-switch v-model:value="downloadLyricsToFile" :round="false" :disabled="!checkPlatform.electron()" />
-        <div class="name">保存封面</div>
-        <n-switch v-model:value="downloadCoverToFile" :round="false" :disabled="checkPlatform.electron()"/>
+        <div class="name">保存歌词到压缩文件</div>
+        <n-switch v-model:value="downloadCoverToFile" :round="false"/>
+        <div class="name">保存封面到压缩文件</div>
+        <n-switch v-model:value="downloadLyricsToFile" :round="false"/>
         <n-button @click="closeDownloadModal"> 关闭 </n-button>
-        <n-button
-          :disabled="!songData"
-          :loading="downloadStatus"
-          :focusable="false"
-          type="primary"
-          @click="toSongDownload(songData, lyricData)"
-        >
+        <n-button :disabled="!songData" :loading="downloadStatus" :focusable="false" type="primary"
+          @click="toSongDownload(songData, lyricData)">
           下载
         </n-button>
       </n-flex>
@@ -66,12 +78,12 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { isLogin } from "@/utils/auth";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyric, getMusicNumUrl } from "@/api/song";
+import { getSongDetail, getSongLyric, getSongDownloadNew } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
+
 
 const router = useRouter();
 const data = siteData();
@@ -106,14 +118,36 @@ const getMusicDetailData = async (id) => {
     console.error("歌曲信息获取失败：", error);
   }
 };
-
+// 新增音质配置 ✅
+const qualityOptions = ref([
+  { label: '标准音质 (128kbps)', value: 128 },
+  { label: '高清音质 (192kbps)', value: 192 },
+  { label: '超清音质 (320kbps)', value: 320 },
+  {
+    label: '无损音质 (740kbps FLAC)',
+    value: 740,
+    lossless: true,
+    description: '高品质无损格式'
+  },
+  {
+    label: 'Hi-Res (999kbps FLAC)',
+    value: 999,
+    lossless: true,
+    description: '超高解析度无损'
+  }
+]);
+const selectedQuality = ref(320); // 默认选择超清音质
 // 歌曲下载
 const toSongDownload = async (song, lyric) => {
   try {
+    const fileType = selectedQuality.value >= 740 ? 'flac' : 'mp3';
     console.log(song, lyric);
     downloadStatus.value = true;
     // 获取下载数据
-    const result = await getMusicNumUrl(song?.id);
+    const result = await getSongDownloadNew({
+      id: song?.id,
+      br: selectedQuality.value
+    });
     console.log("下载数据：", result);
     // 检查 result.data 和 result.data.url 是否存在
     if (!result.data) {
@@ -131,7 +165,7 @@ const toSongDownload = async (song, lyric) => {
     }
     // 获取下载结果
     const isDownloaded = await downloadFile({
-      type: 'mp3',
+      type: fileType,
       url: result.data.url
     }, song, lyric, {
       path: downloadPath.value,
@@ -164,9 +198,7 @@ const openDownloadModal = (data) => {
     downloadSongShow.value = true;
     getMusicDetailData(songId.value);
   };
-  if (isLogin() || !isLogin()) {
-    return toDownload();
-  }
+  return toDownload();
 };
 
 // 关闭歌曲下载
@@ -184,6 +216,20 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+/* 新增音质选择样式 ✅ */
+.set-item {
+  .n-select {
+    margin: 12px 0;
+    width: 100%;
+  }
+
+  .tip {
+    display: block;
+    font-size: 12px;
+    margin-top: 8px;
+    color: var(--n-text-color-tertiary);
+  }
+}
 .download-song {
   .song-info {
     .name {
