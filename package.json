@@ -27,9 +27,9 @@
     "build:linux": "npm run build && electron-builder --linux --config"
   },
   "dependencies": {
-    "@applemusic-like-lyrics/core": "0.2.0-alpha.4",
-    "@applemusic-like-lyrics/lyric": "^0.2.4",
-    "@applemusic-like-lyrics/vue": "0.2.0-alpha.4",
+    "@applemusic-like-lyrics/core": "latest",
+    "@applemusic-like-lyrics/lyric": "latest",
+    "@applemusic-like-lyrics/vue": "latest",
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "@material/material-color-utilities": "^0.2.7",

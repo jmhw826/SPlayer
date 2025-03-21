@@ -1,6 +1,6 @@
 <template>
   <n-modal v-model:show="showModal" title="设置" size="large"
-    style="width:800px; max-width: 90vw; background-color: var(--divider-color)">
+    style="width:800px; max-width: 90vw; background-color: var(--n-color-modal)">
     <div class="settings-modal">
       <div class="tabs-container">
         <n-tabs ref="setTabsRef" v-model:value="setTabsValue" type="line" @update:value="settingTabChange">
@@ -122,12 +122,12 @@ watch(() => settings.themeType, (newTheme) => {
   display: flex;
   flex-direction: column;
   height: 70vh;
-  background-color: var(--main-second-color);
+  background-color: var(--divider-color);
 
   .tabs-container {
     flex-shrink: 0;
     border-bottom: 1px solid var(--divider-color);
-    background-color: var(--main-second-color);
+    background-color: var(--divider-color);
 
     :deep(.n-tabs-nav) {
       padding: 0 20px;
@@ -138,7 +138,7 @@ watch(() => settings.themeType, (newTheme) => {
     flex: 1;
     overflow: hidden;
     padding: 16px 24px;
-    background-color: var(--main-second-color);
+    background-color: var(--divider-color);
 
     .n-scrollbar {
       padding-right: 12px;

@@ -4,6 +4,8 @@ import { defineStore } from "pinia";
 const useSiteStatusStore = defineStore("siteStatus", {
   state: () => {
     return {
+      // 生产分支
+      branch: "dev",
       // 菜单折叠状态
       asideMenuCollapsed: false,
       // 搜索框状态

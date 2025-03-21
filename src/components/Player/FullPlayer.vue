@@ -256,7 +256,10 @@
               </div>
             </div>
             <!-- 歌词 -->
-            <Lyric :cursorShow="playerControlShow" />
+            <Lyric v-if="!useAMLyrics" :cursorShow="playerControlShow" />
+            <div v-else class="amll-tip">
+              AMLL歌词组件正在开发中，敬请期待~
+            </div>
           </div>
         </div>
       </Transition>
@@ -285,7 +288,8 @@ const music = musicData();
 const status = siteStatus();
 const settings = siteSettings();
 const { playList, playSongLyric, playSongSource } = storeToRefs(music);
-const { playerBackgroundType, showYrc, playCoverType, showSpectrums } = storeToRefs(settings);
+const { playerBackgroundType, showYrc, playCoverType, showSpectrums, useAMLyrics } = storeToRefs(settings);
+
 const {
   playerControlShow,
   controlTimeOut,
@@ -788,4 +792,17 @@ onUnmounted(() => {
     display: initial;
   }
 }
+
+.amll-tip {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--cover-main-color);
+  opacity: 0.6;
+  font-style: italic;
+}
+
 </style>

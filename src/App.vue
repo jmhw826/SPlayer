@@ -62,18 +62,17 @@
     </n-config-provider>
     <Playlist v-else />
     <!-- 全局水印 -->
-    <!-- <n-watermark
+    <n-watermark
       :font-size="16"
       :line-height="16"
       :width="384"
       :height="384"
-      :x-offset="12"
-      :y-offset="60"
-      :rotate="-15"
-      content="开发中，敬请期待"
+      :x-offset="'calc(100vw - 384 - 20)'"
+      :y-offset="'calc(100vh - 384 - 40)'"
+      content="当前版本为测试版本, 不代表最终品质"
       cross
-      fullscreen
-    /> -->
+      fullscreen="false"
+    />
   </Provider>
 </template>
 
@@ -137,7 +136,7 @@ if ("serviceWorker" in navigator) {
       });
     } else {
       console.info("站点资源有更新，请刷新以应用更新");
-      $message.info("Github已推送更新到Vercel喵，请刷新以应用更新喵~", {
+      $message.info("新更新已推送更新到服务器，请刷新以应用更新喵~", {
         closable: true,
         duration: 0,
       });

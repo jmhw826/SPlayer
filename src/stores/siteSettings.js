@@ -52,7 +52,8 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       lyricsBlock: "start", // 歌词滚动位置
       showTransl: true, // 是否显示歌词翻译
       showRoma: true, // 是否显示歌词音译
-      lyricsStyle: 'classic', // 默认歌词样式 classic | apple-music
+      useAMLyrics: false, // 是否使用苹果音乐歌词
+      useAMSpring: false, // 是否使用苹果音乐歌词弹簧动画
       // 下载部分
       downloadPath: null, // 默认下载路径
       downloadMeta: true, // 同时下载元信息

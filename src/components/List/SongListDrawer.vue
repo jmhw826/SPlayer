@@ -175,7 +175,7 @@
           @click="
             () => {
               drawerShow = false;
-              downloadSongRef.value.openDownloadModal({ id: songData.id });
+              downloadSongRef.value?.openDownloadModal({ id: songData.id });
             }
           "
         >

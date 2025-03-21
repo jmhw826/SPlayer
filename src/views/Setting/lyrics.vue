@@ -1,31 +1,21 @@
 <template>
   <div class="set-type">
     <n-h3 prefix="bar"> 歌词 </n-h3>
-    <n-card
-      class="set-item"
-      :content-style="{
+    <n-card class="set-item" :content-style="{
         flexDirection: 'column',
         alignItems: 'flex-start',
-      }"
-    >
+      }">
       <div class="name">
         歌词文本大小
         <n-text :style="{ fontSize: lyricsFontSize + 'px', fontWeight: 'bold' }" class="tip">
           歌词显示测试
         </n-text>
       </div>
-      <n-slider
-        v-model:value="lyricsFontSize"
-        :tooltip="false"
-        :max="56"
-        :min="36"
-        :step="1"
-        :marks="{
+      <n-slider v-model:value="lyricsFontSize" :tooltip="false" :max="56" :min="36" :step="1" :marks="{
           36: '最小',
           46: '默认',
           56: '最大',
-        }"
-      />
+        }" />
     </n-card>
     <n-card class="set-item">
       <div class="name">
@@ -39,9 +29,7 @@
         歌词位置
         <n-text class="tip">歌词的默认垂直位置</n-text>
       </div>
-      <n-select
-        v-model:value="lyricsPosition"
-        :options="[
+      <n-select v-model:value="lyricsPosition" :options="[
           {
             label: '居左',
             value: 'left',
@@ -54,18 +42,14 @@
             label: '居右',
             value: 'right',
           },
-        ]"
-        class="set"
-      />
+        ]" class="set" />
     </n-card>
     <n-card class="set-item">
       <div class="name">
         歌词滚动位置
         <n-text class="tip">歌词高亮时所处的位置</n-text>
       </div>
-      <n-select
-        v-model:value="lyricsBlock"
-        :options="[
+      <n-select v-model:value="lyricsBlock" :options="[
           {
             label: '靠近顶部',
             value: 'start',
@@ -74,9 +58,7 @@
             label: '水平居中',
             value: 'center',
           },
-        ]"
-        class="set"
-      />
+        ]" class="set" />
     </n-card>
     <n-card class="set-item">
       <div class="name">
@@ -104,6 +86,24 @@
     </n-card>
     <n-card class="set-item">
       <div class="name">
+        是否使用Apple-Music-Like-Lyrics渲染器
+        <n-text class="tip">
+          Apple-Music-Like-Lyrics渲染器可能会造成卡顿等性能问题，手机端建议关闭
+        </n-text>
+      </div>
+      <n-switch v-model:value="useAMLyrics" :round="false" />
+    </n-card>
+    <n-card class="set-item">
+      <div class="name">
+        是否使用AMLL弹簧渲染效果
+        <n-text class="tip">
+          是否使用Apple-Music-Like-Lyrics组件的弹簧效果
+        </n-text>
+      </div>
+      <n-switch v-model:value="useAMSpring" :round="false" />
+    </n-card>
+    <n-card class="set-item">
+      <div class="name">
         <div class="dev">
           显示逐字歌词动画
           <n-tag :bordered="false" round size="small" type="warning">
@@ -118,18 +118,6 @@
         <n-text class="tip">可能会造成卡顿等性能问题，手机端建议关闭</n-text>
       </div>
       <n-switch v-model:value="showYrcAnimation" :disabled="!showYrc" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">歌词样式</div>
-      <n-text class="tip">选择歌词的显示样式</n-text>
-      <n-select
-        v-model:value="lyricsStyle"
-        :options="[
-          { label: '默认样式', value: 'classic' },
-          { label: 'Apple Music Like Lyrics 样式', value: 'apple-music' },
-        ]"
-        class="set"
-      />
     </n-card>
     <n-card class="set-item">
       <div class="name">
@@ -171,6 +159,7 @@ const {
   lyricsFontSize,
   lyricsBlur,
   lyricsBold,
-  lyricsStyle,
+  useAMLyrics,
+  useAMSpring,
 } = storeToRefs(settings);
 </script>

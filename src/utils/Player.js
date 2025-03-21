@@ -199,8 +199,8 @@ const getFromUnblockMusic = async (data, status, playNow) => {
       if (response.data.source === "pyncmd") {
         musicUrl = response.data.url;
       } else if (response.data.source === "kuwo") {
-        musicUrl = response.data.proxyUrl;
-        // musicUrl = response.data.url;
+        // musicUrl = response.data.proxyUrl;
+        musicUrl = response.data.url;
       }
     }
     console.log(musicUrl);
