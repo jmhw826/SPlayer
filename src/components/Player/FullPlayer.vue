@@ -256,7 +256,6 @@
               </div>
             </div>
             <!-- 歌词 -->
-
             <Lyric 
               v-if="!useAMLyrics" 
               :cursorShow="playerControlShow" 
@@ -271,7 +270,6 @@
             <div v-else class="amll-tip">
               AMLL歌词组件正在开发中，敬请期待~
             </div>
-
           </div>
         </div>
       </Transition>
