@@ -256,10 +256,22 @@
               </div>
             </div>
             <!-- 歌词 -->
+
+            <Lyric 
+              v-if="!useAMLyrics" 
+              :cursorShow="playerControlShow" 
+            />
+            <!--AMLyric
+              v-else
+              :cursorShow="playerControlShow"
+              :lyricData="playSongLyric"
+              class="am-lyric"
+            /-->
             <Lyric v-if="!useAMLyrics" :cursorShow="playerControlShow" />
             <div v-else class="amll-tip">
               AMLL歌词组件正在开发中，敬请期待~
             </div>
+
           </div>
         </div>
       </Transition>
@@ -282,6 +294,7 @@ import screenfull from "screenfull";
 import throttle from "@/utils/throttle";
 import SvgIcon from "@/components/Global/SvgIcon";
 import Settings from "@/components/Modal/Settings.vue";
+import AMLyric from "./AMLyric.vue";
 
 const router = useRouter();
 const music = musicData();
@@ -300,6 +313,12 @@ const {
   pureLyricMode,
   playMode,
 } = storeToRefs(status);
+
+// 获取AM处理后的歌词数据
+const processedLyric = computed(() => ({
+  ...(playSongLyric.value || {}),
+  align: 'top' // 默认居中对齐
+}));
 
 // 是否有歌词
 const isHasLrc = computed(() => {
@@ -357,6 +376,9 @@ watch(
 onUnmounted(() => {
   clearTimeout(controlTimeOut.value);
 });
+
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -804,5 +826,79 @@ onUnmounted(() => {
   opacity: 0.6;
   font-style: italic;
 }
+.lyric-am {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.2));
+  mask: linear-gradient(180deg,
+      hsla(0, 0%, 100%, 0) 0,
+      hsla(0, 0%, 100%, 0.6) 5%,
+      #fff 10%,
+      #fff 75%,
+      hsla(0, 0%, 100%, 0.6) 85%,
+      hsla(0, 0%, 100%, 0));
+  opacity: 1;
+  transform: translateZ(0) scale(1);
+  will-change: transform, opacity;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
+  @media (max-width: 768px) {
+    padding: 0 16px;
+    height: 70vh;
+  }
+
+  &.loading {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  &.lyric-left {
+    :deep(.am-lyric) {
+      text-align: left;
+
+      div {
+        transform-origin: left center;
+      }
+    }
+  }
+
+  &.lyric-center {
+    :deep(.am-lyric) {
+      text-align: center;
+
+      div {
+        transform-origin: center;
+      }
+    }
+  }
+
+  :deep(.am-lyric) {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+
+    @media (max-width: 768px) {
+      position: relative;
+      padding: 20px 0;
+    }
+  }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
 </style>

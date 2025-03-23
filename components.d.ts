@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddPlaylist: typeof import('./src/components/Modal/AddPlaylist.vue')['default']
+    AMLyric: typeof import('./src/components/Player/AMLyric.vue')['default']
+    BackgroundRender: typeof import('./src/components/Player/BackgroundRender.vue')['default']
     CloudSongMatch: typeof import('./src/components/Modal/CloudSongMatch.vue')['default']
     CommentList: typeof import('./src/components/List/CommentList.vue')['default']
     CountDown: typeof import('./src/components/Player/CountDown.vue')['default']

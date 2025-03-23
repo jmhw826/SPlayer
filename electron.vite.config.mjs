@@ -7,7 +7,8 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import viteCompression from "vite-plugin-compression";
 import checkPort from "./electron/main/utils/checkPort";
-
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
 export default defineConfig(async ({ mode }) => {
   // 读取环境变量
   const getEnv = (name) => {
@@ -55,6 +56,8 @@ export default defineConfig(async ({ mode }) => {
         },
       },
       plugins: [
+        wasm(),
+        topLevelAwait(),
         vue(),
         AutoImport({
           imports: [
@@ -141,6 +144,7 @@ export default defineConfig(async ({ mode }) => {
       // 构建
       root: ".",
       build: {
+        target: "esnext",
         minify: "terser",
         publicDir: resolve(__dirname, "public"),
         rollupOptions: {

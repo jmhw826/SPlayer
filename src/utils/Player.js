@@ -639,9 +639,10 @@ const getSongLyricData = async (islocal, data) => {
       }
     } else {
       const lyricResponse = await getSongLyric(data?.id);
-      const lyricData = lyricResponse?.lrc;
+      // 处理新的返回结构，lyricResponse现在包含original和ttml
+      const lyricData = lyricResponse?.original?.lrc;
       if (lyricData) {
-        const result = parseLyric(lyricResponse);
+        const result = parseLyric(lyricResponse.original);
         result ? (music.playSongLyric = result) : setDefaults();
       } else {
         console.log("该歌曲暂无歌词");

@@ -140,7 +140,7 @@
               <template v-if="playSongLyric.hasYrc && showYrc">
                 <n-text class="lrc-text" :depth="3">
                   <span
-                    v-for="(item, index) in playSongLyric.yrc[playSongLyricIndex]?.content"
+                    v-for="(item, index) in playSongLyric.yrc[playSongLyricIndex]?.content || []"
                     :key="index"
                     :class="{
                       space: item.endsWithSpace,

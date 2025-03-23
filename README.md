@@ -1,3 +1,8 @@
+>[!IMPORTANT]
+>
+> # Q&A
+> ### 你为什么要维护这个已经过时的版本
+> 那是因为在imsyy的dev分支将会向本地播放器发展, 且把在线版本进入基本维护模式而导致有些功能将不会在网页端生效, 该版本是最后一个支持移动端和网页部署的版本, 我将会尽量把功能与dev分支同步, 以便能使用到与dev分支相同的功能.
 # SPlayer
 
 #### 一个简约的音乐播放器
@@ -26,18 +31,18 @@
 
 ## 👀 Demo
 
-- [云音乐](https://player.focalors.ltd/)
+- [SPlayer](https://player.focalors.ltd/)
+> 该版本为dev分支
 
 ## 🎉 功能
 
 - ✨ 支持扫码登录
-- 📱 支持手机号登录
+- 📱 支持手机号登录(由于API问题可能不会登陆成功)
 - 📅 自动进行每日签到及云贝签到
 - 🎨 封面主题色自适应
 - 🌚 Light / Dark 模式自动切换
 - 📁 本地歌曲管理及分类（建议先使用 [音乐标签](https://www.cnblogs.com/vinlxc/p/11347744.html) 进行匹配后再使用）
 - 🎵 **支持播放部分无版权歌曲（可能会与原曲不匹配）**
-  > 此功能将会重构, 即将上线!
 - ⬇️ 下载歌曲（最高支持 Hi-Res）
 - ➕ 新建歌单及歌单编辑
 - ❤️ 收藏 / 取消收藏歌单或歌手
@@ -116,9 +121,6 @@
 
 ## ⚙️ Vercel 部署
 
-> [!IMPORTANT]
->
-> API项目即将进行重构, 重构成功后无需部署`UNM-Server`并填入, 而是内置在`网易云API`里面
 
 1. 本程序依赖 [NeteaseCloudMusicApi](https://github.com/IamFurina/NeteaseCloudMusicApi) 运行以及[UNM-Server](https://act.focalors.ltd/unm-server)，请确保您已成功部署该项目，并成功取得在线访问地址
 2. 点击本仓库右上角的 `Fork`，复制本仓库到你的 `GitHub` 账号
@@ -394,6 +396,10 @@
 ```
 
 </details>
+
+## todo列表
+- [ ] 支持Apple-Music Like Lyrics
+- [ ] 解灰支持酷我源
 
 ## ⭐ Star History
 

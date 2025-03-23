@@ -171,7 +171,6 @@ const {
   playCoverType,
   justLyricArea,
   lyricsBold,
-  lyricsStyle,
 } = storeToRefs(settings);
 
 // 歌词滚动数据

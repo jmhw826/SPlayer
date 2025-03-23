@@ -9,7 +9,13 @@ export const parseLyric = (data) => {
     // 判断是否具有内容
     const checkLyric = (lyric) => (lyric ? (lyric.lyric ? true : false) : false);
     // 初始化数据
-    const { lrc, tlyric, romalrc, yrc, ytlrc, yromalrc } = data;
+    if (!data) return false;
+    
+    // 处理API返回的数据结构
+    // 如果是从getSongLyric返回的包含original的结构，取出original
+    const actualData = data.original || data;
+    
+    const { lrc, tlyric, romalrc, yrc, ytlrc, yromalrc } = actualData;
     const lrcData = {
       lrc: lrc?.lyric || null,
       tlyric: tlyric?.lyric || null,
@@ -142,6 +148,11 @@ const parseOtherLrc = (lrc, tranLrc, name) => {
 const parseLrc = (lyrics, isTrim = true) => {
   if (!lyrics) return [];
   try {
+    // 检查是否是JSON格式的歌词（新版API返回格式）
+    if (lyrics.trim().startsWith('{"t":')) {
+      return parseJsonLrc(lyrics);
+    }
+    
     // 匹配时间轴和歌词文本的正则表达式
     const regex = /^\[([^\]]+)\]\s*(.+?)\s*$/;
     // 匹配歌曲信息的正则表达式
@@ -251,4 +262,155 @@ const parseYrc = (lyrics) => {
     console.error("逐字歌词处理出错：" + err);
     return [];
   }
+};
+
+/**
+ * 解析JSON格式的歌词（新版API返回格式）
+ * @param {string} lyrics JSON格式的歌词字符串
+ * @returns {Array} 歌词对象数组
+ */
+const parseJsonLrc = (lyrics) => {
+  try {
+    const lines = lyrics.split('\n').filter(line => line.trim());
+    const parsedLyrics = [];
+    
+    for (const line of lines) {
+      // 跳过元数据行
+      if (line.startsWith('{"t":') && line.includes('"c":[')) {
+        continue;
+      }
+      
+      // 处理普通歌词行 - 支持两种格式：
+      // 1. 标准LRC格式 [00:03.68]曾经我是不安河水
+      // 2. 新版API返回的特殊格式 [3360,3180](3360,300,0)曾(3660,240,0)经...
+      if (line.startsWith('[')) {
+        // 标准LRC格式
+        if (line.includes(']') && !line.includes('](')) {
+          const regex = /^\[(\d+:\d+\.\d+)\](.+)$/;
+          const match = line.match(regex);
+          if (match) {
+            const [, timeStr, content] = match;
+            const parts = timeStr.split(':');
+            const seconds =
+              Number(parts[0]) * 60 +
+              Number(parts[1]);
+            parsedLyrics.push({
+              time: Number(seconds.toFixed(2)),
+              content: content.trim()
+            });
+          }
+        }
+        // 新版API返回的特殊格式 - 逐字歌词
+        else if (line.includes(',') && line.includes('](')) {
+          const timeRegex = /^\[(\d+),(\d+)\]/;
+          const timeMatch = line.match(timeRegex);
+          if (timeMatch) {
+            const [, startTime, duration] = timeMatch;
+            // 提取歌词内容 - 移除时间标记
+            let content = line.replace(timeRegex, '').trim();
+            // 移除逐字时间标记，只保留文本
+            content = content.replace(/\(\d+,\d+,\d+\)/g, '');
+            
+            parsedLyrics.push({
+              time: Number(startTime) / 1000,
+              content: content.trim()
+            });
+          }
+        }
+      }
+    }
+    
+    return parsedLyrics;
+  } catch (err) {
+    console.error("JSON格式歌词处理出错：" + err);
+    return [];
+  }
+};
+
+// 新增TTML转换方法
+export const convertToTTML = (lyricData) => {
+  console.info(lyricData);
+  // 如果没有歌词数据，返回空字符串
+  if (!lyricData) {
+    console.error("无法转换TTML：缺少歌词数据");
+    return "";
+  }
+
+  // 处理歌词数据 - 先尝试解析歌词
+  try {
+    // 处理API返回的数据结构
+    // 如果是从getSongLyric返回的包含original的结构，取出original
+    const actualData = lyricData.original || lyricData;
+    
+    // 如果actualData是原始API返回的数据，先解析它
+    if (!actualData.lrc || !Array.isArray(actualData.lrc)) {
+      const parsedData = parseLyric(actualData);
+      if (parsedData && Array.isArray(parsedData.lrc)) {
+        lyricData = parsedData;
+      } else {
+        // 如果解析失败，返回空字符串
+        console.error("无法转换TTML：歌词解析失败", actualData);
+        return "";
+      }
+    }
+  } catch (error) {
+    console.error("TTML转换出错：", error);
+    return "";
+  }
+
+  // 确保lrc是数组
+  const lrcArray = Array.isArray(lyricData.lrc) ? lyricData.lrc : [];
+  // 处理翻译歌词和音译歌词，确保它们是数组
+  // 如果lyricData中没有tlyric或romalrc属性，则使用空数组
+  const tlyricArray = lyricData.tlyric ? (Array.isArray(lyricData.tlyric) ? lyricData.tlyric : []) : [];
+  const romalrcArray = lyricData.romalrc ? (Array.isArray(lyricData.romalrc) ? lyricData.romalrc : []) : [];
+  
+  // 如果没有歌词行，返回空字符串
+  if (lrcArray.length === 0) {
+    console.error("无法转换TTML：没有歌词行");
+    return "";
+  }
+
+  const buildLine = (time, content, translation, romaji) => {
+    const start = formatTime(time);
+    const end = formatTime(time + 1000);
+    return `<p begin="${start}" end="${end}">
+      ${content}
+      ${translation ? `<span class="translation">${translation}</span>` : ''}
+      ${romaji ? `<span class="romaji">${romaji}</span>` : ''}
+    </p>`;
+  };
+
+  // 新增对齐方式处理
+  const alignment = 'top';
+  
+  return `<?xml version="1.0" encoding="UTF-8"?>
+  <tt xmlns="http://www.w3.org/ns/ttml">
+    <body>
+      <div style="text-align:${alignment}">
+        ${lrcArray.map(line => 
+          buildLine(
+            line.time,
+            line.content,
+            tlyricArray.find(t => t.time === line.time)?.content,
+            romalrcArray.find(r => r.time === line.time)?.content
+          )).join('\n')}
+      </div>
+    </body>
+  </tt>`;
+};
+
+// 时间格式转换
+const formatTime = (ms) => {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = ((ms % 60000) / 1000).toFixed(3);
+  return `${minutes}:${seconds.padStart(6, '0')}`;
+};
+
+// 导出用于测试的内部函数
+export const _internal = {
+  parseLrc,
+  parseYrc,
+  parseJsonLrc,
+  parseOtherLrc
 };
