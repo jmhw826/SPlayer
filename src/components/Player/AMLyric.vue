@@ -7,7 +7,7 @@
       <LyricPlayer
         ref="lyricPlayerRef"
         :lyricLines="currentLyrics"
-        :currentTime="Math.max(0, currentTime) * 1000"
+        :currentTime="playSeek"
         :playing="isPlaying"
         :enableSpring="useAMSpring"
         :enableScale="useAMSpring"
@@ -31,11 +31,12 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
+import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
 import { parseTTMLToAMLL } from '@/utils/processTTML.ts';
-import { setSeek } from '@/utils/Player';
+import { setSeek, getSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
-import { LyricPlayerRef, LyricLine, LyricClickEvent } from '@/types/amll.ts';
+import { LyricPlayerRef, LyricClickEvent } from '@/types/amll.ts';
 // 导入新的歌词处理工具
 import { parseLyricsData, parseLocalLyric } from '@/utils/modernLyricProcessor.ts';
 
@@ -52,7 +53,7 @@ const { useAMSpring, lyricBlur, lyricsFontSize, lyricsBlock, showYrc, lyricFontB
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度
-const currentTime = computed(() => Math.max(0, playTimeData.value?.currentTime || 0));
+const playSeek = ref<number>(getSeek());
 const isPlaying = computed(() => playState.value);
 
 // 歌词对齐位置
