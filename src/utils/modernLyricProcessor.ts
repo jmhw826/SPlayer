@@ -3,9 +3,9 @@
  * 参考src-modern/src/utils/lyric.ts实现
  */
 import { LyricLine, parseLrc, parseYrc } from "@applemusic-like-lyrics/lyric";
-import type { LyricLine as AMLLLyricLine, LyricWord, SongLyric } from '@/types/amll';
-import { msToS } from "./time";
-import { alignLyrics as alignLyricsUtil } from "./lyricAlignment";
+import type { LyricLine as AMLLLyricLine, LyricWord, SongLyric } from '@/types/amll.ts';
+import { msToS } from "./time.ts";
+import { alignLyrics as alignLyricsUtil } from "./lyricAlignment.ts";
 
 // 歌词排除内容 - 从设置中获取
 const getExcludeKeywords = (): string[] => {

@@ -261,16 +261,16 @@
               :cursorShow="playerControlShow" 
             />
             <!--如果要调用AMLL歌词，取消下面的注释即可-->
-            <!--AMLyric
+            <AMLyric
               v-else
               :cursorShow="playerControlShow"
               :lyricData="playSongLyric"
               class="am-lyric"
-            /-->
+            />
             <!--如果要调用AMLL歌词，请注释或去掉以下div标签-->
-            <div v-else class="amll-tip">
+            <!--div v-else class="amll-tip">
               AMLL歌词组件正在开发中，敬请期待~
-            </div>
+            </div-->
           </div>
         </div>
       </Transition>
