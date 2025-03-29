@@ -90,6 +90,23 @@ const currentLyrics = computed<LyricLine[]>(() => {
   return isYrc ? playSongLyric.value.yrcAMData : playSongLyric.value.lrcAMData;
 });
 
+// 监听播放状态变化
+watch(() => playState.value, (newState: boolean) => {
+  if (lyricPlayerRef.value) {
+    const timeMs = Math.max(0, playSeek.value) * 1000;
+    lyricPlayerRef.value.setCurrentTime?.(timeMs);
+    lyricPlayerRef.value.setPlaying?.(newState);
+  }
+});
+
+// 监听当前时间变化
+watch(() => playSeek.value, (newTime: number) => {
+  const safeTime = Math.max(0, newTime);
+  if (lyricPlayerRef.value) {
+    lyricPlayerRef.value.setCurrentTime?.(safeTime * 1000);
+  }
+});
+
 // 获取第一行歌词的时间用于倒计时
 const firstLineTime = computed(() => {
   if (currentLyrics.value && currentLyrics.value.length > 0) {
