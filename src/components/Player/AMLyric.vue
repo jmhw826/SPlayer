@@ -156,7 +156,7 @@ defineExpose({
       margin: 0;
       padding: 0 80px;
       div {
-        transform-origin: center;
+        transform-origin: center !important;
       }
     }
   }

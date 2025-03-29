@@ -264,8 +264,6 @@
             <AMLyric
               v-else
               :cursorShow="playerControlShow"
-              :lyricData="playSongLyric"
-              class="am-lyric"
             />
             <!--如果要调用AMLL歌词，请注释或去掉以下div标签-->
             <!--div v-else class="amll-tip">
