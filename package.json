@@ -38,6 +38,7 @@
     "NeteaseCloudMusicApi": "^4.25.0",
     "axios": "^1.8.4",
     "colorthief": "^2.6.0",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "electron-dl": "^3.5.2",
     "electron-store": "^8.2.0",
