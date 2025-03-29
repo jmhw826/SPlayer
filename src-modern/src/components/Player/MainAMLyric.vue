@@ -18,6 +18,8 @@
           '--amll-lyric-player-font-size': settingStore.lyricFontSize + 'px',
           'font-weight': settingStore.lyricFontBold ? 'bold' : 'normal',
           'font-family': settingStore.LyricFont !== 'follow' ? settingStore.LyricFont : '',
+          'visibility': 'visible',
+          'opacity': '1'
         }"
         class="am-lyric"
         @line-click="jumpSeek"
@@ -94,6 +96,7 @@ onBeforeUnmount(() => {
     hsla(0, 0%, 100%, 0.6) 85%,
     hsla(0, 0%, 100%, 0)
   );
+  z-index: 1;
   :deep(.am-lyric) {
     width: 100%;
     height: 100%;
@@ -103,6 +106,8 @@ onBeforeUnmount(() => {
     padding-left: 10px;
     padding-right: 80px;
     margin-left: -2rem;
+    z-index: 2;
+    display: block;
   }
   &.pure {
     text-align: center;

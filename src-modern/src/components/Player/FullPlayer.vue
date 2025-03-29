@@ -278,6 +278,8 @@ onBeforeUnmount(() => {
       max-width: 50%;
       display: flex;
       flex-direction: column;
+      position: relative;
+      z-index: 2;
       .player-data {
         margin-top: 0;
         margin-bottom: 26px;
