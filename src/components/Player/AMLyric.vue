@@ -103,7 +103,7 @@ watch(() => playState.value, (newState: boolean) => {
   if (lyricPlayerRef.value) {
     // 无论播放状态如何变化，都确保时间同步
     // 确保时间值为非负数
-    const timeMs = Math.max(0, currentTime.value) * 1000;
+    const timeMs = Math.max(0, playSeek.value) * 1000;
     lyricPlayerRef.value.setCurrentTime?.(timeMs);
     // 同步播放状态
     lyricPlayerRef.value.setPlaying?.(newState);
@@ -111,7 +111,7 @@ watch(() => playState.value, (newState: boolean) => {
 });
 
 // 监听当前时间变化
-watch(() => currentTime.value, (newTime: number) => {
+watch(() => playSeek.value, (newTime: number) => {
   const safeTime = Math.max(0, newTime);
   if (lyricPlayerRef.value) {
     lyricPlayerRef.value.setCurrentTime?.(safeTime * 1000);
