@@ -144,11 +144,11 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { siteSettings } from "@/stores";
+import { siteSettings, siteStatus } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import debounce from "@/utils/debounce";
-import { siteStatus } from "@/stores";
 
+const status = siteStatus();
 const settings = siteSettings();
 const { themeAuto, loadSize, showGithub, proxyProtocol, proxyServe, proxyPort, useRealIP, realIP } =
   storeToRefs(settings);
@@ -200,7 +200,7 @@ const getNewPage = () => {
 };
 // 打开完整设置页面
 const toSettingsPage = () => {
-  showFullPlayer.value = false;
+  status.showFullPlayer = false;
   window.location.href = "/#/setting";
 }
 // 应用代理
