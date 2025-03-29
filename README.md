@@ -398,6 +398,7 @@
 </details>
 
 ## 📄 todo列表
+- [x] 支持清除pwa缓存
 - [ ] 支持Apple Music-Like Lyrics
 - [ ] 解灰支持酷我源
 - [ ] 修复imsyy的陈年老bug
