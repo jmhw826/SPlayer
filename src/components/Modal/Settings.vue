@@ -1,9 +1,35 @@
 <template>
-  <n-modal v-model:show="showModal" title="设置" size="large"
-    style="width:800px; max-width: 90vw; background-color: var(--n-color-modal)">
+  <n-modal
+    v-model:show="showModal"
+    title="设置"
+    size="large"
+    :style="{
+      width: isMobile ? '100vw' : '800px',
+      maxWidth: '90vw',
+      backgroundColor: 'var(--n-color-modal)',
+      borderRadius: isMobile ? '16px 16px 0 0' : '8px',
+      margin: isMobile ? 'auto auto 0 auto' : 'auto',
+    }"
+  >
     <div class="settings-modal">
-      <div class="tabs-container">
-        <n-tabs ref="setTabsRef" v-model:value="setTabsValue" type="line" @update:value="settingTabChange">
+      <!-- 移动端下拉选择器 -->
+      <div v-if="isMobile" class="mobile-selector">
+        <n-select
+          v-model:value="setTabsValue"
+          :options="tabOptions"
+          size="large"
+          @update:value="settingTabChange"
+        />
+      </div>
+
+      <!-- 桌面端标签页 -->
+      <div v-else class="tabs-container">
+        <n-tabs
+          ref="setTabsRef"
+          v-model:value="setTabsValue"
+          type="line"
+          @update:value="settingTabChange"
+        >
           <n-tab name="setTab1">常规</n-tab>
           <n-tab name="setTab2">系统</n-tab>
           <n-tab name="setTab3">播放</n-tab>
@@ -13,10 +39,16 @@
           <n-tab name="setTab7">TestOptions</n-tab>
         </n-tabs>
       </div>
+
       <div class="settings-content">
-        <n-scrollbar ref="setScrollRef" :style="{
-    height: `calc(100vh - ${music.getPlaySongData?.id && showPlayBar ? 368 : 288}px)`,
-  }" class="all-set" @scroll="allSetScroll">
+        <n-scrollbar
+          ref="setScrollRef"
+          :style="{
+            height: `calc(100vh - ${getScrollHeight()}px)`,
+          }"
+          class="all-set"
+          @scroll="allSetScroll"
+        >
           <!-- 常规 -->
           <General />
           <!-- 系统 -->
@@ -34,10 +66,11 @@
         </n-scrollbar>
       </div>
     </div>
+
     <!-- 添加底部操作按钮 -->
     <template #action>
       <div class="modal-actions">
-        <n-button type="primary" ghost @click="openWebSettings">
+        <n-button type="primary" ghost @click="openWebSettings" :block="isMobile" size="large">
           打开完整设置页
         </n-button>
       </div>
@@ -46,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { storeToRefs } from "pinia";
 import { siteSettings, siteStatus, musicData } from "@/stores";
 import debounce from "@/utils/debounce";
@@ -66,11 +99,47 @@ const settings = siteSettings();
 const { showPlayBar } = storeToRefs(status);
 const { themeAutoCover } = storeToRefs(settings);
 
+// 响应式布局
+const isMobile = ref(false);
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768;
+};
+
+// 监听窗口大小变化
+onMounted(() => {
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile);
+});
+
 // 标签页数据
 const setTabsRef = ref(null);
 const setScrollRef = ref(null);
 const setTabsValue = ref("setTab1");
 const showModal = ref(false);
+
+// 标签选项
+const tabOptions = computed(() => [
+  { label: '常规', value: 'setTab1' },
+  { label: '系统', value: 'setTab2' },
+  { label: '播放', value: 'setTab3' },
+  { label: '歌词', value: 'setTab4' },
+  { label: '下载', value: 'setTab5' },
+  { label: '其他', value: 'setTab6' },
+  { label: 'TestOptions', value: 'setTab7' }
+]);
+
+// 计算滚动区域高度
+const getScrollHeight = () => {
+  if (isMobile.value) {
+    return music.getPlaySongData?.id && showPlayBar.value ? 420 : 340;
+  } else {
+    return music.getPlaySongData?.id && showPlayBar.value ? 368 : 288;
+  }
+};
 
 // 标签页切换
 const settingTabChange = (name) => {
@@ -80,7 +149,6 @@ const settingTabChange = (name) => {
   // 滚动至设置分类
   setDom.scrollIntoView({ behavior: "smooth" });
 };
-
 
 // 设置列表滚动
 const allSetScroll = debounce((e) => {
@@ -123,6 +191,21 @@ watch(() => settings.themeType, (newTheme) => {
   flex-direction: column;
   height: 70vh;
   background-color: var(--divider-color);
+  transition: all 0.3s ease;
+
+  .mobile-selector {
+    flex-shrink: 0;
+    padding: 16px 16px 8px;
+    background-color: var(--divider-color);
+    border-bottom: 1px solid var(--divider-color);
+
+    :deep(.n-select) {
+      width: 100%;
+      .n-base-selection {
+        border-radius: 8px;
+      }
+    }
+  }
 
   .tabs-container {
     flex-shrink: 0;
@@ -132,6 +215,15 @@ watch(() => settings.themeType, (newTheme) => {
     :deep(.n-tabs-nav) {
       padding: 0 20px;
     }
+
+    :deep(.n-tabs-tab) {
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+    }
+
+    :deep(.n-tabs-tab-active) {
+      font-weight: 600;
+    }
   }
 
   .settings-content {
@@ -139,18 +231,79 @@ watch(() => settings.themeType, (newTheme) => {
     overflow: hidden;
     padding: 16px 24px;
     background-color: var(--divider-color);
+    transition: padding 0.3s ease;
 
     .n-scrollbar {
       padding-right: 12px;
       background-color: var(--main-second-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
   }
 }
 
 .modal-actions {
-  padding: 12px 24px;
+  padding: 16px 24px;
   border-top: 1px solid var(--divider-color);
   text-align: center;
   background-color: var(--main-second-color);
+  transition: all 0.3s ease;
+}
+
+/* 移动端样式 */
+@media (max-width: 768px) {
+  .settings-modal {
+    height: 80vh;
+
+    .settings-content {
+      padding: 12px 16px;
+
+      :deep(.set-type) {
+        .set-item {
+          margin-bottom: 12px;
+        }
+      }
+
+      :deep(.n-card) {
+        border-radius: 12px;
+        transition: transform 0.2s ease;
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+    }
+  }
+
+  .modal-actions {
+    padding: 16px;
+
+    :deep(.n-button) {
+      width: 100%;
+      height: 44px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+  }
+
+  /* 优化移动端触摸体验 */
+  :deep(.n-switch) {
+    height: 24px;
+    min-width: 44px;
+  }
+
+  :deep(.n-input) {
+    .n-input__input-el {
+      height: 40px;
+      font-size: 15px;
+    }
+  }
+
+  :deep(.n-input-number) {
+    .n-input-number-input {
+      height: 40px;
+      font-size: 15px;
+    }
+  }
 }
 </style>
