@@ -71,8 +71,12 @@
         <div class="info">
           <div class="title">
             <!-- 名称 -->
-            <!-- @click.stop="type !== 'dj' && !item.path ? router.push(`/song?id=${item.id}`) : null" -->
-            <n-text class="name" depth="2">
+            <n-text 
+              class="name" 
+              depth="2"
+              :style="type !== 'dj' && !item.path ? 'cursor: pointer' : ''"
+              @click.stop="type !== 'dj' && !item.path ? router.push(`/song?id=${item.id}`) : null"
+            >
               {{ item?.name || "未知曲目" }}
             </n-text>
             <!-- 特权 -->
