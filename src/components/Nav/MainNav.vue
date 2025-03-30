@@ -240,6 +240,7 @@ const mainMenuOptions = computed(() => [
     -webkit-app-region: no-drag;
   }
   .settings {
+    margin-right: 12px; /* 右边距12px，用于与其他元素保持间距 */
     -webkit-app-region: no-drag;
   }
   .main-menu {
