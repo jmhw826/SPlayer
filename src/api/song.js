@@ -18,6 +18,19 @@ export const getSongDetail = (ids) => {
     },
   });
 };
+/**
+ * 获取指定音乐的歌词
+ * @param {number} id - 要获取歌词的音乐ID
+ */
+export const getSongLyricLegacy = async (id) => {
+  return axios({
+    method: "GET",
+    url: "/lyric/new", 
+    params: {
+      id,
+    }
+  })
+};
 
 /**
  * 获取音乐 URL

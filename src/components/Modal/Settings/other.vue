@@ -144,11 +144,11 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { siteSettings } from "@/stores";
+import { siteSettings, siteStatus } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import debounce from "@/utils/debounce";
-import { siteStatus } from "@/stores";
 
+const status = siteStatus();
 const settings = siteSettings();
 const { themeAuto, loadSize, showGithub, proxyProtocol, proxyServe, proxyPort, useRealIP, realIP } =
   storeToRefs(settings);
@@ -181,35 +181,52 @@ const resetApp = () => {
 // 从服务器获取最新页面
 const getNewPage = () => {
   $dialog.warning({
-    title: "确定要获取最新页面吗?",
-    content: "此操作将会清除本地缓存，重新获取最新页面",
-    positiveText: "确定",
+    title: "确定要清除缓存并刷新页面吗?",
+    content: "此操作将会清除 PWA 缓存并重新获取最新页面",
+    positiveText: "确定", 
     negativeText: "取消",
-    onPositiveClick: () => { 
-      $message.success("获取成功，正在重启");
-      setTimeout(() => {
-        if (checkPlatform.electron()) {
-          electron.ipcRenderer.send("window-relaunch");
-        } else {
-          location.reload(true);
-          // window.location.href = "/";
+    onPositiveClick: async () => {
+      try {
+        // 清除所有 PWA 缓存
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          for (const registration of registrations) {
+            await registration.unregister();
+          }
+          const cacheNames = await caches.keys();
+          for (const cacheName of cacheNames) {
+            await caches.delete(cacheName);
+          }
         }
-      }, 1000);
+
+        $message.success("缓存已清除，正在刷新页面");
+        
+        setTimeout(() => {
+          if (checkPlatform.electron()) {
+            electron.ipcRenderer.send("window-relaunch");
+          } else {
+            window.location.reload(true);
+          }
+        }, 1000);
+      } catch (err) {
+        $message.error("清除缓存失败:" + err.message);
+      }
     },
   });
 };
 // 打开完整设置页面
 const toSettingsPage = () => {
-  showFullPlayer.value = false;
+  status.showFullPlayer = false;
   window.location.href = "/#/setting";
-}
+};
+
 // 应用代理
 const setProxy = debounce(() => {
   if (proxyProtocol.value === "off" || !proxyServe.value || !proxyPort.value) {
     electron.ipcRenderer.send("remove-proxy");
     $message.success("成功关闭网络代理");
     return false;
-  }
+  };
   const proxyConfig = {
     protocol: proxyProtocol.value,
     server: proxyServe.value,
@@ -217,7 +234,7 @@ const setProxy = debounce(() => {
   };
   if (checkPlatform.electron()) {
     electron.ipcRenderer.send("set-proxy", proxyConfig);
-  }
+  };
   $message.success("网络代理配置完成，请重启软件");
 }, 300);
 </script>

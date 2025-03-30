@@ -62,13 +62,13 @@
     </Transition>
     <template #footer>
       <n-flex justify="end" :class="{ setting: true }">
-        <div class="name">保存歌词到压缩文件</div>
+        <!--div class="name">保存歌词到压缩文件</div>
         <n-switch v-model:value="downloadCoverToFile" :round="false"/>
         <div class="name">保存封面到压缩文件</div>
-        <n-switch v-model:value="downloadLyricsToFile" :round="false"/>
+        <n-switch v-model:value="downloadLyricsToFile" :round="false"/-->
         <n-button @click="closeDownloadModal"> 关闭 </n-button>
         <n-button :disabled="!songData" :loading="downloadStatus" :focusable="false" type="primary"
-          @click="toSongDownload(songData, lyricData)">
+          @click="toSongDownload(songData, lyricData, tlyricData)">
           下载
         </n-button>
       </n-flex>
@@ -80,7 +80,7 @@
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyric, getSongDownloadNew } from "@/api/song";
+import { getSongDetail, getSongLyricLegacy, getSongDownloadNew } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
 
@@ -101,7 +101,8 @@ const {
 // 歌曲下载数据
 const songId = ref(null);
 const songData = ref(null);
-const lyricData = ref(null);
+const lyricData = ref(null); // 歌词
+const tlyricData = ref(null); // 翻译歌词
 const downloadStatus = ref(false);
 const downloadSongShow = ref(false);
 
@@ -109,10 +110,11 @@ const downloadSongShow = ref(false);
 const getMusicDetailData = async (id) => {
   try {
     const songResult = await getSongDetail(id);
-    const lyricResult = await getSongLyric(id);
+    const lyricResult = await getSongLyricLegacy(id);
     // 获取歌曲详情
     songData.value = formatData(songResult?.songs?.[0], "song")[0];
     lyricData.value = lyricResult?.lrc?.lyric || null;
+    tlyricData.value = lyricResult?.tlyric?.lyric || null;
   } catch (error) {
     closeDownloadModal();
     console.error("歌曲信息获取失败：", error);
@@ -138,10 +140,10 @@ const qualityOptions = ref([
 ]);
 const selectedQuality = ref(320); // 默认选择超清音质
 // 歌曲下载
-const toSongDownload = async (song, lyric) => {
+const toSongDownload = async (song, lyric, tlyric) => {
   try {
     const fileType = selectedQuality.value >= 740 ? 'flac' : 'mp3';
-    console.log(song, lyric);
+    console.log(song, lyric, tlyric);
     downloadStatus.value = true;
     // 获取下载数据
     const result = await getSongDownloadNew({
@@ -167,7 +169,7 @@ const toSongDownload = async (song, lyric) => {
     const isDownloaded = await downloadFile({
       type: fileType,
       url: result.data.url
-    }, song, lyric, {
+    }, song, lyric, tlyric, {
       path: downloadPath.value,
       downloadMeta: downloadMeta.value,
       downloadCover: downloadCover.value,

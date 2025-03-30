@@ -626,6 +626,7 @@ const getSongLyricData = async (islocal, data) => {
         hasYrcRoma: false,
         lrc: [],
         yrc: [],
+        ttml: "", // 添加TTML字段用于AMLL歌词解析
       };
     };
     if (islocal) {
@@ -643,7 +644,13 @@ const getSongLyricData = async (islocal, data) => {
       const lyricData = lyricResponse?.original?.lrc;
       if (lyricData) {
         const result = parseLyric(lyricResponse.original);
-        result ? (music.playSongLyric = result) : setDefaults();
+        if (result) {
+          music.playSongLyric = result;
+          // 添加TTML数据用于AMLL歌词解析
+          music.playSongLyric.ttml = lyricResponse.ttml || "";
+        } else {
+          setDefaults();
+        }
       } else {
         console.log("该歌曲暂无歌词");
         setDefaults();

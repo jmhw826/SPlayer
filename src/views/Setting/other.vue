@@ -13,13 +13,7 @@
         真实 IP 地址
         <n-text class="tip">可在此处输入国内 IP</n-text>
       </div>
-      <n-input
-        v-model:value="realIP"
-        :disabled="!useRealIP"
-        class="set"
-        type="text"
-        placeholder="请填写真实 IP 地址"
-      >
+      <n-input v-model:value="realIP" :disabled="!useRealIP" class="set" type="text" placeholder="请填写真实 IP 地址">
         <template #prefix>
           <n-text depth="3">IP</n-text>
         </template>
@@ -35,25 +29,20 @@
           <Transition name="fade" mode="out-in">
             <n-button type="error" strong secondary @click="setProxy"> 保存并应用 </n-button>
           </Transition>
-          <n-select
-            v-model:value="proxyProtocol"
-            :options="[
-              {
-                label: '关闭代理',
-                value: 'off',
-              },
-              {
-                label: 'HTTP 代理',
-                value: 'HTTP',
-              },
-              {
-                label: 'HTTPS 代理',
-                value: 'HTTPS',
-              },
-            ]"
-            class="set"
-            @update:value="themeAuto = false"
-          />
+          <n-select v-model:value="proxyProtocol" :options="[
+        {
+          label: '关闭代理',
+          value: 'off',
+        },
+        {
+          label: 'HTTP 代理',
+          value: 'HTTP',
+        },
+        {
+          label: 'HTTPS 代理',
+          value: 'HTTPS',
+        },
+      ]" class="set" @update:value="themeAuto = false" />
         </n-flex>
       </n-card>
       <n-card class="set-item">
@@ -61,13 +50,8 @@
           代理服务器地址
           <n-text class="tip">请填写代理服务器地址，如 127.0.0.1</n-text>
         </div>
-        <n-input
-          v-model:value="proxyServe"
-          :disabled="proxyProtocol === 'off'"
-          class="set"
-          type="text"
-          placeholder="请填写代理服务器地址"
-        >
+        <n-input v-model:value="proxyServe" :disabled="proxyProtocol === 'off'" class="set" type="text"
+          placeholder="请填写代理服务器地址">
           <template #prefix>
             <n-text depth="3">{{ proxyProtocol === "off" ? "-" : proxyProtocol }}</n-text>
           </template>
@@ -78,15 +62,8 @@
           代理服务器端口
           <n-text class="tip">请填写代理服务器端口，如 80</n-text>
         </div>
-        <n-input-number
-          v-model:value="proxyPort"
-          :disabled="proxyProtocol === 'off'"
-          :show-button="false"
-          :min="1"
-          :max="65535"
-          class="set"
-          placeholder="请填写代理服务器端口"
-        />
+        <n-input-number v-model:value="proxyPort" :disabled="proxyProtocol === 'off'" :show-button="false" :min="1"
+          :max="65535" class="set" placeholder="请填写代理服务器端口" />
       </n-card>
     </div>
     <n-card class="set-item">
@@ -98,25 +75,20 @@
         默认加载数量
         <n-text class="tip">在部分列表页面显示几条数据, 过多数据可能会造成响应过慢</n-text>
       </div>
-      <n-select
-        v-model:value="loadSize"
-        :options="[
-          {
-            label: '少一点（ 30 条 ）',
-            value: 30,
-          },
-          {
-            label: '差不多刚刚好（ 50 条 ）',
-            value: 50,
-          },
-          {
-            label: '我要很多（ 100 条 ）',
-            value: 100,
-          },
-        ]"
-        class="set"
-        @update:value="themeAuto = false"
-      />
+      <n-select v-model:value="loadSize" :options="[
+        {
+          label: '少一点（ 30 条 ）',
+          value: 30,
+        },
+        {
+          label: '差不多刚刚好（ 50 条 ）',
+          value: 50,
+        },
+        {
+          label: '我要很多（ 100 条 ）',
+          value: 100,
+        },
+      ]" class="set" @update:value="themeAuto = false" />
     </n-card>
     <n-card class="set-item">
       <div class="name">
@@ -132,15 +104,23 @@
       </div>
       <n-button strong secondary type="error" @click="getNewPage"> 获取 </n-button>
     </n-card>
+    <n-card class="set-item">
+      <div class="name">
+        打开完整设置页
+        <n-text class="tip">打开完整设置页面，可在此处查看更多设置</n-text>
+      </div>
+      <n-button strong secondary type="error" @click="toSettingsPage"> 打开 </n-button>
+    </n-card>
   </div>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { siteSettings } from "@/stores";
+import { siteSettings, siteStatus } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import debounce from "@/utils/debounce";
 
+const status = siteStatus();
 const settings = siteSettings();
 const { themeAuto, loadSize, showGithub, proxyProtocol, proxyServe, proxyPort, useRealIP, realIP } =
   storeToRefs(settings);
@@ -173,22 +153,43 @@ const resetApp = () => {
 // 从服务器获取最新页面
 const getNewPage = () => {
   $dialog.warning({
-    title: "确定要获取最新页面吗?",
-    content: "此操作将会清除本地缓存，重新获取最新页面",
+    title: "确定要清除缓存并刷新页面吗?",
+    content: "此操作将会清除 PWA 缓存并重新获取最新页面",
     positiveText: "确定",
     negativeText: "取消",
-    onPositiveClick: () => { 
-      $message.success("获取成功，正在重启");
-      setTimeout(() => {
-        if (checkPlatform.electron()) {
-          electron.ipcRenderer.send("window-relaunch");
-        } else {
-          location.reload(true);
-          // window.location.href = "/";
+    onPositiveClick: async () => {
+      try {
+        // 清除所有 PWA 缓存
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          for (const registration of registrations) {
+            await registration.unregister();
+          }
+          const cacheNames = await caches.keys();
+          for (const cacheName of cacheNames) {
+            await caches.delete(cacheName);
+          }
         }
-      }, 1000);
+
+        $message.success("缓存已清除，正在刷新页面");
+
+        setTimeout(() => {
+          if (checkPlatform.electron()) {
+            electron.ipcRenderer.send("window-relaunch");
+          } else {
+            window.location.reload(true);
+          }
+        }, 1000);
+      } catch (err) {
+        $message.error("清除缓存失败:" + err.message);
+      }
     },
   });
+};
+// 打开完整设置页面
+const toSettingsPage = () => {
+  status.showFullPlayer = false;
+  window.location.href = "/#/setting";
 };
 
 // 应用代理
@@ -197,7 +198,7 @@ const setProxy = debounce(() => {
     electron.ipcRenderer.send("remove-proxy");
     $message.success("成功关闭网络代理");
     return false;
-  }
+  };
   const proxyConfig = {
     protocol: proxyProtocol.value,
     server: proxyServe.value,
@@ -205,7 +206,7 @@ const setProxy = debounce(() => {
   };
   if (checkPlatform.electron()) {
     electron.ipcRenderer.send("set-proxy", proxyConfig);
-  }
+  };
   $message.success("网络代理配置完成，请重启软件");
 }, 300);
 </script>
