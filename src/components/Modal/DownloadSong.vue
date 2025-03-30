@@ -80,7 +80,7 @@
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyric, getSongDownloadNew } from "@/api/song";
+import { getSongDetail, getSongLyricLegacy, getSongDownloadNew } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
 
@@ -109,7 +109,7 @@ const downloadSongShow = ref(false);
 const getMusicDetailData = async (id) => {
   try {
     const songResult = await getSongDetail(id);
-    const lyricResult = await getSongLyric(id);
+    const lyricResult = await getSongLyricLegacy(id);
     // 获取歌曲详情
     songData.value = formatData(songResult?.songs?.[0], "song")[0];
     lyricData.value = lyricResult?.lrc?.lyric || null;
