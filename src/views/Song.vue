@@ -165,7 +165,7 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useRouter, onBeforeRouteLeave } from "vue-router";
 import { getSongDetail, getSimiPlayList } from "@/api/song";
 import { getHotComment } from "@/api/comment";
 import { addSongToNext } from "@/utils/Player";
@@ -285,6 +285,15 @@ watch(
     }
   }
 );
+
+// 添加路由离开守卫
+onBeforeRouteLeave((to, from) => {
+  // 清理组件数据
+  songDetail.value = null;
+  hotCommentData.value = [];
+  simiPlayList.value = [];
+  return true;
+});
 </script>
 
 <style lang="scss" scoped>
