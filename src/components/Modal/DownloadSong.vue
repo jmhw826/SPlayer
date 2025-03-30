@@ -62,10 +62,10 @@
     </Transition>
     <template #footer>
       <n-flex justify="end" :class="{ setting: true }">
-        <div class="name">保存歌词到压缩文件</div>
+        <!--div class="name">保存歌词到压缩文件</div>
         <n-switch v-model:value="downloadCoverToFile" :round="false"/>
         <div class="name">保存封面到压缩文件</div>
-        <n-switch v-model:value="downloadLyricsToFile" :round="false"/>
+        <n-switch v-model:value="downloadLyricsToFile" :round="false"/-->
         <n-button @click="closeDownloadModal"> 关闭 </n-button>
         <n-button :disabled="!songData" :loading="downloadStatus" :focusable="false" type="primary"
           @click="toSongDownload(songData, lyricData, tlyricData)">
