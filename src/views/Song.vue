@@ -100,6 +100,65 @@
         </n-space>
       </div>
     </div>
+    
+    <!-- 热门评论 -->
+    <div class="comments" v-if="hotCommentData.length > 0">
+      <n-h6 prefix="bar">热门评论</n-h6>
+      <div class="content">
+        <CommentList :data="hotCommentData" :loadingNum="5" />
+      </div>
+    </div>
+    
+    <!-- 相似歌单 -->
+    <div class="simiPlayList" v-if="simiPlayList.length > 0">
+      <n-divider />
+      <n-h6 prefix="bar">包含这首歌的歌单</n-h6>
+      <div class="cover-lists">
+        <n-grid cols="2 s:3 m:4 l:5" responsive="screen" :x-gap="16" :y-gap="16">
+          <n-gi v-for="(item, index) in simiPlayList" :key="index">
+            <n-card
+              class="cover"
+              :content-style="{ padding: 0 }"
+              hoverable
+              @click="router.push(`/playlist?id=${item.id}`)"
+            >
+              <div class="img">
+                <n-image
+                  :src="item.cover + '?param=512y512'"
+                  class="cover-img"
+                  preview-disabled
+                  lazy
+                  @load="(e) => { e.target.style.opacity = 1; }"
+                >
+                  <template #placeholder>
+                    <div class="cover-loading">
+                      <img class="loading-img" src="/imgs/pic/playlist.jpg?assest" alt="playlist" />
+                    </div>
+                  </template>
+                </n-image>
+                <div class="mask">
+                  <div class="play-count">
+                    <n-icon>
+                      <SvgIcon icon="play" />
+                    </n-icon>
+                    <span>{{ item.playCount }}</span>
+                  </div>
+                  <div class="play-button">
+                    <n-icon>
+                      <SvgIcon icon="play-circle" />
+                    </n-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="info">
+                <div class="name">{{ item.name }}</div>
+                <div class="creator">by {{ item.artist?.nickname }}</div>
+              </div>
+            </n-card>
+          </n-gi>
+        </n-grid>
+      </div>
+    </div>
   </div>
   <!-- 添加到歌单 -->
   <AddPlaylist ref="addPlaylistRef" />
@@ -107,12 +166,15 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import { getSongDetail } from "@/api/song";
+import { getSongDetail, getSimiPlayList } from "@/api/song";
+import { getHotComment } from "@/api/comment";
 import { addSongToNext } from "@/utils/Player";
 import { musicData, siteStatus } from "@/stores";
+import { formatNumber } from "@/utils/helper";
 // import { getLongTime } from "@/utils/timeTools";
 import formatData from "@/utils/formatData";
 import AddPlaylist from "@/components/Modal/AddPlaylist.vue";
+import CommentList from "@/components/List/CommentList.vue";
 
 const router = useRouter();
 const music = musicData();
@@ -124,6 +186,12 @@ const addPlaylistRef = ref(null);
 // 歌曲信息
 const songId = ref(router.currentRoute.value.query.id);
 const songDetail = ref(null);
+
+// 热门评论数据
+const hotCommentData = ref([]);
+
+// 相似歌单数据
+const simiPlayList = ref([]);
 
 // 检查是否具有歌曲 id
 const isHasSongId = (id) => {
@@ -142,10 +210,47 @@ const getSongDetailData = async (id) => {
     // 设置页面标题
     if (songDetail.value) {
       document.title = `${songDetail.value.name} - ${songDetail.value.artists?.[0]?.name || "未知艺术家"} - 歌曲详情`;
+      // 获取热门评论
+      getHotCommentData(id);
+      // 获取相似歌单
+      getSimiPlayListData(id);
     }
   } catch (error) {
     console.error("获取歌曲详情失败：", error);
     $message.error("获取歌曲详情失败");
+  }
+};
+
+// 获取热门评论
+const getHotCommentData = async (id) => {
+  try {
+    const res = await getHotComment(id, 0, 5);
+    if (res.hotComments?.length > 0) {
+      hotCommentData.value = res.hotComments;
+    }
+  } catch (error) {
+    console.error("获取热门评论失败：", error);
+  }
+};
+
+// 获取相似歌单
+const getSimiPlayListData = async (id) => {
+  try {
+    const res = await getSimiPlayList(id);
+    if (res.playlists?.length > 0) {
+      simiPlayList.value = [];
+      res.playlists.forEach((v) => {
+        simiPlayList.value.push({
+          id: v.id,
+          cover: v.coverImgUrl,
+          name: v.name,
+          artist: v.creator,
+          playCount: formatNumber(v.playCount),
+        });
+      });
+    }
+  } catch (error) {
+    console.error("获取相似歌单失败：", error);
   }
 };
 
@@ -165,7 +270,21 @@ onMounted(() => {
   getSongDetailData(songId.value);
 });
 
-// 路由参数变化已在router/routes.js中通过beforeEnter钩子函数处理
+// 监听路由变化
+watch(
+  () => router.currentRoute.value,
+  (val) => {
+    if (val.name === "song") {
+      songId.value = val.query.id;
+      // 重置数据
+      songDetail.value = null;
+      hotCommentData.value = [];
+      simiPlayList.value = [];
+      // 获取歌曲详情
+      getSongDetailData(songId.value);
+    }
+  }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -332,6 +451,148 @@ onMounted(() => {
 
           .alia {
             font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  .comments {
+    margin-top: 40px;
+  }
+
+  .simiPlayList {
+    margin-top: 40px;
+
+    .cover-lists {
+      margin-top: 16px;
+
+      .cover {
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 8px;
+        overflow: hidden;
+
+        &:hover {
+          transform: translateY(-6px);
+
+          .img .mask {
+            opacity: 1;
+          }
+        }
+
+        .img {
+          position: relative;
+          width: 100%;
+          height: 0;
+          padding-bottom: 100%;
+          overflow: hidden;
+
+          .cover-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+            :deep(img) {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              opacity: 0;
+              transition: opacity 0.35s ease-in-out;
+            }
+
+            .cover-loading {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #0001;
+
+              .loading-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+          }
+
+          .mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.6) 100%);
+            opacity: 0.8;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .play-count {
+              padding: 8px;
+              display: flex;
+              align-items: center;
+              color: #fff;
+              font-size: 12px;
+              align-self: flex-end;
+
+              .n-icon {
+                margin-right: 4px;
+              }
+            }
+
+            .play-button {
+              align-self: center;
+              margin-bottom: 40%;
+              width: 48px;
+              height: 48px;
+              border-radius: 50%;
+              background-color: rgba(255, 255, 255, 0.2);
+              backdrop-filter: blur(4px);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #fff;
+              font-size: 24px;
+              cursor: pointer;
+              transition: all 0.3s;
+
+              &:hover {
+                transform: scale(1.1);
+                background-color: rgba(255, 255, 255, 0.3);
+              }
+            }
+          }
+        }
+
+        .info {
+          padding: 12px;
+
+          .name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+
+          .creator {
+            font-size: 12px;
+            color: var(--text-color-3);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
