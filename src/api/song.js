@@ -167,3 +167,31 @@ export const songScrobble = (id, sourceid = 0, time = 0) => {
     },
   });
 };
+
+/**
+ * 获取包含指定音乐的相似歌单
+ * @param {number} id - 要查询的音乐ID
+ */
+export const getSimiPlayList = (id) => {
+  return axios({
+    method: "GET",
+    url: "/simi/playlist",
+    params: {
+      id,
+    },
+  });
+};
+
+/**
+ * 获取与指定音乐相似的音乐列表
+ * @param {number} id - 要查询的音乐ID
+ */
+export const getSimiSong = (id) => {
+  return axios({
+    method: "GET",
+    url: "/simi/song",
+    params: {
+      id,
+    },
+  });
+};
