@@ -101,7 +101,8 @@ const {
 // 歌曲下载数据
 const songId = ref(null);
 const songData = ref(null);
-const lyricData = ref(null);
+const lyricData = ref(null); // 歌词
+const tlyricData = ref(null); // 翻译歌词
 const downloadStatus = ref(false);
 const downloadSongShow = ref(false);
 
@@ -113,6 +114,7 @@ const getMusicDetailData = async (id) => {
     // 获取歌曲详情
     songData.value = formatData(songResult?.songs?.[0], "song")[0];
     lyricData.value = lyricResult?.lrc?.lyric || null;
+    tlyricData.value = lyricResult?.tlyric?.lyric || null;
   } catch (error) {
     closeDownloadModal();
     console.error("歌曲信息获取失败：", error);
@@ -167,7 +169,7 @@ const toSongDownload = async (song, lyric) => {
     const isDownloaded = await downloadFile({
       type: fileType,
       url: result.data.url
-    }, song, lyric, {
+    }, song, lyric, tlyric, {
       path: downloadPath.value,
       downloadMeta: downloadMeta.value,
       downloadCover: downloadCover.value,

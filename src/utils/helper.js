@@ -309,7 +309,7 @@ export const generateId = (fileName) => {
  * @param {String} songName - 歌曲名称
  * @returns {number} - 生成的数字ID
  */
-export const downloadFile = async (data, song, lyric, options) => {
+export const downloadFile = async (data, song, lyric, tlyric, options) => {
   try {
     const isElectron = checkPlatform.electron();
     const songType = data.type.toLowerCase();
@@ -355,6 +355,7 @@ export const downloadFile = async (data, song, lyric, options) => {
       }
       if (options.downloadLyrics && options.downloadLyricsToFile && options.downloadMeta) {
         zipFile.file(songName + ".lrc", lyric);
+        zipFile.file(songName + "zh.lrc", tlyric);
       }
       if (zipFile) {
         blob = await zipFile.generateAsync({ type: 'blob' });
