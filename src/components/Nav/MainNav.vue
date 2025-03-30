@@ -79,6 +79,7 @@
             <SvgIcon icon="round-settings" />
           </n-icon>
         </template>
+      </n-button>
       <n-dropdown
         :show="mainMenuShow"
         :show-arrow="true"
