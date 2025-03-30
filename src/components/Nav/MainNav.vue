@@ -67,6 +67,18 @@
     </div>
     <div class="right">
       <!-- 全局菜单 -->
+      <n-button
+        :focusable="false"
+        class="settings"
+        circle
+        quaternary
+        @click="openSettings"
+      >
+        <template #icon>
+          <n-icon>
+            <SvgIcon icon="round-settings" />
+          </n-icon>
+        </template>
       <n-dropdown
         :show="mainMenuShow"
         :show-arrow="true"
@@ -123,6 +135,9 @@ const openGithub = () => {
   window.open(packageJson.github);
 };
 
+const openSettings = () => {
+  location.href = "/#/setting"; 
+}
 // 主菜单渲染
 const mainMenuShow = ref(false);
 const mainMenuOptions = computed(() => [
@@ -220,7 +235,10 @@ const mainMenuOptions = computed(() => [
     }
   }
   .github {
-    margin-left: 12px;
+    margin-left: 12px; /* 左边距12px，用于与其他元素保持间距 */
+    -webkit-app-region: no-drag;
+  }
+  .settings {
     -webkit-app-region: no-drag;
   }
   .main-menu {
