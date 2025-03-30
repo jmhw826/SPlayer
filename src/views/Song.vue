@@ -55,14 +55,14 @@
               {{ songDetail.album.name }}
             </n-text>
           </div>
-          <div class="item" v-if="songDetail.publishTime">
+          <!--div class="item" v-if="songDetail.publishTime">
             <n-icon :depth="3">
               <SvgIcon icon="time" />
             </n-icon>
             <n-text class="text">
               {{ getLongTime(songDetail.publishTime) }}
             </n-text>
-          </div>
+          </div-->
         </div>
         <n-space class="button">
           <n-button type="primary" strong secondary @click="playSong(songDetail)">
@@ -110,7 +110,7 @@ import { useRouter } from "vue-router";
 import { getSongDetail } from "@/api/song";
 import { addSongToNext } from "@/utils/Player";
 import { musicData, siteStatus } from "@/stores";
-import { getLongTime } from "@/utils/timeTools";
+// import { getLongTime } from "@/utils/timeTools";
 import formatData from "@/utils/formatData";
 import AddPlaylist from "@/components/Modal/AddPlaylist.vue";
 
