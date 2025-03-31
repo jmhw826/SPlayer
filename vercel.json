@@ -5,7 +5,7 @@
       "destination": "/index.html"
     },
  {
-      "source": "/api/:apiurl*",
+      "source": "/ncmapi/:apiurl*",
       "destination": "${process.env.RENDERER_VITE_SERVER_URL}/:apiurl*"
  },
     {
