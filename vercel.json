@@ -9,7 +9,7 @@
       "destination": "https://music-api.focalors.ltd/:apiurl*"
  },
     {
-      "source": "/unblock/:*",
+      "source": "/unblock/:match*",
       "destination": "https://unm-server.focalors.ltd/:match*"
     }
   ]
