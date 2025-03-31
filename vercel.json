@@ -6,11 +6,11 @@
     },
  {
       "source": "/api/:apiurl*",
-      "destination": "${process.env.UNBLOCK_SERVER_URL}/:apiurl*"
+      "destination": "${process.env.RENDERER_VITE_SERVER_URL}/:apiurl*"
  },
     {
       "source": "/unblock/:match*",
-      "destination": "${process.env.UNBLOCK_SERVER_URL}:match*"
+      "destination": "${process.env.VITE_UNM_API}:match*"
     }
   ]
 }
