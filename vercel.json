@@ -1,3 +1,11 @@
 {
   "rewrites": [{ "source": "/:path*", "destination": "/index.html" }]
 }
+{
+  "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "https://music-api.focalors.ltd/:match*"
+    }
+  ]
+}
