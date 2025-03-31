@@ -1,9 +1,16 @@
 {
-  "rewrites": [{ "source": "/:path*", "destination": "/index.html" }]
   "rewrites": [
     {
-      "source": "/api/:match*",
-      "destination": "https://music-api.focalors.ltd/:match*"
+      "source": "/:path*", 
+      "destination": "/index.html"
+    }
+    {
+      "source": "/api/:apiurl*",
+      "destination": "https://music-api.focalors.ltd/:apiurl*"
+    }
+    {
+      "source": "/unblock/:match*",
+      "destination": "https://unm-server.focalors.ltd/:match*"
     }
   ]
 }
