@@ -27,6 +27,15 @@
     "build:linux": "npm run build && electron-builder --linux --config"
   },
   "dependencies": {
+    "@pixi/app": "latest",
+    "@pixi/core": "latest",
+    "@pixi/display": "latest",
+    "@pixi/filter-blur": "latest",
+    "@pixi/filter-bulge-pinch": "latest",
+    "@pixi/filter-color-matrix": "latest",
+    "@pixi/sprite": "latest",
+    "jss": "latest",
+    "jss-preset-default": "latest",
     "@UnblockNeteaseMusic/server": "npm:@unblockneteasemusic/server@0.27.8-patch.1",
     "@applemusic-like-lyrics/core": "latest",
     "@applemusic-like-lyrics/lyric": "latest",
@@ -71,6 +80,7 @@
     "vue-slider-component": "4.1.0-beta.7"
   },
   "devDependencies": {
+    // 原有开发依赖保持不变
     "@electron-toolkit/eslint-config": "^1.0.2",
     "@rollup/pluginutils": "^5.1.4",
     "@rushstack/eslint-patch": "^1.11.0",
