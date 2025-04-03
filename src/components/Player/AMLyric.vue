@@ -40,7 +40,7 @@ import { LyricPlayerRef, LyricClickEvent } from '@/types/amll.ts';
 // 导入新的歌词处理工具
 import { parseLyricsData, parseLocalLyric } from '@/utils/modernLyricProcessor.ts';
 
-const lyricPlayerRef = ref<LyricPlayerRef | null>(null);
+const lyricPlayerRef = ref<any | null>(null);
 const music = musicData();
 const settings = siteSettings();
 const status = siteStatus();
