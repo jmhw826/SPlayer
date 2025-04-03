@@ -53,8 +53,8 @@ const { useAMSpring, lyricBlur, lyricsFontSize, lyricsBlock, showYrc, lyricFontB
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度
-const playSeek = ref<number>(getSeek());
-const isPlaying = computed(() => playState.value);
+const playSeek = ref<number>(status.playSeek.value);
+const isPlaying = computed(() => status.playState.value);
 
 // 歌词对齐位置
 const alignPosition = computed(() => {
