@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"  # 虽然名称是 npm，但支持 pnpm
+    directory: "/"
+    schedule:
+      interval: "daily"       # 每天检查更新
+    commit-message:
+      prefix: "chore(deps)"   # PR 提交信息前缀
+    open-pull-requests-limit: 10
+    reviewers:
+      - "your-github-username"
+    labels:
+      - "dependencies"
+    # 指定使用 pnpm
+    groups:
+      production:
+        dependency-type: "production"
+      dev:
+        dependency-type: "development"
+    # 强制更新 lockfile
+    versioning-strategy: "lockfile-only"
