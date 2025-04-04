@@ -3,19 +3,27 @@ updates:
   - package-ecosystem: "npm"  # 虽然名称是 npm，但支持 pnpm
     directory: "/"
     schedule:
-      interval: "daily"       # 每天检查更新
+      interval: "daily"
     commit-message:
-      prefix: "chore(deps)"   # PR 提交信息前缀
+      prefix: "chore(deps)"
     open-pull-requests-limit: 10
     reviewers:
       - "your-github-username"
     labels:
       - "dependencies"
-    # 指定使用 pnpm
-    groups:
-      production:
-        dependency-type: "production"
-      dev:
-        dependency-type: "development"
-    # 强制更新 lockfile
+    # 核心改动：允许生成新锁文件
+    allow:
+      # 允许创建新的 lockfile（默认行为是仅在已有 lockfile 时更新）
+      - dependency-type: "all"
+    # 强制使用 pnpm 行为
     versioning-strategy: "lockfile-only"
+    # 指定 pnpm 作为包管理器（需要依赖检测逻辑支持）
+    registries:
+      - type: "npm-registry"
+        url: "https://registry.npmjs.org"
+        replaces-base: true
+    # 可选：强制生成 lockfile 的初始化命令
+    rebase-strategy: "auto"
+    # 若需要，添加 pnpm 配置触发
+    pull-request-branch-name:
+      separator: "-"
