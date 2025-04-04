@@ -8,22 +8,12 @@ updates:
       prefix: "chore(deps)"
     open-pull-requests-limit: 10
     reviewers:
-      - "your-github-username"
+      - "IamFurina"
     labels:
       - "dependencies"
-    # 核心改动：允许生成新锁文件
+    # 关键配置：允许生成 lockfile
     allow:
-      # 允许创建新的 lockfile（默认行为是仅在已有 lockfile 时更新）
       - dependency-type: "all"
-    # 强制使用 pnpm 行为
+    # 强制基于 lockfile 更新
     versioning-strategy: "lockfile-only"
-    # 指定 pnpm 作为包管理器（需要依赖检测逻辑支持）
-    registries:
-      - type: "npm-registry"
-        url: "https://registry.npmjs.org"
-        replaces-base: true
-    # 可选：强制生成 lockfile 的初始化命令
-    rebase-strategy: "auto"
-    # 若需要，添加 pnpm 配置触发
-    pull-request-branch-name:
-      separator: "-"
+    # 移除 registries 字段（Dependabot 自动识别 npm 源）
