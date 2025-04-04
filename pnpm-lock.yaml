@@ -1,1 +1,268 @@
+lockfileVersion: '9.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@UnblockNeteaseMusic/server':
+        specifier: npm:@unblockneteasemusic/server@0.27.8-patch.1
+        version: '@unblockneteasemusic/server@0.27.8-patch.1'
+      '@applemusic-like-lyrics/core':
+        specifier: latest
+        version: 0.1.3(@pixi/app@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3))(@pixi/filter-blur@7.4.3(@pixi/core@7.4.3))(@pixi/filter-bulge-pinch@5.1.1(@pixi/core@7.4.3))(@pixi/filter-color-matrix@7.4.3(@pixi/core@7.4.3))(@pixi/sprite@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(jss-preset-default@10.10.0)(jss@10.10.0)
+      '@applemusic-like-lyrics/lyric':
+        specifier: latest
+        version: 0.2.4
+      '@applemusic-like-lyrics/react':
+        specifier: latest
+        version: 0.1.5(@pixi/app@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3))(@pixi/filter-blur@7.4.3(@pixi/core@7.4.3))(@pixi/filter-bulge-pinch@5.1.1(@pixi/core@7.4.3))(@pixi/filter-color-matrix@7.4.3(@pixi/core@7.4.3))(@pixi/sprite@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(jss-preset-default@10.10.0)(jss@10.10.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@applemusic-like-lyrics/vue':
+        specifier: latest
+        version: 0.1.5(@pixi/app@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3))(@pixi/filter-blur@7.4.3(@pixi/core@7.4.3))(@pixi/filter-bulge-pinch@5.1.1(@pixi/core@7.4.3))(@pixi/filter-color-matrix@7.4.3(@pixi/core@7.4.3))(@pixi/sprite@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(jss-preset-default@10.10.0)(jss@10.10.0)(vue@3.5.13(typescript@5.8.2))
+      '@electron-toolkit/preload':
+        specifier: ^3.0.1
+        version: 3.0.1(electron@35.1.2)
+      '@electron-toolkit/utils':
+        specifier: ^3.0.0
+        version: 3.0.0(electron@35.1.2)
+      '@material/material-color-utilities':
+        specifier: ^0.2.7
+        version: 0.2.7
+      NeteaseCloudMusicApi:
+        specifier: ^4.25.0
+        version: 4.25.0
+      axios:
+        specifier: ^1.8.4
+        version: 1.8.4
+      colorthief:
+        specifier: ^2.6.0
+        version: 2.6.0
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
+      electron-dl:
+        specifier: ^3.5.2
+        version: 3.5.2
+      electron-store:
+        specifier: ^8.2.0
+        version: 8.2.0
+      electron-updater:
+        specifier: ^6.3.9
+        version: 6.3.9
+      express:
+        specifier: ^4.21.2
+        version: 4.21.2
+      express-http-proxy:
+        specifier: ^2.1.1
+        version: 2.1.1
+      font-list:
+        specifier: ^1.5.1
+        version: 1.5.1
+      howler:
+        specifier: ^2.2.4
+        version: 2.2.4
+      js-cookie:
+        specifier: ^3.0.5
+        version: 3.0.5
+      jszip:
+        specifier: latest
+        version: 3.10.1
+      koa:
+        specifier: ^2.16.0
+        version: 2.16.0
+      koa-bodyparser:
+        specifier: ^4.4.1
+        version: 4.4.1
+      koa-router:
+        specifier: ^12.0.1
+        version: 12.0.1
+      koa-static:
+        specifier: ^5.0.0
+        version: 5.0.0
+      koa-views:
+        specifier: ^8.1.0
+        version: 8.1.0(@babel/core@7.26.10)(ejs@3.1.10)(lodash@4.17.21)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      koa2-cors:
+        specifier: ^2.0.6
+        version: 2.0.6
+      localforage:
+        specifier: ^1.10.0
+        version: 1.10.0
+      music-metadata:
+        specifier: 7.14.0
+        version: 7.14.0
+      node-taglib-sharp:
+        specifier: ^5.2.3
+        version: 5.2.3
+      nodemon:
+        specifier: ^2.0.22
+        version: 2.0.22
+      pinia:
+        specifier: ^2.3.1
+        version: 2.3.1(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
+      pinia-plugin-persistedstate:
+        specifier: ^3.2.3
+        version: 3.2.3(pinia@2.3.1(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2)))
+      plyr:
+        specifier: ^3.7.8
+        version: 3.7.8
+      screenfull:
+        specifier: ^6.0.2
+        version: 6.0.2
+      vite-plugin-top-level-await:
+        specifier: ^1.5.0
+        version: 1.5.0(rollup@2.79.2)(vite@5.4.14(@types/node@22.13.11)(sass@1.86.0)(terser@5.39.0))
+      vite-plugin-wasm:
+        specifier: ^3.4.1
+        version: 3.4.1(vite@5.4.14(@types/node@22.13.11)(sass@1.86.0)(terser@5.39.0))
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13(typescript@5.8.2)
+      vue-i18n:
+        specifier: ^9.14.3
+        version: 9.14.3(vue@3.5.13(typescript@5.8.2))
+      vue-router:
+        specifier: ^4.5.0
+        version: 4.5.0(vue@3.5.13(typescript@5.8.2))
+      vue-slider-component:
+        specifier: 4.1.0-beta.7
+        version: 4.1.0-beta.7
+    devDependencies:
+      '@electron-toolkit/eslint-config':
+        specifier: ^1.0.2
+        version: 1.0.2(eslint@8.57.1)
+      '@rollup/pluginutils':
+        specifier: ^5.1.4
+        version: 5.1.4(rollup@2.79.2)
+      '@rushstack/eslint-patch':
+        specifier: ^1.11.0
+        version: 1.11.0
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.3
+        version: 5.2.3(vite@5.4.14(@types/node@22.13.11)(sass@1.86.0)(terser@5.39.0))(vue@3.5.13(typescript@5.8.2))
+      '@vue/eslint-config-prettier':
+        specifier: ^9.0.0
+        version: 9.0.0(eslint@8.57.1)(prettier@3.5.3)
+      ajv:
+        specifier: ^8.17.1
+        version: 8.17.1
+      electron:
+        specifier: ^35.1.2
+        version: 35.1.2
+      electron-builder:
+        specifier: ^24.13.3
+        version: 24.13.3(electron-builder-squirrel-windows@24.13.3)
+      electron-log:
+        specifier: ^5.3.2
+        version: 5.3.2
+      electron-vite:
+        specifier: ^2.3.0
+        version: 2.3.0(@swc/core@1.11.11)(vite@5.4.14(@types/node@22.13.11)(sass@1.86.0)(terser@5.39.0))
+      eslint:
+        specifier: ^8.57.1
+        version: 8.57.1
+      eslint-plugin-vue:
+        specifier: ^9.33.0
+        version: 9.33.0(eslint@8.57.1)
+      naive-ui:
+        specifier: ^2.41.0
+        version: 2.41.0(vue@3.5.13(typescript@5.8.2))
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
+      sass:
+        specifier: ^1.86.0
+        version: 1.86.0
+      terser:
+        specifier: ^5.39.0
+        version: 5.39.0
+      unplugin-auto-import:
+        specifier: ^0.17.8
+        version: 0.17.8(rollup@2.79.2)
+      unplugin-vue-components:
+        specifier: ^0.26.0
+        version: 0.26.0(@babel/parser@7.26.10)(rollup@2.79.2)(vue@3.5.13(typescript@5.8.2))
+      vite:
+        specifier: ^5.4.14
+        version: 5.4.14(@types/node@22.13.11)(sass@1.86.0)(terser@5.39.0)
+      vite-plugin-compression:
+        specifier: ^0.5.1
+        version: 0.5.1(vite@5.4.14(@types/node@22.13.11)(sass@1.86.0)(terser@5.39.0))
+      vite-plugin-pwa:
+        specifier: ^0.17.5
+        version: 0.17.5(vite@5.4.14(@types/node@22.13.11)(sass@1.86.0)(terser@5.39.0))(workbox-build@7.3.0)(workbox-window@7.3.0)
+
+packages:
+
+  7zip-bin@5.2.0:
+    resolution: {integrity: sha512-ukTPVhqG4jNzMro2qA9HSCSSVJN3aN7tlb+hfqYCt3ER0yWroeA2VR38MNrOHLQ/cVj+DaIMad0kFCtWWowh/A==}
+
+  '@ampproject/remapping@2.3.0':
+    resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
+    engines: {node: '>=6.0.0'}
+
+  '@antfu/utils@0.7.10':
+    resolution: {integrity: sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==}
+
+  '@apideck/better-ajv-errors@0.3.6':
+    resolution: {integrity: sha512-P+ZygBLZtkp0qqOAJJVX4oX/sFo5JR3eBWwwuqHHhK0GIgQOKWrAfiAaWX0aArHkRWHMuggFEgAZNxVPwPZYaA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      ajv: '>=8'
+
+  '@applemusic-like-lyrics/core@0.1.3':
+    resolution: {integrity: sha512-QCT280bl7zr0Dw7uXH22d7NGNRKfP0MisCL8U639BpFep9WpKbd1CwTnX8smE7D3KliIN8QC+6hYZrpRUyPy0Q==}
+    peerDependencies:
+      '@pixi/app': '*'
+      '@pixi/core': '*'
+      '@pixi/display': '*'
+      '@pixi/filter-blur': '*'
+      '@pixi/filter-bulge-pinch': '*'
+      '@pixi/filter-color-matrix': '*'
+      '@pixi/sprite': '*'
+      jss: '*'
+      jss-preset-default: '*'
+
+  '@applemusic-like-lyrics/lyric@0.2.4':
+    resolution: {integrity: sha512-B1N7dMEwEIlgtyqLGVt7EbXJBQLCbv5J/N0YjkgWHu5qM1vMhKSGOXzrBuMDusmr4Z6tfO5iLfOYQUtoSXZyeg==}
+
+  '@applemusic-like-lyrics/react@0.1.5':
+    resolution: {integrity: sha512-cvYCBW7AF3c+bmHC3uyuNHNNntbdsVWYxNuA+NYHUSgkdqJKl7n1WFUE+v8Z427abUM3+uLy7Pxtix4yh95N3g==}
+    peerDependencies:
+      react: '*'
+      react-dom: '*'
+
+  '@applemusic-like-lyrics/vue@0.1.5':
+    resolution: {integrity: sha512-FE8XtfoScmSwg61XFdNjdYBBQ8RvT10V01hFv38sMsOPUxLQn7rVUafx3NCwUDwGbAYPrC4Azn5wUpeZPdKFOg==}
+    peerDependencies:
+      vue: '*'
+
+  '@babel/code-frame@7.26.2':
+    resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/compat-data@7.26.8':
+    resolution: {integrity: sha512-oH5UPLMWR3L2wEFLnFJ1TZXqHufiTKAiLfqw5zkhS4dKXLJ10yVztfil/twG8EDTA4F/tvVNw9nOl4ZMslB8rQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/core@7.26.10':
+    resolution: {integrity: sha512-vMqyb7XCDMPvJFFOaT9kxtiRh42GwlZEg1/uIgtZshS5a/8OaduUfCi7kynKgc3Tw/6Uo2D+db9qBttghhmxwQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/generator@7.26.10':
+    resolution: {integrity: sha512-rRHT8siFIXQrAYOYqZQVsAr8vJ+cBNqcVAY6m5V8/4QqzaPl+zDBe6cLEPRDuNOUf3ww8RfJVlOyQMoSI+5Ang==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/helper-annotate-as-pure@7.25.9':
+    resolution: {integrity: sha512-gv7320KBUFJz1RnylIg5WWYPRXKZ884AGkYpgpWW02TH66Dl+HaC1t1CKd0z3R4b6hdYEcmrNZHUmfCP+1u3/g==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/helper-compilation-targets@7.26.5':
+    resolution: {integrity: sha512-IXuyn5EkouFJscIDuFF5EsiSolseme1s0CZB+QxVugqJLYmKdxI1VfIBOst0
