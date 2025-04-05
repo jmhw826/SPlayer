@@ -17,7 +17,6 @@
         :style="{
           '--amll-lyric-view-color': mainColor,
           '--amll-lyric-player-font-size': 46 + 'px',
-          '--amll-lyric-player-height': 597.8 + 'px',
           'font-weight': lyricFontBold ? 'bold' : 'normal',
           'font-family': lyricFont !== 'PingFang SC',
           'visibility': 'visible',
