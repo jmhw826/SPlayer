@@ -132,6 +132,41 @@ export const getSongDownloadNew = async (params) => {
 };
 
 /**
+ * qq解灰源
+ * @param {string} songName
+ * @param {string} artistName
+ */
+export const getSongQQUrl = async (songName, artistName) => {
+  if (!songName || !artistName) {
+    throw new Error("Missing required parameters");
+  }
+
+  // 参数处理
+  const encodedName = encodeURIComponent(songName);
+  const encodedArtist = encodeURIComponent(artistName);
+
+  // 构建 URL
+  const url = `${
+    import.meta.env.VITE_UNM_API
+  }qqmget?id=${encodedName}&br=${encodedArtist}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      throw new Error(`请求失败，状态码：${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("API 请求错误:", error);
+    throw new Error("下载服务暂时不可用");
+  }
+};
+/**
  * 获取客户端歌曲下载
  * @param {number} id - 要下载的音乐ID
  * @param {number} br - 码率, 默认设置了 999000 即最大码率, 如果要 320k 则可设置为 320000, 其他类推

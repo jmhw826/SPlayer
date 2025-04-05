@@ -36,8 +36,25 @@
           <n-tab name="setTab4">歌词</n-tab>
           <n-tab name="setTab5">下载</n-tab>
           <n-tab name="setTab6">其他</n-tab>
-          <n-tab name="setTab7">TestOptions</n-tab>
+          <!--n-tab name="setTab7">TestOptions</n-tab-->
         </n-tabs>
+        
+        <!-- 添加跳转按钮 -->
+        <n-button 
+          class="web-settings-btn" 
+          quaternary 
+          size="small" 
+          @click="openWebSettings"
+        >
+          <template #icon>
+            <n-icon>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                <path fill="currentColor" d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
+              </svg>
+            </n-icon>
+          </template>
+          网页设置
+        </n-button>
       </div>
 
       <div class="settings-content">
@@ -62,19 +79,10 @@
           <!-- 其他 -->
           <Other />
           <!--TestOptions-->
-          <TestOptions />
+          <!--TestOptions /-->
         </n-scrollbar>
       </div>
     </div>
-
-    <!-- 添加底部操作按钮 -->
-    <template #action>
-      <div class="modal-actions">
-        <n-button type="primary" ghost @click="openWebSettings" :block="isMobile" size="large">
-          打开完整设置页
-        </n-button>
-      </div>
-    </template>
   </n-modal>
 </template>
 
@@ -90,8 +98,8 @@ import System from "@/views/Setting/system.vue";
 import Player from "@/views/Setting/player.vue";
 import Lyrics from "@/views/Setting/lyrics.vue";
 import Download from "@/views/Setting/download.vue";
-import Other from "@/components/Modal/Settings/other.vue";
-import TestOptions from "@/views/Setting/testoptions.vue";
+import Other from "@/views/Setting/other.vue";
+// import TestOptions from "@/views/Setting/testoptions.vue";
 
 const music = musicData();
 const status = siteStatus();
@@ -128,8 +136,8 @@ const tabOptions = computed(() => [
   { label: '播放', value: 'setTab3' },
   { label: '歌词', value: 'setTab4' },
   { label: '下载', value: 'setTab5' },
-  { label: '其他', value: 'setTab6' },
-  { label: 'TestOptions', value: 'setTab7' }
+  { label: '其他', value: 'setTab6' }
+  // { label: 'TestOptions', value: 'setTab7' }
 ]);
 
 // 计算滚动区域高度
@@ -159,11 +167,11 @@ const allSetScroll = debounce((e) => {
   });
 }, 100);
 
-// 跳转
+/* 跳转
 const jump = () => {
   window.open(packageJson.github);
 };
-
+*/
 // 方法：显示弹窗
 const openModal = () => {
   showModal.value = true;
@@ -211,6 +219,7 @@ watch(() => settings.themeType, (newTheme) => {
     flex-shrink: 0;
     border-bottom: 1px solid var(--divider-color);
     background-color: var(--divider-color);
+    position: relative; /* 添加相对定位 */
 
     :deep(.n-tabs-nav) {
       padding: 0 20px;
@@ -223,6 +232,21 @@ watch(() => settings.themeType, (newTheme) => {
 
     :deep(.n-tabs-tab-active) {
       font-weight: 600;
+    }
+    
+    /* 添加按钮样式 */
+    .web-settings-btn {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: var(--hover-color);
+      }
     }
   }
 

@@ -135,6 +135,7 @@ import { NText, NIcon, NModal, NButton } from "naive-ui";
 import { storeToRefs } from "pinia";
 import { musicData, siteStatus, siteSettings } from "@/stores";
 import { initPlayer, fadePlayOrPause, changePlayIndex, soundStop } from "@/utils/Player";
+import { Howl, Howler } from "howler";
 import SvgIcon from "@/components/Global/SvgIcon";
 import debounce from "@/utils/debounce";
 
