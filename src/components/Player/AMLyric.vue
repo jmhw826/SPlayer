@@ -16,9 +16,11 @@
         :enableInterludeDots="true"
         :style="{
           '--amll-lyric-view-color': mainColor,
-          '--amll-lyric-player-font-size': lyricsFontSize.value + 'px',
+          '--amll-lyric-player-font-size': 46 + 'px',
           'font-weight': lyricFontBold ? 'bold' : 'normal',
-          'font-family': lyricFont !== 'follow' ? lyricFont : '',
+          'font-family': lyricFont !== 'PingFang SC',
+          'visibility': 'visible',
+          'opacity': '1'
         }"
         class="am-lyric"
         @line-click="handleLineClick"
@@ -44,7 +46,7 @@ const status = siteStatus();
 
 // 从store获取状态
 const { playState, isPureLyricMode } = storeToRefs(status);
-const { useAMSpring, lyricBlur, lyricsFontSize, lyricsBlock, showYrc, lyricFontBold, lyricFont } = storeToRefs(settings);
+const { useAMSpring, lyricBlur,lyricsPosition, showYrc, lyricFontBold, lyricFont } = storeToRefs(settings);
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度
@@ -53,7 +55,7 @@ const isPlaying = computed(() => playState.value);
 
 // 歌词对齐位置
 const alignPosition = computed(() => {
-  return lyricsBlock.value === 'center' ? 0.5 : 0.2;
+  return lyricsPosition.value === 'left' ? 0.2 : 0.5;
 });
 
 // 歌词主色
