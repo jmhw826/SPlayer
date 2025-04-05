@@ -145,6 +145,7 @@ defineExpose({
     hsla(0, 0%, 100%, 0.6) 85%,
     hsla(0, 0%, 100%, 0)
   );
+  z-index: 1;
   :deep(.am-lyric) {
     width: 100%;
     height: 100%;
@@ -154,6 +155,14 @@ defineExpose({
     padding-left: 10px;
     padding-right: 80px;
     margin-left: -2rem;
+    z-index: 2;
+    display: block;
+    /* 确保LyricPlayer组件有一个有效的高度计算 */
+    min-height: 200px;
+    /* 防止高度计算为负值 */
+    box-sizing: border-box;
+    /* 确保内容可见 */
+    overflow: visible;
   }
   &.pure {
     text-align: center;
