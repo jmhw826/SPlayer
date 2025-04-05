@@ -42,6 +42,7 @@
     "@pixi/filter-bulge-pinch": "^5.1.1",
     "@pixi/filter-color-matrix": "^7.4.3",
     "@pixi/sprite": "^7.4.3",
+    "@vueuse/core": "^13.0.0",
     "NeteaseCloudMusicApi": "^4.25.0",
     "axios": "^1.8.4",
     "colorthief": "^2.6.0",
