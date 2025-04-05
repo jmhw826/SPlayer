@@ -1,164 +1,170 @@
 <!-- 单曲页面 -->
 <template>
   <div class="song" v-if="songDetail">
-    <div class="detail">
-      <div class="pic">
-        <n-image
-          class="coverImg"
-          :previewed-img-props="{ style: { borderRadius: '8px' } }"
-          :src="songDetail?.coverSize?.l || songDetail?.cover"
-          fallback-src="/imgs/pic/album.jpg?assest"
-        >
-          <template #placeholder>
-            <div class="cover-loading">
-              <n-spin />
-            </div>
-          </template>
-        </n-image>
-        <n-image
-          class="shadow"
-          preview-disabled
-          :src="songDetail?.coverSize?.l || songDetail?.cover"
-          fallback-src="/imgs/pic/album.jpg?assest"
-        />
-      </div>
-      <div class="right">
-        <div class="intr">
-          <n-text class="name text-hidden">{{ songDetail.name }}</n-text>
-          <n-text depth="3" class="alia" v-if="songDetail.alia">{{ songDetail.alia }}</n-text>
-          <n-space class="tag">
-            <n-tag v-if="songDetail.fee == 1 || songDetail.fee == 4" class="vip" round :bordered="false">
-              {{ songDetail.fee == 1 ? "VIP" : "EP" }}
-            </n-tag>
-            <n-tag v-if="songDetail.pc" class="cloud" round type="info" :bordered="false">
-              云盘歌曲
-            </n-tag>
-          </n-space>
-          <div class="item">
-            <n-icon :depth="3">
-              <SvgIcon icon="user" />
-            </n-icon>
-            <div v-if="songDetail.artists && Array.isArray(songDetail.artists)" class="all-ar">
-              <n-text v-for="ar in songDetail.artists" :key="ar.id" class="ar" depth="3">
-                {{ ar.name }}
+    <Transition name="fade" mode="out-in">
+      <div class="detail">
+        <div class="pic">
+          <n-image
+            class="coverImg"
+            :previewed-img-props="{ style: { borderRadius: '8px' } }"
+            :src="songDetail?.coverSize?.l || songDetail?.cover"
+            fallback-src="/imgs/pic/album.jpg?assest"
+          >
+            <template #placeholder>
+              <div class="cover-loading">
+                <n-spin />
+              </div>
+            </template>
+          </n-image>
+          <n-image
+            class="shadow"
+            preview-disabled
+            :src="songDetail?.coverSize?.l || songDetail?.cover"
+            fallback-src="/imgs/pic/album.jpg?assest"
+          />
+        </div>
+        <div class="right">
+          <div class="intr">
+            <n-text class="name text-hidden">{{ songDetail.name }}</n-text>
+            <n-text depth="3" class="alia" v-if="songDetail.alia">{{ songDetail.alia }}</n-text>
+            <n-space class="tag">
+              <n-tag v-if="songDetail.fee == 1 || songDetail.fee == 4" class="vip" round :bordered="false">
+                {{ songDetail.fee == 1 ? "VIP" : "EP" }}
+              </n-tag>
+              <n-tag v-if="songDetail.pc" class="cloud" round type="info" :bordered="false">
+                云盘歌曲
+              </n-tag>
+            </n-space>
+            <div class="item">
+              <n-icon :depth="3">
+                <SvgIcon icon="user" />
+              </n-icon>
+              <div v-if="songDetail.artists && Array.isArray(songDetail.artists)" class="all-ar">
+                <n-text v-for="ar in songDetail.artists" :key="ar.id" class="ar" depth="3">
+                  {{ ar.name }}
+                </n-text>
+              </div>
+              <n-text v-else class="ar" depth="3">
+                {{ songDetail.artists || "未知艺术家" }}
               </n-text>
             </div>
-            <n-text v-else class="ar" depth="3">
-              {{ songDetail.artists || "未知艺术家" }}
-            </n-text>
+            <div class="item" v-if="songDetail.album">
+              <n-icon :depth="3">
+                <SvgIcon icon="disc" />
+              </n-icon>
+              <n-text class="text" @click="router.push(`/album?id=${songDetail.album.id}`)">
+                {{ songDetail.album.name }}
+              </n-text>
+            </div>
+            <!--div class="item" v-if="songDetail.publishTime">
+              <n-icon :depth="3">
+                <SvgIcon icon="time" />
+              </n-icon>
+              <n-text class="text">
+                {{ getLongTime(songDetail.publishTime) }}
+              </n-text>
+            </div-->
           </div>
-          <div class="item" v-if="songDetail.album">
-            <n-icon :depth="3">
-              <SvgIcon icon="disc" />
-            </n-icon>
-            <n-text class="text" @click="router.push(`/album?id=${songDetail.album.id}`)">
-              {{ songDetail.album.name }}
-            </n-text>
-          </div>
-          <!--div class="item" v-if="songDetail.publishTime">
-            <n-icon :depth="3">
-              <SvgIcon icon="time" />
-            </n-icon>
-            <n-text class="text">
-              {{ getLongTime(songDetail.publishTime) }}
-            </n-text>
-          </div-->
+          <n-space class="button">
+            <n-button type="primary" strong secondary @click="playSong(songDetail)">
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="play" />
+                </n-icon>
+              </template>
+              立即播放
+            </n-button>
+            <n-button strong secondary @click="addPlaylistRef?.openAddToPlaylist(songId)">
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="playlist-add" />
+                </n-icon>
+              </template>
+              添加到歌单
+            </n-button>
+            <n-button strong secondary @click="router.push(`/comment?id=${songDetail.id}`)">
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="comment-text" />
+                </n-icon>
+              </template>
+              查看评论
+            </n-button>
+            <n-button strong secondary v-if="songDetail.mv" @click="router.push(`/videos-player?id=${songDetail.mv}`)">
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="video" />
+                </n-icon>
+              </template>
+              观看 MV
+            </n-button>
+          </n-space>
         </div>
-        <n-space class="button">
-          <n-button type="primary" strong secondary @click="playSong(songDetail)">
-            <template #icon>
-              <n-icon>
-                <SvgIcon icon="play" />
-              </n-icon>
-            </template>
-            立即播放
-          </n-button>
-          <n-button strong secondary @click="addPlaylistRef?.openAddToPlaylist(songId)">
-            <template #icon>
-              <n-icon>
-                <SvgIcon icon="playlist-add" />
-              </n-icon>
-            </template>
-            添加到歌单
-          </n-button>
-          <n-button strong secondary @click="router.push(`/comment?id=${songDetail.id}`)">
-            <template #icon>
-              <n-icon>
-                <SvgIcon icon="comment-text" />
-              </n-icon>
-            </template>
-            查看评论
-          </n-button>
-          <n-button strong secondary v-if="songDetail.mv" @click="router.push(`/videos-player?id=${songDetail.mv}`)">
-            <template #icon>
-              <n-icon>
-                <SvgIcon icon="video" />
-              </n-icon>
-            </template>
-            观看 MV
-          </n-button>
-        </n-space>
       </div>
-    </div>
+    </Transition>
     
     <!-- 热门评论 -->
-    <div class="comments" v-if="hotCommentData.length > 0">
-      <n-h6 prefix="bar">热门评论</n-h6>
-      <div class="content">
-        <CommentList :data="hotCommentData" :loadingNum="5" />
+    <Transition name="fade" mode="out-in">
+      <div class="comments" v-if="hotCommentData.length > 0">
+        <n-h6 prefix="bar">热门评论</n-h6>
+        <div class="content">
+          <CommentList :data="hotCommentData" :loadingNum="5" />
+        </div>
       </div>
-    </div>
+    </Transition>
     
     <!-- 相似歌单 -->
-    <div class="simiPlayList" v-if="simiPlayList.length > 0">
-      <n-divider />
-      <n-h6 prefix="bar">包含这首歌的歌单</n-h6>
-      <div class="cover-lists">
-        <n-grid cols="2 s:3 m:4 l:5" responsive="screen" :x-gap="16" :y-gap="16">
-          <n-gi v-for="(item, index) in simiPlayList" :key="index">
-            <n-card
-              class="cover"
-              :content-style="{ padding: 0 }"
-              hoverable
-              @click="router.push(`/playlist?id=${item.id}`)"
-            >
-              <div class="img">
-                <n-image
-                  :src="item.cover + '?param=512y512'"
-                  class="cover-img"
-                  preview-disabled
-                  lazy
-                  @load="(e) => { e.target.style.opacity = 1; }"
-                >
-                  <template #placeholder>
-                    <div class="cover-loading">
-                      <img class="loading-img" src="/imgs/pic/album.jpg?assest" alt="album" />
+    <Transition name="fade" mode="out-in">
+      <div class="simiPlayList" v-if="simiPlayList.length > 0">
+        <n-divider />
+        <n-h6 prefix="bar">包含这首歌的歌单</n-h6>
+        <div class="cover-lists">
+          <n-grid cols="2 s:3 m:4 l:5" responsive="screen" :x-gap="16" :y-gap="16">
+            <n-gi v-for="(item, index) in simiPlayList" :key="index">
+              <n-card
+                class="cover"
+                :content-style="{ padding: 0 }"
+                hoverable
+                @click="router.push(`/playlist?id=${item.id}`)"
+              >
+                <div class="img">
+                  <n-image
+                    :src="item.cover + '?param=512y512'"
+                    class="cover-img"
+                    preview-disabled
+                    lazy
+                    @load="(e) => { e.target.style.opacity = 1; }"
+                  >
+                    <template #placeholder>
+                      <div class="cover-loading">
+                        <img class="loading-img" src="/imgs/pic/album.jpg?assest" alt="album" />
+                      </div>
+                    </template>
+                  </n-image>
+                  <div class="mask">
+                    <div class="play-count">
+                      <n-icon>
+                        <SvgIcon icon="play" />
+                      </n-icon>
+                      <span>{{ item.playCount }}</span>
                     </div>
-                  </template>
-                </n-image>
-                <div class="mask">
-                  <div class="play-count">
-                    <n-icon>
-                      <SvgIcon icon="play" />
-                    </n-icon>
-                    <span>{{ item.playCount }}</span>
-                  </div>
-                  <div class="play-button">
-                    <n-icon>
-                      <SvgIcon icon="play-circle" />
-                    </n-icon>
+                    <div class="play-button">
+                      <n-icon>
+                        <SvgIcon icon="play-circle" />
+                      </n-icon>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="info">
-                <div class="name">{{ item.name }}</div>
-                <div class="creator">by {{ item.artist?.nickname }}</div>
-              </div>
-            </n-card>
-          </n-gi>
-        </n-grid>
+                <div class="info">
+                  <div class="name">{{ item.name }}</div>
+                  <div class="creator">by {{ item.artist?.nickname }}</div>
+                </div>
+              </n-card>
+            </n-gi>
+          </n-grid>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
   <!-- 添加到歌单 -->
   <AddPlaylist ref="addPlaylistRef" />
