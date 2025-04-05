@@ -58,7 +58,8 @@ export const getMusicNumUrl = async (id) => {
   //   process.env.NODE_ENV === "development"
   //     ? "kuwo,qq,pyncmd,kugou"
   //     : "qq,pyncmd,kugou";
-  const server = "pyncmd,kuwo";
+  const server = "pyncmd"
+  // const server = "pyncmd,kuwo";
   const url = `${import.meta.env.VITE_UNM_API}match?id=${id}&server=${server}`;
   const response = await fetch(url, {
     method: "GET",
@@ -136,7 +137,7 @@ export const getSongDownloadNew = async (params) => {
  * @param {string} songName
  * @param {string} artistName
  */
-export const getSongQQUrl = async (songName, artistName) => {
+export const getSongTidalUrl = async (songName, artistName) => {
   if (!songName || !artistName) {
     throw new Error("Missing required parameters");
   }
@@ -148,7 +149,7 @@ export const getSongQQUrl = async (songName, artistName) => {
   // 构建 URL
   const url = `${
     import.meta.env.VITE_UNM_API
-  }qqmget?id=${encodedName}&br=${encodedArtist}`;
+  }tidalget?id=${encodedName}&br=${encodedArtist}`;
 
   try {
     const response = await fetch(url, {

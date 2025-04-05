@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl } from "@/api/song";
+import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl, getSongTidalUrl } from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
 import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/timeTools";
@@ -201,6 +201,11 @@ const getFromUnblockMusic = async (data, status, playNow) => {
       } else if (response.data.source === "kuwo") {
         // musicUrl = response.data.proxyUrl;
         musicUrl = response.data.url;
+      }
+    } else {
+      let tidalget = await getSongTidalUrl(data.name, data.artists);
+      if (tidalget?.code == 200 && tidalget?.data) {
+        musicUrl = tidalget.data.url;
       }
     }
     console.log(musicUrl);
