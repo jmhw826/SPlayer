@@ -108,6 +108,8 @@
       <TitleBar v-if="checkPlatform.electron()" />
     </div>
   </nav>
+  <!-- 设置弹窗组件 -->
+  <settings ref="settingsRef" />
 </template>
 
 <script setup>
@@ -116,14 +118,16 @@ import { storeToRefs } from "pinia";
 import { siteStatus, siteSettings } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
+import settings from "@/components/Modal/Settings.vue"
 import Menu from "@/components/Global/Menu";
 import packageJson from "@/../package.json";
 
 const router = useRouter();
 const status = siteStatus();
-const settings = siteSettings();
+const sitesettings = siteSettings();
 const { asideMenuCollapsed, searchInputFocus } = storeToRefs(status);
-const { showGithub, showSider, themeAutoCover } = storeToRefs(settings);
+const { showGithub, showSider, themeAutoCover } = storeToRefs(sitesettings);
 
 // 站点信息
 const siteVersion = packageJson.version;
@@ -136,9 +140,18 @@ const openGithub = () => {
   window.open(packageJson.github);
 };
 
+const settingsRef = ref(null)
 const openSettings = () => {
-  location.href = "/#/setting"; 
+  if (settingsRef.value) {
+    settingsRef.value.showModal();
+  }
+};
+/*
+const openSettings = () => {
+  window.location.href = "/#/setting"; 
 }
+*/
+
 // 主菜单渲染
 const mainMenuShow = ref(false);
 const mainMenuOptions = computed(() => [

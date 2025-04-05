@@ -75,7 +75,7 @@
               class="name" 
               depth="2"
               :style="type !== 'dj' && !item.path ? 'cursor: pointer' : ''"
-              @click.stop="type !== 'dj' && !item.path ? router.push(`/song?id=${item.id}`) : null"
+              @click.stop="type !== 'dj' && !item.path ? window.location.href = `/song?id=${item.id}` : null"
             >
               {{ item?.name || "未知曲目" }}
             </n-text>

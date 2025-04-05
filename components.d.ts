@@ -87,7 +87,6 @@ declare module 'vue' {
     NThing: typeof import('naive-ui')['NThing']
     NVirtualList: typeof import('naive-ui')['NVirtualList']
     NWatermark: typeof import('naive-ui')['NWatermark']
-    Other: typeof import('./src/components/Modal/Settings/other.vue')['default']
     Pagination: typeof import('./src/components/Global/Pagination.vue')['default']
     PlayerControl: typeof import('./src/components/Player/PlayerControl.vue')['default']
     PlayerCover: typeof import('./src/components/Player/PlayerCover.vue')['default']
