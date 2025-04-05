@@ -179,7 +179,7 @@ const openModal = () => {
 
 // 新增打开网页端设置方法
 const openWebSettings = () => {
-  window.open(`${window.location.origin}/#/setting`);
+  window.location.href = "/#/setting";
 };
 
 defineExpose({ showModal: openModal });
