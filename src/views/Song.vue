@@ -174,11 +174,12 @@
 import { useRouter, onBeforeRouteLeave } from "vue-router";
 import { getSongDetail, getSimiPlayList } from "@/api/song";
 import { getHotComment } from "@/api/comment";
-import { addSongToNext } from "@/utils/Player";
-import { musicData, siteStatus } from "@/stores";
+import { addSongToNext, initPlayer, fadePlayOrPause } from "@/utils/Player";
+import { musicData, siteStatus, siteSettings } from "@/stores";
 import { formatNumber } from "@/utils/helper";
 // import { getLongTime } from "@/utils/timeTools";
 import formatData from "@/utils/formatData";
+import { addSongToPlayList } from "@/api/playlist"
 import AddPlaylist from "@/components/Modal/AddPlaylist.vue";
 import CommentList from "@/components/List/CommentList.vue";
 
@@ -261,12 +262,40 @@ const getSimiPlayListData = async (id) => {
 };
 
 // 播放歌曲
-const playSong = (data) => {
+const playSong = async (data) => {
   if (!data) return;
+  
+  // 若开启了缓存且正在加载
+  const settings = siteSettings();
+  if (settings.useMusicCache && status.playLoading) {
+    $message.warning("歌曲正在缓冲中，请稍后");
+    return false;
+  }
+  
   // 更改播放模式为普通模式
   status.playMode = "normal";
-  // 添加到播放列表并播放
-  addSongToNext(data, true);
+  
+  // 检查当前页面
+  const isPage = router.currentRoute.value.matched?.[0].path || null;
+  
+  // 是否关闭心动模式
+  if (isPage !== "/like-songs") status.playHeartbeatMode = false;
+  
+  // 是否为当前播放歌曲
+  if (music.getPlaySongData?.id === data?.id) {
+    // 继续播放
+    fadePlayOrPause();
+  } else {
+    // 添加到播放列表并播放
+    addSongToNext(data, true);
+    // 设置当前播放歌曲
+    music.playSongData = data;
+    // 初始化播放器
+    await initPlayer(true);
+  }
+  
+  // 附加来源
+  music.playSongSource = Number(songId.value);
 };
 
 onMounted(() => {

@@ -227,12 +227,19 @@
       />
       <!-- 移动端菜单 -->
       <SongListDrawer
-        ref="songListDrawerRef"
+        ref="songListDropDownRef"
         @playSong="playSong"
         @delCloudSong="delCloudSong"
         @deletePlaylistSong="deletePlaylistSong"
         @delLocalSong="delLocalSong"
       />
+      <!--SongListDrawer
+        ref="songListDrawerRef"
+        @playSong="playSong"
+        @delCloudSong="delCloudSong"
+        @deletePlaylistSong="deletePlaylistSong"
+        @delLocalSong="delLocalSong"
+      /-->
       <!-- 定位歌曲 -->
       <Transition name="shrink" mode="out-in">
         <n-card

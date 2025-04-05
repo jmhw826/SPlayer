@@ -307,11 +307,6 @@ const {
   playMode,
 } = storeToRefs(status);
 
-// 获取AM处理后的歌词数据
-const processedLyric = computed(() => ({
-  ...(playSongLyric.value || {}),
-  align: 'top' // 默认居中对齐
-}));
 
 // 是否有歌词
 const isHasLrc = computed(() => {
