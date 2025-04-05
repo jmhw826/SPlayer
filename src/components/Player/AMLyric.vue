@@ -34,10 +34,10 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
-import { parseTTMLToAMLL } from '@/utils/processTTML';
+import { parseTTMLToAMLL } from '@/utils/processTTML.ts';
 import { setSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
-import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll';
+import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
 import { useRafFn } from '@vueuse/core';
 
 // 组件引用
