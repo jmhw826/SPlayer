@@ -18,7 +18,7 @@
           '--amll-lyric-view-color': mainColor,
           '--amll-lyric-player-font-size': 46 + 'px',
           'font-weight': lyricFontBold ? 'bold' : 'normal',
-          'font-family': lyricFont !== 'PingFang SC',
+          'font-family': lyricFont !== 'PingFang SC' ? lyricFont : '',
           'visibility': 'visible',
           'opacity': '1'
         }"
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
@@ -47,21 +47,19 @@ const status = siteStatus();
 
 // 从store获取状态
 const { playState, isPureLyricMode } = storeToRefs(status);
-const { useAMSpring, lyricBlur,lyricsPosition, showYrc, lyricFontBold, lyricFont } = storeToRefs(settings);
+const { useAMSpring, lyricBlur, lyricsPosition, showYrc, lyricFontBold, lyricFont } = storeToRefs(settings);
 const { playSongLyric } = storeToRefs(music);
 
-// 实时播放进度
-const playSeek = ref<number>(status.playSeek);
+// 实时播放进度 - 确保是毫秒单位
+const playSeek = ref<number>(status.playSeek * 1000);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
-// 导入 useRafFn
-
-
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
   const seekInSeconds = status.playSeek;
   playSeek.value = Math.floor(seekInSeconds * 1000);
 });
+
 // 歌词对齐位置
 const alignPosition = computed(() => {
   return lyricsPosition.value === 'left' ? 0.2 : 0.5;
@@ -76,8 +74,11 @@ const mainColor = computed(() => {
 
 // 处理歌词点击
 const handleLineClick = (e: LyricClickEvent) => {
-  if (!e?.line?.lyricLine?.startTime) return;
-  const time = e.line.lyricLine.startTime / 1000;
+  if (!e?.line?.getLine) return;
+  const lyricLine = e.line.getLine();
+  if (!lyricLine?.startTime) return;
+  
+  const time = lyricLine.startTime / 1000;
   setSeek(time);
   playState.value = true;
 };
@@ -99,29 +100,35 @@ const currentLyrics = computed<LyricLine[]>(() => {
 // 监听播放状态变化
 watch(() => playState.value, (newState: boolean) => {
   if (lyricPlayerRef.value) {
-    const timeMs = Math.max(0, playSeek.value) * 1000;
-    lyricPlayerRef.value.setCurrentTime?.(timeMs);
     lyricPlayerRef.value.setPlaying?.(newState);
   }
 });
 
 // 监听当前时间变化
 watch(() => status.playSeek, (newTime: number) => {
-  playSeek.value = newTime;
-  const safeTime = Math.max(0, newTime);
+  const timeMs = Math.max(0, newTime * 1000);
+  playSeek.value = timeMs;
+  
   if (lyricPlayerRef.value) {
-    lyricPlayerRef.value.setCurrentTime?.(safeTime * 1000);
+    lyricPlayerRef.value.setCurrentTime?.(timeMs);
   }
 });
 
 onMounted(() => {
   // 恢复进度
   resumeSeek();
+  
+  // 初始化播放器状态
+  if (lyricPlayerRef.value) {
+    lyricPlayerRef.value.setCurrentTime?.(playSeek.value);
+    lyricPlayerRef.value.setPlaying?.(isPlaying.value);
+  }
 });
 
 onBeforeUnmount(() => {
   pauseSeek();
 });
+
 // 导出歌词处理函数，供外部使用
 defineExpose({
   parseLyricsData,
@@ -154,11 +161,11 @@ defineExpose({
     top: 0;
     padding-left: 10px;
     padding-right: 80px;
-    margin-left: -2rem;
+    margin-left: 0; /* 修复margin-left问题 */
     z-index: 2;
     display: block;
     /* 确保LyricPlayer组件有一个有效的高度计算 */
-    min-height: 200px;
+    min-height: 300px;
     /* 防止高度计算为负值 */
     box-sizing: border-box;
     /* 确保内容可见 */
