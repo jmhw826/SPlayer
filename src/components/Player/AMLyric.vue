@@ -54,6 +54,11 @@ const { playSongLyric } = storeToRefs(music);
 const playSeek = ref<number>(status.playSeek);
 const isPlaying = computed(() => playState.value);
 
+// 实时更新播放进度
+const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
+  const seekInSeconds = status.playSeek;
+  playSeek.value = Math.floor(seekInSeconds * 1000);
+});
 // 歌词对齐位置
 const alignPosition = computed(() => {
   return lyricsPosition.value === 'left' ? 0.2 : 0.5;
@@ -106,6 +111,14 @@ watch(() => status.playSeek, (newTime: number) => {
   }
 });
 
+onMounted(() => {
+  // 恢复进度
+  resumeSeek();
+});
+
+onBeforeUnmount(() => {
+  pauseSeek();
+});
 // 导出歌词处理函数，供外部使用
 defineExpose({
   parseLyricsData,
