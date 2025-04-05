@@ -39,6 +39,7 @@ import { parseTTMLToAMLL, parseLyricsData, parseLocalLyric } from '@/utils/lyric
 import { setSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
 import type { LyricClickEvent } from '@/types/amll';
+import { useRafFn } from '@vueuse/core';
 
 const lyricPlayerRef = ref<any | null>(null);
 const music = musicData();
@@ -55,6 +56,9 @@ const playSeek = ref<number>(status.playSeek);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
+// 导入 useRafFn
+
+
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
   const seekInSeconds = status.playSeek;
   playSeek.value = Math.floor(seekInSeconds * 1000);
