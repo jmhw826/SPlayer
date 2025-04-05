@@ -14,7 +14,6 @@
         :alignPosition="alignPosition"
         :enableBlur="lyricBlur"
         :enableInterludeDots="true"
-        :wordFadeWidth="0.5"
         :style="{
           '--amll-lyric-view-color': mainColor,
           '--amll-lyric-player-font-size': lyricsFontSize.value + 'px',
@@ -33,39 +32,35 @@ import { ref, computed, watch } from 'vue';
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
-import { parseTTMLToAMLL } from '@/utils/processTTML.ts';
-import { setSeek, getSeek } from '@/utils/Player';
+import { parseTTMLToAMLL, parseLyricsData, parseLocalLyric } from '@/utils/lyric.ts';
+import { setSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
-import { LyricPlayerRef, LyricClickEvent } from '@/types/amll.ts';
-// 导入新的歌词处理工具
-import { parseLyricsData, parseLocalLyric } from '@/utils/modernLyricProcessor.ts';
+import type { LyricClickEvent } from '@/types/amll';
 
 const lyricPlayerRef = ref<any | null>(null);
 const music = musicData();
 const settings = siteSettings();
 const status = siteStatus();
 
-// 修改 store 引用方式
-const { playTimeData } = storeToRefs(status); // 从 siteStatus 获取时间数据
-const { playState } = storeToRefs(status);
-const { isPureLyricMode } = storeToRefs(status);
+// 从store获取状态
+const { playState, isPureLyricMode } = storeToRefs(status);
 const { useAMSpring, lyricBlur, lyricsFontSize, lyricsBlock, showYrc, lyricFontBold, lyricFont } = storeToRefs(settings);
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度
-const playSeek = ref<number>(status.playSeek.value);
-const isPlaying = computed(() => status.playState.value);
+const playSeek = ref<number>(status.playSeek);
+const isPlaying = computed(() => playState.value);
 
 // 歌词对齐位置
 const alignPosition = computed(() => {
-  // 根据歌词块位置设置位置
   return lyricsBlock.value === 'center' ? 0.5 : 0.2;
 });
 
 // 歌词主色
 const mainColor = computed(() => {
-  // 这里可以根据需要从状态中获取主色
-  return 'rgb(239, 239, 239)';
+  return status.coverTheme?.light?.shadeTwo 
+    ? `rgb(${status.coverTheme.light.shadeTwo})` 
+    : 'rgb(239, 239, 239)';
 });
 
 // 处理歌词点击
@@ -76,7 +71,7 @@ const handleLineClick = (e: LyricClickEvent) => {
   playState.value = true;
 };
 
-// 获取当前歌词 - 使用新的处理逻辑
+// 获取当前歌词
 const currentLyrics = computed<LyricLine[]>(() => {
   if (!playSongLyric.value) return [];
   
@@ -85,7 +80,7 @@ const currentLyrics = computed<LyricLine[]>(() => {
     return parseTTMLToAMLL(playSongLyric.value.ttml);
   }
   
-  // 使用新的歌词处理逻辑
+  // 使用歌词处理逻辑
   const isYrc = showYrc.value && playSongLyric.value.hasYrc && playSongLyric.value.yrc?.length > 0;
   return isYrc ? playSongLyric.value.yrcAMData : playSongLyric.value.lrcAMData;
 });
@@ -100,35 +95,8 @@ watch(() => playState.value, (newState: boolean) => {
 });
 
 // 监听当前时间变化
-watch(() => playSeek.value, (newTime: number) => {
-  const safeTime = Math.max(0, newTime);
-  if (lyricPlayerRef.value) {
-    lyricPlayerRef.value.setCurrentTime?.(safeTime * 1000);
-  }
-});
-
-// 获取第一行歌词的时间用于倒计时
-const firstLineTime = computed(() => {
-  if (currentLyrics.value && currentLyrics.value.length > 0) {
-    return currentLyrics.value[0].startTime;
-  }
-  return 0;
-});
-
-// 监听播放状态变化 - 优化同步逻辑
-watch(() => playState.value, (newState: boolean) => {
-  if (lyricPlayerRef.value) {
-    // 无论播放状态如何变化，都确保时间同步
-    // 确保时间值为非负数
-    const timeMs = Math.max(0, playSeek.value) * 1000;
-    lyricPlayerRef.value.setCurrentTime?.(timeMs);
-    // 同步播放状态
-    lyricPlayerRef.value.setPlaying?.(newState);
-  }
-});
-
-// 监听当前时间变化
-watch(() => playSeek.value, (newTime: number) => {
+watch(() => status.playSeek, (newTime: number) => {
+  playSeek.value = newTime;
   const safeTime = Math.max(0, newTime);
   if (lyricPlayerRef.value) {
     lyricPlayerRef.value.setCurrentTime?.(safeTime * 1000);
@@ -141,6 +109,7 @@ defineExpose({
   parseLocalLyric
 });
 </script>
+
 <style lang="scss" scoped>
 .amll-lyric {
   position: relative;

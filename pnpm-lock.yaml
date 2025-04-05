@@ -33,25 +33,25 @@ importers:
         specifier: ^0.2.7
         version: 0.2.7
       '@pixi/app':
-        specifier: latest
+        specifier: ^7.4.3
         version: 7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3))
       '@pixi/core':
-        specifier: latest
+        specifier: ^7.4.3
         version: 7.4.3
       '@pixi/display':
-        specifier: latest
+        specifier: ^7.4.3
         version: 7.4.3(@pixi/core@7.4.3)
       '@pixi/filter-blur':
-        specifier: latest
+        specifier: ^7.4.3
         version: 7.4.3(@pixi/core@7.4.3)
       '@pixi/filter-bulge-pinch':
-        specifier: latest
+        specifier: ^5.1.1
         version: 5.1.1(@pixi/core@7.4.3)
       '@pixi/filter-color-matrix':
-        specifier: latest
+        specifier: ^7.4.3
         version: 7.4.3(@pixi/core@7.4.3)
       '@pixi/sprite':
-        specifier: latest
+        specifier: ^7.4.3
         version: 7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3))
       NeteaseCloudMusicApi:
         specifier: ^4.25.0
@@ -93,10 +93,10 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       jss:
-        specifier: latest
+        specifier: ^10.10.0
         version: 10.10.0
       jss-preset-default:
-        specifier: latest
+        specifier: ^10.10.0
         version: 10.10.0
       jszip:
         specifier: latest
