@@ -196,12 +196,7 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     console.log(response);
     let musicUrl = null;
     if (response?.code === 200 && response?.data) {
-      if (response.data.source === "pyncmd") {
-        musicUrl = response.data.url;
-      } else if (response.data.source === "kuwo") {
-        // musicUrl = response.data.proxyUrl;
-        musicUrl = response.data.url;
-      }
+      musicUrl = response.data.url;
     } else {
       let tidalget = await getSongTidalUrl(data.name, data.artists);
       if (tidalget?.code == 200 && tidalget?.data) {
