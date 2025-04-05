@@ -189,7 +189,7 @@
             depth="3"
             size="20"
             @click.stop="
-              songListDrawerRef?.drawerOpen(data, item, songsIndex + index, sourceId, type)
+              songListDropdownRef?.openDropdown($event, data, item, songsIndex + index, sourceId, type)
             "
             @dblclick.stop
           >
@@ -227,7 +227,7 @@
       />
       <!-- 移动端菜单 -->
       <SongListDrawer
-        ref="songListDropDownRef"
+        ref="songListDrawerRef"
         @playSong="playSong"
         @delCloudSong="delCloudSong"
         @deletePlaylistSong="deletePlaylistSong"
