@@ -192,15 +192,24 @@ const getFromUnblockMusic = async (data, status, playNow) => {
   try {
     console.info("🎵 开始解灰：", data);
     // 调用解灰
-    let response = await getMusicNumUrl(data.id);
-    console.log(response);
     let musicUrl = null;
-    if (response?.code === 200 && response?.data) {
-      musicUrl = response.data.url;
-    } else {
-      let tidalget = await getSongTidalUrl(data.name, data.artists);
-      if (tidalget?.code == 200 && tidalget?.data) {
-        musicUrl = tidalget.data.url;
+    try {
+      let response = await getMusicNumUrl(data.id);
+      console.log(response);
+      if (response?.code === 200 && response?.data) {
+        musicUrl = response.data.url;
+      }
+    } catch (error) {
+      console.log("getMusicNumUrl失败，尝试使用Tidal源：", error);
+    }
+    if (!musicUrl) {
+      try {
+        let tidalget = await getSongTidalUrl(data.name, data.artists);
+        if (tidalget?.code == 200 && tidalget?.data) {
+          musicUrl = tidalget.data.url;
+        }
+      } catch (error) {
+        console.log("getSongTidalUrl获取失败：", error);
       }
     }
     console.log(musicUrl);
