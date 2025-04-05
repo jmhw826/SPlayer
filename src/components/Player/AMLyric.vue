@@ -1,5 +1,5 @@
 <template>
-  <Transition>
+  <Transition name="fade">
     <div
       :key="currentLyrics?.[0]?.startTime"
       :class="['amll-lyric', { pure: isPureLyricMode }]"
@@ -16,7 +16,7 @@
         :enableInterludeDots="true"
         :style="{
           '--amll-lyric-view-color': mainColor,
-          '--amll-lyric-player-font-size': 46 + 'px',
+          '--amll-lyric-player-font-size': lyricFontSize + 'px',
           'font-weight': lyricFontBold ? 'bold' : 'normal',
           'font-family': lyricFont !== 'PingFang SC' ? lyricFont : '',
           'visibility': 'visible',
@@ -34,20 +34,31 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
-import { parseTTMLToAMLL, parseLyricsData, parseLocalLyric } from '@/utils/lyric.ts';
+import { parseTTMLToAMLL } from '@/utils/processTTML';
 import { setSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
-import type { LyricClickEvent } from '@/types/amll';
+import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll';
 import { useRafFn } from '@vueuse/core';
 
-const lyricPlayerRef = ref<any | null>(null);
+// 组件引用
+const lyricPlayerRef = ref<LyricPlayerRef | null>(null);
+
+// 获取store
 const music = musicData();
 const settings = siteSettings();
 const status = siteStatus();
 
 // 从store获取状态
-const { playState, isPureLyricMode } = storeToRefs(status);
-const { useAMSpring, lyricBlur, lyricsPosition, showYrc, lyricFontBold, lyricFont } = storeToRefs(settings);
+const { playState, isPureLyricMode, coverTheme } = storeToRefs(status);
+const { 
+  useAMSpring, 
+  lyricBlur, 
+  lyricsPosition, 
+  showYrc, 
+  lyricFontBold, 
+  lyricFont,
+  lyricFontSize = 46 // 默认字体大小
+} = storeToRefs(settings);
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
@@ -58,7 +69,7 @@ const isPlaying = computed(() => playState.value);
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
   const seekInSeconds = status.playSeek;
   playSeek.value = Math.floor(seekInSeconds * 1000);
-});
+}, { immediate: true });
 
 // 歌词对齐位置
 const alignPosition = computed(() => {
@@ -67,8 +78,8 @@ const alignPosition = computed(() => {
 
 // 歌词主色
 const mainColor = computed(() => {
-  return status.coverTheme?.light?.shadeTwo 
-    ? `rgb(${status.coverTheme.light.shadeTwo})` 
+  return coverTheme.value?.light?.shadeTwo 
+    ? `rgb(${coverTheme.value.light.shadeTwo})` 
     : 'rgb(239, 239, 239)';
 });
 
@@ -127,12 +138,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   pauseSeek();
-});
-
-// 导出歌词处理函数，供外部使用
-defineExpose({
-  parseLyricsData,
-  parseLocalLyric
 });
 </script>
 

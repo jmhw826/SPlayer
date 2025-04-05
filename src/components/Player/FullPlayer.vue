@@ -29,8 +29,19 @@
               alt="overlay"
             />
           </template>
-          <!-- 流动背景 -->
+          <!-- AMLL流动背景 -->
           <template v-else-if="playerBackgroundType === 'animation'">
+            <BackgroundRender
+              :album="music.getPlaySongData?.coverSize?.s || music.getPlaySongData?.localCover"
+              :playing="playState"
+              :flow-speed="1.0"
+              :render-scale="0.5"
+              :has-lyric="isHasLrc"
+              :fps="60"
+            />
+          </template>
+          <!-- 传统流动背景（备用） -->
+          <template v-else-if="playerBackgroundType === 'animation-legacy'">
             <img
               v-for="item in 4"
               :key="item"
@@ -288,6 +299,11 @@ import throttle from "@/utils/throttle";
 import SvgIcon from "@/components/Global/SvgIcon";
 import Settings from "@/components/Modal/Settings.vue";
 import AMLyric from "./AMLyric.vue";
+import BackgroundRender from "./BackgroundRender.vue";
+import Lyric from "./Lyric.vue";
+import PlayerControl from "./PlayerControl.vue";
+import PlayerCover from "./PlayerCover.vue";
+import Spectrum from "./Spectrum.vue";
 
 const router = useRouter();
 const music = musicData();
@@ -305,6 +321,7 @@ const {
   coverBackground,
   pureLyricMode,
   playMode,
+  playState,
 } = storeToRefs(status);
 
 
