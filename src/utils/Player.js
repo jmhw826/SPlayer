@@ -7,7 +7,6 @@ import { getSongPlayTime } from "@/utils/timeTools";
 import { getCoverGradient } from "@/utils/cover-color";
 import { isLogin } from "@/utils/auth";
 import { parseLyric, parseLocalLrc } from "@/utils/parseLyric";
-import { parseLyricsData } from "./lyric";
 
 // 全局播放器
 let player;
@@ -636,9 +635,7 @@ const getSongLyricData = async (islocal, data) => {
         hasYrcRoma: false,
         lrc: [],
         yrc: [],
-        lrcAM: [],
-        yrcAM: [],
-        ttml: [], // 添加TTML字段用于AMLL歌词解析
+        ttml: "", // 添加TTML字段用于AMLL歌词解析
       };
     };
     if (islocal) {
@@ -655,10 +652,8 @@ const getSongLyricData = async (islocal, data) => {
       // 处理新的返回结构，lyricResponse现在包含original和ttml
       const lyricData = lyricResponse?.original?.lrc;
       if (lyricData) {
-        // const result = parseLyric(lyricResponse.original);
-        const result = parseLyricsData(lyricResponse.original);
+        const result = parseLyric(lyricResponse.original);
         if (result) {
-          // music.playSongLyric = result;
           music.playSongLyric = result;
           // 添加TTML数据用于AMLL歌词解析
           music.playSongLyric.ttml = lyricResponse.ttml || "";
