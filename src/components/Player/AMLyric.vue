@@ -13,6 +13,7 @@
         :enableScale="useAMSpring"
         :alignPosition="alignPosition"
         :enableBlur="lyricBlur"
+        :alignAnchor="'top'"
         :enableInterludeDots="true"
         :style="{
           '--amll-lyric-view-color': mainColor,
@@ -75,7 +76,7 @@ const {
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
-const playSeek = ref<number>(status.playSeek * 1000);
+const playSeek = ref<number>(status.currentTime * 1000);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
