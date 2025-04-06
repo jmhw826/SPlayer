@@ -81,7 +81,7 @@ const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
-  const seekInSeconds = status.playSeek;
+  const seekInSeconds = playTimeData.currentTime * 1000;
   // 确保seekInSeconds不是undefined或null
   if (seekInSeconds !== undefined && seekInSeconds !== null) {
     playSeek.value = Math.floor(seekInSeconds * 1000);
