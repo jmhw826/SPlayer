@@ -63,7 +63,7 @@ const settings = siteSettings();
 const status = siteStatus();
 
 // 从store获取状态
-const { playState, isPureLyricMode, coverTheme } = storeToRefs(status);
+const { playState, isPureLyricMode, coverTheme, playTimeData } = storeToRefs(status);
 const { 
   useAMSpring, 
   lyricsBlur, 
@@ -76,7 +76,7 @@ const {
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
-const playSeek = ref<number>(getSeek() * 1000);
+const playSeek = ref<number>(playTimeData.currentTime * 1000);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
@@ -114,18 +114,45 @@ const handleLineClick = (e: LyricClickEvent) => {
   playState.value = true;
 };
 
+// 检查是否为纯音乐歌词
+const isPureInstrumental = (lyrics: LyricLine[]): boolean => {
+  if (!lyrics || lyrics.length === 0) return false;
+  
+  // 纯音乐关键词
+  const instrumentalKeywords = ['纯音乐', 'instrumental', '请欣赏'];
+  
+  // 如果只有一行歌词，检查是否包含纯音乐关键词
+  if (lyrics.length === 1) {
+    const content = lyrics[0].words[0]?.word || '';
+    return instrumentalKeywords.some(keyword => content.toLowerCase().includes(keyword.toLowerCase()));
+  }
+  
+  // 如果有多行歌词但内容很少，也检查是否为纯音乐
+  if (lyrics.length <= 3) {
+    const allContent = lyrics.map(line => line.words[0]?.word || '').join('');
+    return instrumentalKeywords.some(keyword => allContent.toLowerCase().includes(keyword.toLowerCase()));
+  }
+  
+  return false;
+};
+
 // 获取当前歌词
 const currentLyrics = computed<LyricLine[]>(() => {
   if (!playSongLyric.value) return [];
   
   // 检查是否有TTML格式的歌词
   if (playSongLyric.value?.ttml) {
-    return parseTTMLToAMLL(playSongLyric.value.ttml);
+    const ttmlLyrics = parseTTMLToAMLL(playSongLyric.value.ttml);
+    // 检查是否为纯音乐歌词
+    return isPureInstrumental(ttmlLyrics) ? [] : ttmlLyrics;
   }
   
   // 使用歌词处理逻辑
   const isYrc = showYrc.value && playSongLyric.value.hasYrc && playSongLyric.value.yrc?.length > 0;
-  return isYrc ? playSongLyric.value.yrcAMData : playSongLyric.value.lrcAMData;
+  const lyrics = isYrc ? playSongLyric.value.yrcAMData : playSongLyric.value.lrcAMData;
+  
+  // 检查是否为纯音乐歌词
+  return isPureInstrumental(lyrics) ? [] : lyrics;
 });
 
 // 监听播放状态变化
