@@ -86,10 +86,7 @@ const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
   // 确保seekInSeconds不是undefined或null
   if (seekInSeconds !== undefined && seekInSeconds !== null) {
     Seek.value = Math.floor(seekInSeconds * 1000);
-  } else {
-    // 如果status.playSeek无效，则使用getSeek()作为备选
-    Seek.value = Math.floor(getSeek() * 1000);
-  }
+  };
 }, { immediate: true });
 
 // 歌词对齐位置

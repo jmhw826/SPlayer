@@ -7,6 +7,7 @@ import { getSongPlayTime } from "@/utils/timeTools";
 import { getCoverGradient } from "@/utils/cover-color";
 import { isLogin } from "@/utils/auth";
 import { parseLyricsData, parseLocalLyric } from "@/utils/lyric.ts";
+import { parseLyric } from "@/utils/parseLyric";
 
 // 全局播放器
 let player;
