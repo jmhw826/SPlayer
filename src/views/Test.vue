@@ -31,9 +31,13 @@
           :style="{
             '--amll-lyric-view-color': `rgb(${status.coverTheme?.light?.shadeTwo})` || 'rgb(239, 239, 239)',
             '--amll-lyric-player-font-size': '36px',
+            '--amll-lyric-player-height': '300px',
+            '--amll-lyric-player-width': '100%',
             'font-weight': 'normal',
             'visibility': 'visible',
-            'opacity': '1'
+            'opacity': '1',
+            'height': '100%',
+            'width': '100%'
           }"
           class="am-lyric"
         />
@@ -231,6 +235,10 @@ onBeforeUnmount(() => {
     padding: 0 20px;
     box-sizing: border-box;
     overflow: visible;
+    /* 确保内容在容器内正确显示 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 
