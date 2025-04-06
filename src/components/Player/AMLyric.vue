@@ -7,7 +7,7 @@
       <LyricPlayer
         ref="lyricPlayerRef"
         :lyricLines="currentLyrics"
-        :currentTime="playSeek"
+        :currentTime="Seek"
         :playing="isPlaying"
         :enableSpring="useAMSpring"
         :enableScale="useAMSpring"
