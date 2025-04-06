@@ -641,8 +641,7 @@ const getSongLyricData = async (islocal, data) => {
         hasYrcRoma: false,
         lrc: [],
         yrc: [],
-        lrcAMData: [],
-        yrcAMData: []
+        ttml: "", // 添加TTML字段用于AMLL歌词解析
       };
     };
     if (islocal) {
@@ -656,12 +655,14 @@ const getSongLyricData = async (islocal, data) => {
       }
     } else {
       const lyricResponse = await getSongLyric(data?.id);
-      // 直接处理返回的歌词数据
-      const lyricData = lyricResponse?.lrc;
+      // 处理新的返回结构，lyricResponse现在包含original和ttml
+      const lyricData = lyricResponse?.original?.lrc;
       if (lyricData) {
-        const result = parseLrcData(lyricResponse);
+        const result = parseLrcData(lyricResponse.original);
         if (result) {
           music.playSongLyric = result;
+          // 添加TTML数据用于AMLL歌词解析
+          music.playSongLyric.ttml = lyricResponse.ttml || "";
         } else {
           setDefaults();
         }
