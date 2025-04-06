@@ -629,20 +629,36 @@ const getSongLyricData = async (islocal, data) => {
     if (islocal) {
       const lyricData = await electron.ipcRenderer.invoke("getMusicLyric", data?.path);
       if (lyricData) {
-        const result = parseLocalLyric(lyricData);
-        music.playSongLyric = result;
+        // 使用parseLyric.js处理本地歌词
+        const parsedLyric = parseLyric(lyricData);
+        // 使用lyric.ts处理AMLL格式
+        const amllLyric = parseLocalLyric(lyricData);
+        // 合并结果
+        music.playSongLyric = {
+          ...parsedLyric,
+          lrcAMData: amllLyric.lrcAMData,
+          yrcAMData: amllLyric.yrcAMData
+        };
       } else {
         console.log("该歌曲暂无歌词");
-        music.playSongLyric = parseLocalLyric("");
+        music.playSongLyric = parseLyric("");
       }
     } else {
       const lyricResponse = await getSongLyric(data?.id);
       if (lyricResponse?.original) {
-        const result = parseLyricsData(lyricResponse.original);
-        music.playSongLyric = result;
+        // 使用parseLyric.js处理基础歌词
+        const parsedLyric = parseLyric(lyricResponse.original);
+        // 使用lyric.ts处理AMLL格式
+        const amllLyric = parseLyricsData(lyricResponse.original);
+        // 合并结果
+        music.playSongLyric = {
+          ...parsedLyric,
+          lrcAMData: amllLyric.lrcAMData,
+          yrcAMData: amllLyric.yrcAMData
+        };
       } else {
         console.log("该歌曲暂无歌词");
-        music.playSongLyric = parseLyricsData(null);
+        music.playSongLyric = parseLyric(null);
       }
     }
   } catch (err) {
