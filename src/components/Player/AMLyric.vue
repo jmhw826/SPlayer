@@ -155,9 +155,9 @@ watch(() => playState.value, (newState: boolean) => {
 });
 
 // 监听当前时间变化
-watch(() => status.playSeek, (newTime: number) => {
+watch(Seek, (newTime: number) => {
   const timeMs = Math.max(0, newTime * 1000);
-  playSeek.value = timeMs;
+  Seek.value = timeMs;
   
   if (lyricPlayerRef.value) {
     lyricPlayerRef.value.setCurrentTime?.(timeMs);
@@ -170,7 +170,7 @@ onMounted(() => {
   
   // 初始化播放器状态
   if (lyricPlayerRef.value) {
-    lyricPlayerRef.value.setCurrentTime?.(playSeek.value);
+    lyricPlayerRef.value.setCurrentTime?.(Seek.value);
     lyricPlayerRef.value.setPlaying?.(isPlaying.value);
   }
 });
