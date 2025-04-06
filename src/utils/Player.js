@@ -6,7 +6,7 @@ import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/timeTools";
 import { getCoverGradient } from "@/utils/cover-color";
 import { isLogin } from "@/utils/auth";
-import { parseLyric, parseLocalLrc } from "@/utils/parseLyric";
+import { parseLyricsData, parseLocalLyric } from "@/utils/lyric.ts";
 
 // 全局播放器
 let player;
@@ -626,43 +626,23 @@ const getSongLyricData = async (islocal, data) => {
   if (!data?.id) return false;
   try {
     const music = musicData();
-    const setDefaults = () => {
-      music.playSongLyric = {
-        hasLrcTran: false,
-        hasLrcRoma: false,
-        hasYrc: false,
-        hasYrcTran: false,
-        hasYrcRoma: false,
-        lrc: [],
-        yrc: [],
-        ttml: "", // 添加TTML字段用于AMLL歌词解析
-      };
-    };
     if (islocal) {
       const lyricData = await electron.ipcRenderer.invoke("getMusicLyric", data?.path);
       if (lyricData) {
-        const result = parseLocalLrc(lyricData);
-        music.playSongLyric = result ? (music.playSongLyric = result) : setDefaults();
+        const result = parseLocalLyric(lyricData);
+        music.playSongLyric = result;
       } else {
         console.log("该歌曲暂无歌词");
-        setDefaults();
+        music.playSongLyric = parseLocalLyric("");
       }
     } else {
       const lyricResponse = await getSongLyric(data?.id);
-      // 处理新的返回结构，lyricResponse现在包含original和ttml
-      const lyricData = lyricResponse?.original?.lrc;
-      if (lyricData) {
-        const result = parseLyric(lyricResponse.original);
-        if (result) {
-          music.playSongLyric = result;
-          // 添加TTML数据用于AMLL歌词解析
-          music.playSongLyric.ttml = lyricResponse.ttml || "";
-        } else {
-          setDefaults();
-        }
+      if (lyricResponse?.original) {
+        const result = parseLyricsData(lyricResponse.original);
+        music.playSongLyric = result;
       } else {
         console.log("该歌曲暂无歌词");
-        setDefaults();
+        music.playSongLyric = parseLyricsData(null);
       }
     }
   } catch (err) {
