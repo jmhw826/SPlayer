@@ -20,7 +20,11 @@
           'font-weight': lyricFontBold ? 'bold' : 'normal',
           'font-family': lyricFont !== 'PingFang SC' ? lyricFont : '',
           'visibility': 'visible',
-          'opacity': '1'
+          'opacity': '1',
+          '--amll-lyric-player-height': '100%',
+          '--amll-lyric-player-width': '100%',
+          'height': '100%',
+          'width': '100%',
         }"
         class="am-lyric"
         @line-click="handleLineClick"
