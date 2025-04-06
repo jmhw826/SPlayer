@@ -41,7 +41,7 @@ import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
 import { parseTTMLToAMLL } from '@/utils/processTTML.ts';
-import { setSeek } from '@/utils/Player';
+import { setSeek, getSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
 import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
 import { useRafFn } from '@vueuse/core';
@@ -76,7 +76,7 @@ const {
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
-const playSeek = ref<number>(status.currentTime * 1000);
+const playSeek = ref<number>(getSeek * 1000);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
