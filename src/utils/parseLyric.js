@@ -37,9 +37,9 @@ export const parseLyric = (data) => {
       // 是否具有逐字音译
       hasYrcRoma: checkLyric(yromalrc),
       // 普通歌词数组
-      lrc: [],
+      lrcData: [],
       // 逐字歌词数据
-      yrc: [],
+      yrcData: [],
     };
     // 普通歌词
     if (lrcData.lrc) {
