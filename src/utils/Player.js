@@ -2,11 +2,17 @@ import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
 import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl, getSongOtherUrl } from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
-import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/timeTools";
 import { getCoverGradient } from "@/utils/cover-color";
 import { isLogin } from "@/utils/auth";
+/* 原版歌词对齐方式弃用
 import { parseLyric, parseLocalLrc } from "@/utils/parseLyric";
+import { decode as base642Buffer } from "@/utils/base64";
+*/
+// 使用新版本歌词对齐方式
+import { parseLrcData, parseLocalLyric } from "@/utils/lyric.ts"
+
+
 
 // 全局播放器
 let player;
@@ -641,7 +647,7 @@ const getSongLyricData = async (islocal, data) => {
     if (islocal) {
       const lyricData = await electron.ipcRenderer.invoke("getMusicLyric", data?.path);
       if (lyricData) {
-        const result = parseLocalLrc(lyricData);
+        const result = parseLocalLyric(lyricData);
         music.playSongLyric = result ? (music.playSongLyric = result) : setDefaults();
       } else {
         console.log("该歌曲暂无歌词");
@@ -652,7 +658,7 @@ const getSongLyricData = async (islocal, data) => {
       // 处理新的返回结构，lyricResponse现在包含original和ttml
       const lyricData = lyricResponse?.original?.lrc;
       if (lyricData) {
-        const result = parseLyric(lyricResponse.original);
+        const result = parseLrcData(lyricResponse.original);
         if (result) {
           music.playSongLyric = result;
           // 添加TTML数据用于AMLL歌词解析
