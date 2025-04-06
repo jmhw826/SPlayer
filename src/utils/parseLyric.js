@@ -37,9 +37,9 @@ export const parseLyric = (data) => {
       // 是否具有逐字音译
       hasYrcRoma: checkLyric(yromalrc),
       // 普通歌词数组
-      lrcData: [],
+      lrc: [],
       // 逐字歌词数据
-      yrcData: [],
+      yrc: [],
     };
     // 普通歌词
     if (lrcData.lrc) {
@@ -170,10 +170,20 @@ const parseLrc = (lyrics, isTrim = true) => {
         // 继续解析
         const [, time, text] = line.match(regex);
         const parts = time.split(":");
+        // 验证时间戳格式
+        if (parts.length < 2 || parts.some(part => isNaN(Number(part)))) {
+          console.warn("Invalid timestamp format:", time);
+          return null;
+        }
         const seconds =
           Number(parts[0]) * 60 +
           Number(parts[1]) +
           (parts.length > 2 ? Number(parts[2]) / 1000 : 0);
+        // 确保计算结果是有效数字
+        if (isNaN(seconds)) {
+          console.warn("Invalid timestamp calculation:", time);
+          return null;
+        }
         return { time: Number(seconds.toFixed(2)), content: isTrim ? text.trim() : text };
       })
       .filter((c) => c && c.content.trim() !== "");

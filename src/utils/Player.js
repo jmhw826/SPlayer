@@ -653,8 +653,8 @@ const getSongLyricData = async (islocal, data) => {
         const amllLyric = parseLyricsData(lyricResponse.original);
         // 合并结果
         music.playSongLyric = {
-          lrcData: parsedLyric.lrcData,
-          yrcData: parsedLyric.yrcData,
+          lrc: parsedLyric.lrc,
+          yrc: parsedLyric.yrc,
           lrcAMData: amllLyric.lrcAMData,
           yrcAMData: amllLyric.yrcAMData
         };
