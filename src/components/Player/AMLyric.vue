@@ -45,6 +45,7 @@ import { setSeek, getSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
 import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
 import { useRafFn } from '@vueuse/core';
+import { get } from 'http';
 
 // 接收cursorShow属性
 defineProps({
@@ -76,20 +77,17 @@ const {
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
-// const playSeek = ref<number>(getSeek() * 1000);
-const Seek = ref<number>(playSeek.value);
+const Seek = ref<number>(getSeek()*1000);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
-  const seekInSeconds = playSeek.value;
+  // const seekInSeconds = playSeek.value;
+  const seekInSeconds = getSeek();
   // 确保seekInSeconds不是undefined或null
   if (seekInSeconds !== undefined && seekInSeconds !== null) {
     Seek.value = Math.floor(seekInSeconds * 1000);
-  } else {
-    // 如果status.playSeek无效，则使用getSeek()作为备选
-    Seek.value = Math.floor(getSeek() * 1000);
-  }
+  };
 }, { immediate: true });
 
 // 歌词对齐位置
