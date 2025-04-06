@@ -17,9 +17,9 @@
         :enableInterludeDots="true"
         :style="{
           '--amll-lyric-view-color': mainColor,
-          '--amll-lyric-player-font-size': lyricFontSize + 'px',
-          'font-weight': lyricFontBold ? 'bold' : 'normal',
-          'font-family': lyricFont !== 'PingFang SC' ? lyricFont : '',
+          '--amll-lyric-player-font-size': lyricsFontSize + 'px',
+          'font-weight': lyricsFontBold ? 'bold' : 'normal',
+          'font-family': lyricsFont !== 'PingFang SC' ? lyricsFont : '',
           'visibility': 'visible',
           // 设置歌词组件的不透明度为1，确保歌词完全可见
           'opacity': '1',
@@ -63,31 +63,32 @@ const settings = siteSettings();
 const status = siteStatus();
 
 // 从store获取状态
-const { playState, isPureLyricMode, coverTheme, playTimeData } = storeToRefs(status);
+const { playState, isPureLyricMode, coverTheme,playSeek } = storeToRefs(status);
 const { 
   useAMSpring, 
   lyricsBlur, 
   lyricsPosition, 
   showYrc, 
-  lyricFontBold, 
-  lyricFont,
-  lyricFontSize = 46 // 默认字体大小
+  lyricsFontBold, 
+  lyricsFont,
+  lyricsFontSize = 46 // 默认字体大小
 } = storeToRefs(settings);
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
-const playSeek = ref<number>(playTimeData.currentTime * 1000);
+// const playSeek = ref<number>(getSeek() * 1000);
+const Seek = ref<number>(playSeek.value);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
-  const seekInSeconds = playTimeData.currentTime * 1000;
+  const seekInSeconds = playSeek.value;
   // 确保seekInSeconds不是undefined或null
   if (seekInSeconds !== undefined && seekInSeconds !== null) {
-    playSeek.value = Math.floor(seekInSeconds * 1000);
+    Seek.value = Math.floor(seekInSeconds * 1000);
   } else {
     // 如果status.playSeek无效，则使用getSeek()作为备选
-    playSeek.value = Math.floor(getSeek() * 1000);
+    Seek.value = Math.floor(getSeek() * 1000);
   }
 }, { immediate: true });
 
