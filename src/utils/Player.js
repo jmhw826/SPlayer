@@ -275,21 +275,6 @@ export const createPlayer = async (src, autoPlay = true) => {
     // 加载完成
     player?.once("load", () => {
       console.info("🎵 加载完成", player, status.playState);
-      
-      // 输出歌词内容到控制台
-      console.log("========== 歌词内容 ==========");
-      console.log("歌词类型:", {
-        普通歌词: music.playSongLyric.hasLrcTran ? "有" : "无",
-        普通翻译: music.playSongLyric.hasLrcTran ? "有" : "无",
-        普通音译: music.playSongLyric.hasLrcRoma ? "有" : "无",
-        逐字歌词: music.playSongLyric.hasYrc ? "有" : "无",
-        逐字翻译: music.playSongLyric.hasYrcTran ? "有" : "无",
-        逐字音译: music.playSongLyric.hasYrcRoma ? "有" : "无"
-      });
-      console.log("普通歌词(LRC):", music.playSongLyric.lrc);
-      console.log("逐字歌词(YRC):", music.playSongLyric.yrc);
-      console.log("==============================");
-      
       // 自动播放
       if (autoPlay && status.playState) {
         setSeek();
@@ -649,7 +634,8 @@ const getSongLyricData = async (islocal, data) => {
         hasYrcTran: false,
         hasYrcRoma: false,
         lrc: [],
-        yrc: []
+        yrc: [],
+        ttml: "", // 添加TTML字段用于AMLL歌词解析
       };
     };
     if (islocal) {
@@ -663,12 +649,14 @@ const getSongLyricData = async (islocal, data) => {
       }
     } else {
       const lyricResponse = await getSongLyric(data?.id);
-      // 直接处理歌词数据
-      const lyricData = lyricResponse?.lrc;
+      // 处理新的返回结构，lyricResponse现在包含original和ttml
+      const lyricData = lyricResponse?.original?.lrc;
       if (lyricData) {
-        const result = parseLyric(lyricResponse);
+        const result = parseLyric(lyricResponse.original);
         if (result) {
           music.playSongLyric = result;
+          // 添加TTML数据用于AMLL歌词解析
+          music.playSongLyric.ttml = lyricResponse.ttml || "";
         } else {
           setDefaults();
         }
