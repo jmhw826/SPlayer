@@ -34,8 +34,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
-import { parseTTMLToAMLL } from '@/utils/processTTML.ts';
-import { setSeek } from '@/utils/Player';
+import { setSeek } from '@/utils/Player.js';
 import { storeToRefs } from 'pinia';
 import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
 import { useRafFn } from '@vueuse/core';
@@ -97,11 +96,6 @@ const handleLineClick = (e: LyricClickEvent) => {
 // 获取当前歌词
 const currentLyrics = computed<LyricLine[]>(() => {
   if (!playSongLyric.value) return [];
-  
-  // 检查是否有TTML格式的歌词
-  if (playSongLyric.value?.ttml) {
-    return parseTTMLToAMLL(playSongLyric.value.ttml);
-  }
   
   // 使用歌词处理逻辑
   const isYrc = showYrc.value && playSongLyric.value.hasYrc && playSongLyric.value.yrc?.length > 0;

@@ -1,5 +1,4 @@
 import axios from "@/utils/request";
-import { convertToTTML } from '@/utils/parseLyric';
 /**
  * 歌曲部分
  */
@@ -84,13 +83,8 @@ export const getSongLyric = async (id) => {
     params: { id }
   });
   
-  // 确保response.data存在再进行转换
-  const responseData = response || {};
-  
-  return {
-    original: responseData,
-    ttml: responseData ? convertToTTML(responseData) : "" // 添加TTML格式，确保数据存在
-  };
+  // 直接返回原始响应数据
+  return response;
 };
 
 /**
