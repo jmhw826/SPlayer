@@ -12,7 +12,7 @@
         :enableSpring="useAMSpring"
         :enableScale="useAMSpring"
         :alignPosition="alignPosition"
-        :enableBlur="lyricBlur"
+        :enableBlur="lyricsBlur"
         :alignAnchor="'top'"
         :enableInterludeDots="true"
         :style="{
@@ -66,7 +66,7 @@ const status = siteStatus();
 const { playState, isPureLyricMode, coverTheme } = storeToRefs(status);
 const { 
   useAMSpring, 
-  lyricBlur, 
+  lyricsBlur, 
   lyricsPosition, 
   showYrc, 
   lyricFontBold, 
@@ -76,13 +76,19 @@ const {
 const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
-const playSeek = ref<number>(getSeek * 1000);
+const playSeek = ref<number>(getSeek() * 1000);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
   const seekInSeconds = status.playSeek;
-  playSeek.value = Math.floor(seekInSeconds * 1000);
+  // 确保seekInSeconds不是undefined或null
+  if (seekInSeconds !== undefined && seekInSeconds !== null) {
+    playSeek.value = Math.floor(seekInSeconds * 1000);
+  } else {
+    // 如果status.playSeek无效，则使用getSeek()作为备选
+    playSeek.value = Math.floor(getSeek() * 1000);
+  }
 }, { immediate: true });
 
 // 歌词对齐位置
