@@ -3,19 +3,17 @@ updates:
   - package-ecosystem: "npm"  # 虽然名称是 npm，但支持 pnpm
     directory: "/"
     schedule:
-      interval: "daily"       # 每天检查更新
+      interval: "daily"
     commit-message:
-      prefix: "chore(deps)"   # PR 提交信息前缀
+      prefix: "chore(deps)"
     open-pull-requests-limit: 10
     reviewers:
-      - "your-github-username"
+      - "IamFurina"
     labels:
       - "dependencies"
-    # 指定使用 pnpm
-    groups:
-      production:
-        dependency-type: "production"
-      dev:
-        dependency-type: "development"
-    # 强制更新 lockfile
+    # 关键配置：允许生成 lockfile
+    allow:
+      - dependency-type: "all"
+    # 强制基于 lockfile 更新
     versioning-strategy: "lockfile-only"
+    # 移除 registries 字段（Dependabot 自动识别 npm 源）

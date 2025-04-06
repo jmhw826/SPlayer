@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl } from "@/api/song";
+import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl, getSongOtherUrl } from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
 import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/timeTools";
@@ -192,15 +192,24 @@ const getFromUnblockMusic = async (data, status, playNow) => {
   try {
     console.info("🎵 开始解灰：", data);
     // 调用解灰
-    let response = await getMusicNumUrl(data.id);
-    console.log(response);
     let musicUrl = null;
-    if (response?.code === 200 && response?.data) {
-      if (response.data.source === "pyncmd") {
+    try {
+      let response = await getMusicNumUrl(data.id);
+      console.log(response);
+      if (response?.code === 200 && response?.data) {
         musicUrl = response.data.url;
-      } else if (response.data.source === "kuwo") {
-        // musicUrl = response.data.proxyUrl;
-        musicUrl = response.data.url;
+      }
+    } catch (error) {
+      console.log("getMusicNumUrl失败，尝试使用Other源：", error);
+    }
+    if (!musicUrl) {
+      try {
+        let Otherget = await getSongOtherUrl(data.name, data.artists);
+        if (Otherget?.code == 200 && Otherget?.data) {
+          musicUrl = Otherget.data.url;
+        }
+      } catch (error) {
+        console.log("getSongOtherUrl获取失败：", error);
       }
     }
     console.log(musicUrl);
