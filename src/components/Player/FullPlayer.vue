@@ -912,7 +912,7 @@ onUnmounted(() => {
 .amll-lyric-container {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: calc(100vh - 200px);
   overflow: hidden;
   margin-bottom: 20px;
   
