@@ -20,6 +20,7 @@
           'font-weight': lyricFontBold ? 'bold' : 'normal',
           'font-family': lyricFont !== 'PingFang SC' ? lyricFont : '',
           'visibility': 'visible',
+          // 设置歌词组件的不透明度为1，确保歌词完全可见
           'opacity': '1',
           '--amll-lyric-player-height': '100%',
           '--amll-lyric-player-width': '100%',

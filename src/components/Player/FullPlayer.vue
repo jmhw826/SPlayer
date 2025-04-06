@@ -275,7 +275,7 @@
             <AMLyric
               v-else
               :cursorShow="playerControlShow"
-              :class="amll-lyric-container"
+              class="amll-lyric-container"
             />
           </div>
         </div>
