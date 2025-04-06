@@ -52,7 +52,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       alignAnchor: "top", // 歌词对齐位置
       showTransl: true, // 是否显示歌词翻译
       showRoma: true, // 是否显示歌词音译
-      useAMLyrics: true, // 是否使用苹果音乐歌词
+      useAMLyrics: false, // 是否使用苹果音乐歌词
       useAMSpring: false, // 是否使用苹果音乐歌词弹簧动画
       // 下载部分
       downloadPath: null, // 默认下载路径
