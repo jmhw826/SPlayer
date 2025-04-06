@@ -123,33 +123,17 @@ export const alignLyrics = (lyrics: any[], otherLyrics: any[], key: "tran" | "ro
   const lyricsData = [...lyrics];
   
   // 遍历主歌词，为每行查找匹配的翻译/音译
-  lyricsData.forEach((line, index) => {
-    // 首先尝试精确匹配
-    let matchedLine = otherLyrics.find(otherLine => line.time === otherLine.time);
-    
-    // 如果没有精确匹配，尝试在更大的时间范围内查找最接近的匹配
-    if (!matchedLine) {
-      const timeWindow = 2.0; // 扩大时间窗口到2秒
-      const nearbyLines = otherLyrics.filter(
-        otherLine => Math.abs(line.time - otherLine.time) < timeWindow
-      );
-      
-      if (nearbyLines.length > 0) {
-        // 在候选行中找出时间差最小的一行
-        matchedLine = nearbyLines.reduce((closest, current) => {
-          const closestDiff = Math.abs(line.time - closest.time);
-          const currentDiff = Math.abs(line.time - current.time);
-          return currentDiff < closestDiff ? current : closest;
-        });
-      }
-    }
+  lyricsData.forEach((line) => {
+    // 查找时间匹配或接近的翻译/音译行
+    const matchedLine = otherLyrics.find(
+      (otherLine) => line.time === otherLine.time || Math.abs(line.time - otherLine.time) < 0.6
+    );
     
     // 如果找到匹配行，添加翻译/音译内容
     if (matchedLine) {
       line[key] = matchedLine.content;
     }
   });
-
   
   return lyricsData;
 };
