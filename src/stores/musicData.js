@@ -30,9 +30,13 @@ const useMusicDataStore = defineStore("musicData", {
         // 是否具有逐字音译
         hasYrcRoma: false,
         // 普通歌词数组
-        lrc: [],
+        lrcData: [],
         // 逐字歌词数据
-        yrc: [],
+        yrcData: [],
+        // AMLL普通歌词
+        lrcAMData: [],
+        // AMLL逐字歌词
+        yrcAMData: [],
       },
       // 本地歌曲目录
       localSongPath: [],
