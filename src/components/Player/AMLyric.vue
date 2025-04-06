@@ -44,6 +44,14 @@ import { storeToRefs } from 'pinia';
 import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
 import { useRafFn } from '@vueuse/core';
 
+// 接收cursorShow属性
+defineProps({
+  cursorShow: {
+    type: Boolean,
+    default: true
+  }
+});
+
 // 组件引用
 const lyricPlayerRef = ref<LyricPlayerRef | null>(null);
 
@@ -150,7 +158,12 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.2));
   mask: linear-gradient(
     180deg,
@@ -201,5 +214,26 @@ onBeforeUnmount(() => {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+/* AMLL歌词样式 */
+.amll-lyric-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  
+  .am-lyric {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 0 20px;
+    box-sizing: border-box;
+    overflow: visible;
+    /* 确保内容在容器内正确显示 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 </style>

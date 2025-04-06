@@ -275,6 +275,7 @@
             <AMLyric
               v-else
               :cursorShow="playerControlShow"
+              :class="amll-lyric-container"
             />
           </div>
         </div>
@@ -905,5 +906,27 @@ onUnmounted(() => {
 .v-leave-to {
   opacity: 0;
   transform: scale(0.8);
+}
+
+/* AMLL歌词样式 */
+.amll-lyric-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  
+  .am-lyric {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 0 20px;
+    box-sizing: border-box;
+    overflow: visible;
+    /* 确保内容在容器内正确显示 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 </style>
