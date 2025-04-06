@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl, getSongTidalUrl } from "@/api/song";
+import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl, getSongOtherUrl } from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
 import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/timeTools";
@@ -200,16 +200,16 @@ const getFromUnblockMusic = async (data, status, playNow) => {
         musicUrl = response.data.url;
       }
     } catch (error) {
-      console.log("getMusicNumUrl失败，尝试使用Tidal源：", error);
+      console.log("getMusicNumUrl失败，尝试使用Other源：", error);
     }
     if (!musicUrl) {
       try {
-        let tidalget = await getSongTidalUrl(data.name, data.artists);
-        if (tidalget?.code == 200 && tidalget?.data) {
-          musicUrl = tidalget.data.url;
+        let Otherget = await getSongOtherUrl(data.name, data.artists);
+        if (Otherget?.code == 200 && Otherget?.data) {
+          musicUrl = Otherget.data.url;
         }
       } catch (error) {
-        console.log("getSongTidalUrl获取失败：", error);
+        console.log("getSongOtherUrl获取失败：", error);
       }
     }
     console.log(musicUrl);

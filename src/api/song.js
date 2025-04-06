@@ -133,11 +133,11 @@ export const getSongDownloadNew = async (params) => {
 };
 
 /**
- * qq解灰源
+ * 其他解灰源
  * @param {string} songName
  * @param {string} artistName
  */
-export const getSongTidalUrl = async (songName, artistName) => {
+export const getSongOtherUrl = async (songName, artistName) => {
   if (!songName || !artistName) {
     throw new Error("Missing required parameters");
   }
@@ -149,7 +149,7 @@ export const getSongTidalUrl = async (songName, artistName) => {
   // 构建 URL
   const url = `${
     import.meta.env.VITE_UNM_API
-  }tidalget?id=${encodedName}&br=${encodedArtist}`;
+  }tidalget?name=${encodedName}-${encodedArtist}`;
 
   try {
     const response = await fetch(url, {
