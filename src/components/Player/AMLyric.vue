@@ -76,12 +76,12 @@ const { playSongLyric } = storeToRefs(music);
 
 // 实时播放进度 - 确保是毫秒单位
 // const playSeek = ref<number>(getSeek() * 1000);
-const Seek = ref<number>(playSongData.value?.duration || 0);
+const Seek = ref<number>(playSongData.duration || 0);
 const isPlaying = computed(() => playState.value);
 
 // 实时更新播放进度
 const { pause: pauseSeek, resume: resumeSeek } = useRafFn(() => {
-  const seekInSeconds = playSongData.value?.duration;
+  const seekInSeconds = playSongData.duration;
   // 确保seekInSeconds不是undefined或null
   if (seekInSeconds !== undefined && seekInSeconds !== null) {
     Seek.value = Math.floor(seekInSeconds * 1000);
