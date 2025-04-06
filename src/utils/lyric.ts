@@ -3,9 +3,8 @@
  * 整合了原来的多个歌词处理文件的功能
  */
 import { LyricLine, parseLrc, parseYrc } from "@applemusic-like-lyrics/lyric";
-import type { LyricType } from "@/types/main.d.ts";
-import type { LyricLine as AMLLLyricLine } from '@/types/amll.ts';
-import { useMusicStore, useSettingStore } from "@/stores";
+import type { LyricLine as AMLLLyricLine } from '@/types/amll';
+import { siteSettings } from "@/stores";
 import { msToS } from "./time.ts";
 
 // 获取排除关键词
@@ -14,7 +13,9 @@ const getExcludeKeywords = (): string[] => {
   return ['纯音乐', 'instrumental', '作词', '作曲', 'op', 'ed', 'www', 'http'];
 };
 
-// 创建空的歌词数据结构
+/**
+ * 创建空的歌词数据结构
+ */
 export const createEmptySongLyric = () => {
   return {
     lrcData: [],
@@ -25,12 +26,6 @@ export const createEmptySongLyric = () => {
     hasLrcTran: false,
     hasLrcRoma: false,
   };
-};
-
-// 恢复默认
-export const resetSongLyric = () => {
-  const musicStore = useMusicStore();
-  musicStore.songLyric = createEmptySongLyric();
 };
 
 /**
@@ -197,16 +192,16 @@ export const parseLocalLyric = (lyric: string): any => {
 /**
  * 解析歌词数据
  * @param lyricData API返回的歌词数据
+ * @returns 处理后的歌词数据
  */
-export const parseLyricsData = (lyricData: any) => {
-  const musicStore = useMusicStore();
+export const parseLyricsData = (lyricData: any): any => {
   if (!lyricData || lyricData.code !== 200) {
-    resetSongLyric();
-    return;
+    return createEmptySongLyric();
   }
   
-  let lrcData: LyricType[] = [];
-  let yrcData: LyricType[] = [];
+  let lrcData: any[] = [];
+  let yrcData: any[] = [];
+  
   // 处理后歌词
   let lrcParseData: LyricLine[] = [];
   let tlyricParseData: LyricLine[] = [];
@@ -214,42 +209,49 @@ export const parseLyricsData = (lyricData: any) => {
   let yrcParseData: LyricLine[] = [];
   let ytlrcParseData: LyricLine[] = [];
   let yromalrcParseData: LyricLine[] = [];
+  
   // 普通歌词
   if (lyricData?.lrc?.lyric) {
     lrcParseData = parseLrc(lyricData.lrc.lyric);
     lrcData = parseLrcData(lrcParseData);
+    
     // 其他翻译
     if (lyricData?.tlyric?.lyric) {
       tlyricParseData = parseLrc(lyricData.tlyric.lyric);
       lrcData = alignLyrics(lrcData, parseLrcData(tlyricParseData), "tran");
     }
+    
     if (lyricData?.romalrc?.lyric) {
       romalrcParseData = parseLrc(lyricData.romalrc.lyric);
       lrcData = alignLyrics(lrcData, parseLrcData(romalrcParseData), "roma");
     }
   }
+  
   // 逐字歌词
   if (lyricData?.yrc?.lyric) {
     yrcParseData = parseYrc(lyricData.yrc.lyric);
     yrcData = parseYrcData(yrcParseData);
+    
     // 其他翻译
     if (lyricData?.ytlrc?.lyric) {
       ytlrcParseData = parseLrc(lyricData.ytlrc.lyric);
       yrcData = alignLyrics(yrcData, parseLrcData(ytlrcParseData), "tran");
     }
+    
     if (lyricData?.yromalrc?.lyric) {
       yromalrcParseData = parseLrc(lyricData.yromalrc.lyric);
       yrcData = alignLyrics(yrcData, parseLrcData(yromalrcParseData), "roma");
     }
   }
-  musicStore.songLyric = {
+  
+  return {
     lrcData,
     yrcData,
     lrcAMData: parseAMData(lrcParseData, tlyricParseData, romalrcParseData),
     yrcAMData: parseAMData(yrcParseData, ytlrcParseData, yromalrcParseData),
     hasLrcTran: lyricData?.tlyric?.lyric ? true : false,
     hasLrcRoma: lyricData?.romalrc?.lyric ? true : false,
-    hasYrc: lyricData?.yrc?.lyric ? true : false
+    hasYrc: lyricData?.yrc?.lyric ? true : false,
   };
 };
 
