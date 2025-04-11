@@ -19,7 +19,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "*"  
+          "value": "${process.env.RENDERER_VITE_SITE_URL}"  
         },
         {
           "key": "Access-Control-Allow-Methods",

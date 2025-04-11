@@ -1,3 +1,4 @@
+# 该项目已经完成了目前所有的使命, 现已转入维护模式直到我中考结束!
 >[!IMPORTANT]
 >
 > # Q&A
@@ -126,10 +127,12 @@
 2. 点击本仓库右上角的 `Fork`，复制本仓库到你的 `GitHub` 账号
 3. 复制 `/.env.example` 文件并重命名为 `/.env`
 4. 将 `.env` 文件中的 `RENDERER_VITE_SERVER_URL` 和 `VITE_UNM_API` 改为第一步得到的 API 地址
+5. 将 `.env` 文件中的 `RENDERER_VITE_SITE_URL` 改为您的站点地址, 用于解决跨域问题
 
    ```js
    RENDERER_VITE_SERVER_URL = "https://api.example.com";
-   VITE_UNM_API = "https://unm.example.com";
+   VITE_UNM_API = "https://unm.example.com/"; # 注意要加 /
+   RENDERER_VITE_SITE_URL = "https://player.example.com";
    ```
 
 5. 将 `Build and Output Settings` 中的 `Output Directory` 改为 `out/renderer`
@@ -400,8 +403,8 @@
 ## 📄 todo列表
 - [x] 支持清除pwa缓存
 - [x] 支持Apple Music-Like Lyrics
-> - [ ] 解决歌词处理问题
-- [ ] 解灰支持酷我源
+> - [x] 解决歌词处理问题
+- [x] 解灰支持酷我源
 - [ ] 修复imsyy的陈年老bug
 - [ ] 同步dev分支
 - [ ] 支持修改全局字体
