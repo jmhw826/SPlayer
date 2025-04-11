@@ -400,6 +400,7 @@
 ## 📄 todo列表
 - [x] 支持清除pwa缓存
 - [ ] 支持Apple Music-Like Lyrics
+> - [ ] 解决歌词处理问题
 - [ ] 解灰支持酷我源
 - [ ] 修复imsyy的陈年老bug
 - [ ] 同步dev分支

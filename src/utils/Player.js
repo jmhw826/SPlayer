@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl, getSongOtherUrl } from "@/api/song";
+import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrl, getSongOtherUrl, getSongLyricLegacy } from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
 import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/timeTools";
@@ -646,9 +646,10 @@ const getSongLyricData = async (islocal, data) => {
       }
     } else {
       const lyricResponse = await getSongLyric(data?.id);
-      if (lyricResponse?.original) {
+      const lyricLegacy = await getSongLyricLegacy(data?.id);
+      if (lyricResponse?.original || lyricLegacy) {
         // 使用parseLyric.js处理基础歌词
-        const parsedLyric = parseLyric(lyricResponse.original);
+        const parsedLyric = parseLyric(lyricLegacy);
         // 使用lyric.ts处理AMLL格式
         const amllLyric = parseLyricsData(lyricResponse.original);
         // 合并结果
