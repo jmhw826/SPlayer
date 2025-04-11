@@ -87,6 +87,7 @@ import userSignIn from "@/utils/userSignIn";
 import globalShortcut from "@/utils/globalShortcut";
 import globalEvents from "@/utils/globalEvents";
 import packageJson from "@/../package.json";
+import { checkWebUpdates } from "@/api/other";
 
 const router = useRouter();
 const music = musicData();
@@ -161,6 +162,21 @@ const showAnnouncements = () => {
   }
 };
 
+const checkUpdatesWeb = () => {
+  const isLatest = checkWebUpdates();
+  if (isLatest === false) {
+    $notification.error({
+     content: "当前不是最新版本",
+     meta: "当前版本为 v." + packageJson.version + "请前往 GitHub 仓库同步最新版本并在设置页面清除PWA缓存",
+     duration: 8000,
+    })
+  } else {
+    $message.info("当前已是最新版本 v." + packageJson.version, {
+      duration: 2000, 
+    })
+  }
+}; 
+
 // 站点源代码出现错误 or 网络出现问题
 const canNotConnect = (error) => {
   console.error("网络连接错误：", error.message);
@@ -200,6 +216,8 @@ onMounted(async () => {
   if (autoCheckUpdates.value) checkUpdates();
   // 显示公告
   showAnnouncements();
+  // 检查PWA更新
+  checkUpdatesWeb();
 });
 
 onUnmounted(() => {
