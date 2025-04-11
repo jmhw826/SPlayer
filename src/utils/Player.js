@@ -657,7 +657,13 @@ const getSongLyricData = async (islocal, data) => {
           lrc: parsedLyric.lrc,
           yrc: parsedLyric.yrc,
           lrcAMData: amllLyric.lrcAMData,
-          yrcAMData: amllLyric.yrcAMData
+          yrcAMData: amllLyric.yrcAMData,
+          // 保留原始歌词属性
+          hasLrcTran: parsedLyric.hasLrcTran,
+          hasLrcRoma: parsedLyric.hasLrcRoma,
+          hasYrc: parsedLyric.hasYrc,
+          hasYrcTran: parsedLyric.hasYrcTran,
+          hasYrcRoma: parsedLyric.hasYrcRoma
         };
       } else {
         console.log("该歌曲暂无歌词");
