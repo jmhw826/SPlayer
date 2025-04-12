@@ -71,19 +71,7 @@ app.use(pinia);
 // router
 app.use(router);
 
-// 初始化字体设置
-try {
-  const settings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
-  const { webFonts, fontBold } = settings;
-  if (webFonts) {
-    document.documentElement.style.setProperty('--main-font-family', `"${webFonts}", system-ui, -apple-system, sans-serif`);
-  }
-  if (typeof fontBold === 'boolean') {
-    document.documentElement.style.setProperty('--font-weight', fontBold ? 'bold' : 'normal');
-  }
-} catch (error) {
-  console.warn('初始化字体设置失败:', error);
-}
+
 
 // app
 app.mount("#app");

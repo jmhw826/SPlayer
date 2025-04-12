@@ -199,6 +199,19 @@ onMounted(async () => {
   window.$canNotConnect = canNotConnect;
   // 主播放器
   await initPlayer(autoPlay.value);
+  // 初始化字体设置
+  try {
+    const storedSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+    const { webFonts, fontBold } = storedSettings;
+    if (webFonts) {
+      document.documentElement.style.setProperty('--main-font-family', `"${webFonts}", system-ui, -apple-system, sans-serif`);
+    }
+    if (typeof fontBold === 'boolean') {
+      document.documentElement.style.setProperty('--font-weight', fontBold ? 'bold' : 'normal');
+    }
+  } catch (error) {
+    console.warn('初始化字体设置失败:', error);
+  }
   // 更改全局字体
   settings.changeSystemFonts();
   // 全局事件
