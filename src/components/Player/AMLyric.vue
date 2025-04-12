@@ -17,7 +17,7 @@
         :enableInterludeDots="true"
         :style="{
           '--amll-lyric-view-color': mainColor,
-          '--amll-lyric-player-font-size': isMobile ? '36px' : lyricsFontSize + 'px',
+          '--amll-lyric-player-font-size': isMobile ? '10px' : lyricsFontSize + 'px',
           'font-weight': lyricsFontBold ? 'bold' : 'normal',
           'font-family': lyricsFont !== 'PingFang SC' ? lyricsFont : '',
           'visibility': 'visible',
