@@ -17,7 +17,7 @@
         :enableInterludeDots="true"
         :style="{
           '--amll-lyric-view-color': mainColor,
-          '--amll-lyric-player-font-size': isMobile ? '20px' : lyricsFontSize + 'px',
+          '--amll-lyric-player-font-size': isMobile ? '25px' : lyricsFontSize + 'px',
           'font-weight': lyricsFontBold ? 'bold' : 'normal',
           'font-family': lyricsFont !== 'PingFang SC' ? lyricsFont : '',
           'visibility': 'visible',
@@ -41,7 +41,7 @@ import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
 import { parseTTMLToAMLL } from '@/utils/processTTML.ts';
-import { setSeek, getSeek } from '@/utils/Player';
+import { setSeek, getSeek, fadePlayOrPause } from '@/utils/Player.js';
 import { storeToRefs } from 'pinia';
 import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
 import { useRafFn } from '@vueuse/core';
@@ -109,7 +109,7 @@ const handleLineClick = (e: LyricClickEvent) => {
   
   const time = lyricLine.startTime / 1000;
   setSeek(time);
-  playState.value = true;
+  fadePlayOrPause();
 };
 
 // 检查是否为纯音乐歌词

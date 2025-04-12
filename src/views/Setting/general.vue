@@ -26,15 +26,15 @@
         <n-text class="tip">选择您偏好的字体</n-text>
       </div>
       <n-select
-        v-model:value="webFonts"
+        v-model:value="settings.webFonts"
         :options="[
-          {
-            label: 'HarmonyOS Sans',
-            value: 'HarmonyOS Sans', 
-          },
           {
             label: 'LXGW WenKai',
             value: 'LXGW WenKai',
+          },
+          {
+            label: 'HarmonyOS Sans',
+            value: 'HarmonyOS Sans', 
           },
           {
             label: 'PingFang SC',
@@ -42,7 +42,7 @@
           },
         ]"
         class="set"
-        @update:value="settings.webFonts"
+        @update:value="updateWebFont"
       />
     </n-card>
     <n-card class="set-item">
@@ -180,6 +180,12 @@ const {
 
 // 基础数据
 const osThemeRef = useOsTheme();
+
+// 更新全局字体
+const updateWebFont = (font) => {
+  settings.webFonts = font;
+  document.documentElement.style.setProperty('--main-font-family', `"${font}", system-ui, -apple-system, sans-serif`);
+};
 
 // 封面自动跟随变化
 const themeAutoCoverChange = (val) => {
