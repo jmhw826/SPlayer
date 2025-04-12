@@ -208,7 +208,7 @@ onMounted(async () => {
       document.documentElement.style.setProperty('--main-font-family-lyric', `"${lyricsFont}", system-ui, -apple-system, sans-serif`);
     }
     if (typeof fontBold === 'boolean') {
-      document.documentElement.style.setProperty('--font-weight', fontBold ? 'bold' : 'normal');
+      document.documentElement.style.setProperty('font-weight', fontBold ? 'bold' : 'normal');
     }
   } catch (error) {
     console.warn('初始化字体设置失败:', error);
