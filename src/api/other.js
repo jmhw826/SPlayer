@@ -38,13 +38,13 @@ export const resourceLike = (id, t = 1, type = 0) => {
  */
 export const checkWebUpdates = async () => {
   const nowVersion = packageJson.version;
-  const rawUrl = "https://raw.githubusercontent.com/IamFurina/SPlayer/refs/heads/master-fix/package.json";
+  const rawUrl = "https://";
   const response = await fetch(rawUrl,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-      }, 
+      },
     }
   );
   if (response && response?.version) {
@@ -56,5 +56,25 @@ export const checkWebUpdates = async () => {
     }
   } else {
     return false;
+  }
+};
+
+/**
+ * 获取最新版本信息
+ */
+export const getWebUpdates = async () => {
+  const rawUrl = "https://raw.githubusercontent.com/IamFurina/SPlayer/refs/heads/master-fix/package.json"
+  const getLatestVersion = await fetch(rawUrl,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (getLatestVersion) {
+    return getLatestVersion; 
+  } else {
+    return null;
   }
 }

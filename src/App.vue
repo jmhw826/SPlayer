@@ -87,7 +87,7 @@ import userSignIn from "@/utils/userSignIn";
 import globalShortcut from "@/utils/globalShortcut";
 import globalEvents from "@/utils/globalEvents";
 import packageJson from "@/../package.json";
-import { checkWebUpdates } from "@/api/other";
+import { checkWebUpdates, getWebUpdates } from "@/api/other";
 
 const router = useRouter();
 const music = musicData();
@@ -137,7 +137,7 @@ if ("serviceWorker" in navigator) {
       });
     } else {
       console.info("站点资源有更新，请刷新以应用更新");
-      $message.info("新更新已推送更新到服务器，请刷新以应用更新喵~", {
+      $message.info("有PWA更新推送, 刷新页面以应用更新", {
         closable: true,
         duration: 0,
       });
@@ -164,12 +164,9 @@ const showAnnouncements = () => {
 
 const checkUpdatesWeb = () => {
   const isLatest = checkWebUpdates();
-  if (isLatest === false) {
-    $notification.error({
-     content: "当前不是最新版本",
-     meta: "当前版本为 v." + packageJson.version + "请前往 GitHub 仓库同步最新版本并在设置页面清除PWA缓存",
-     duration: 8000,
-    })
+  const updates = getWebUpdates();
+  if (isLatest === false && updates !== null) {
+    $message.warning("有 v."+ updates + " 的版本更新, 请前往 GitHub 仓库同步最新版本并在设置页面清除PWA缓存或者等待PWA更新推送")
   } else {
     $message.info("当前已是最新版本 v." + packageJson.version, {
       duration: 2000, 
