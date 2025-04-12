@@ -18,7 +18,7 @@
         :style="{
           '--amll-lyric-view-color': mainColor,
           '--amll-lyric-player-font-size': isMobile ? '25px' : lyricsFontSize + 'px',
-          'font-weight': lyricsFontBold ? 'bold' : 'normal',
+          'font-weight': lyricsBold ? 'bold' : 'normal',
           'font-family': lyricsFont !== 'PingFang SC' ? lyricsFont : '',
           'visibility': 'visible',
           // 设置歌词组件的不透明度为1，确保歌词完全可见
@@ -69,7 +69,7 @@ const {
   lyricsBlur, 
   lyricsPosition, 
   showYrc, 
-  lyricsFontBold, 
+  lyricsBold, 
   lyricsFont,
   lyricsFontSize = 36 // 默认字体大小
 } = storeToRefs(settings);
