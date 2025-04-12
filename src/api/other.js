@@ -38,7 +38,7 @@ export const resourceLike = (id, t = 1, type = 0) => {
  */
 export const checkWebUpdates = async () => {
   const nowVersion = packageJson.version;
-  const rawUrl = "https://";
+  const rawUrl = "https://raw.githubusercontent.com/IamFurina/SPlayer/refs/heads/master-fix/package.json";
   const response = await fetch(rawUrl,
     {
       method: "GET",
