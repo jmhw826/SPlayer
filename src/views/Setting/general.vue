@@ -42,19 +42,8 @@
           },
         ]"
         class="set"
-        @update:value="updateWebFontProperty"
+        @update:value="updateWebFont"
       />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        全局字体加粗
-        <n-text class="tip">选择您偏好的字体加粗方式</n-text>
-        </div>
-        <n-switch
-          v-model:value="settings.isFontBold"
-          :round="false"
-          @update:value="updateFontBoldProperty"
-        />
     </n-card>
     <n-card class="set-item">
       <div class="name">明暗模式是否跟随系统</div>
@@ -172,7 +161,6 @@
 import { storeToRefs } from "pinia";
 import { useOsTheme } from "naive-ui";
 import { siteSettings, siteStatus } from "@/stores";
-import { updateWebFont, updateFontBold } from "@/utils/helper";
 
 const status = siteStatus();
 const settings = siteSettings();
@@ -194,12 +182,9 @@ const {
 const osThemeRef = useOsTheme();
 
 // 更新全局字体
-const updateWebFontProperty = (font) => {
-  const changeFont = font || "LXGW WenKai";
-  updateWebFont(changeFont);
-};
-const updateFontBoldProperty = (val) => {
-  updateFontBold(val);
+const updateWebFont = (font) => {
+  settings.webFonts = font;
+  document.documentElement.style.setProperty('--main-font-family', `"${font}", system-ui, -apple-system, sans-serif`);
 };
 
 // 封面自动跟随变化
