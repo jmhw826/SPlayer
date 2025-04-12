@@ -2,7 +2,7 @@
   <Transition name="fade">
     <div
       :key="currentLyrics?.[0]?.startTime"
-      :class="['amll-lyric', { pure: isPureLyricMode }]"
+      :class="['amll-lyric', { pure: pureLyricMode }]"
     >
       <LyricPlayer
         ref="lyricPlayerRef"
@@ -45,7 +45,6 @@ import { setSeek, getSeek } from '@/utils/Player';
 import { storeToRefs } from 'pinia';
 import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
 import { useRafFn } from '@vueuse/core';
-import { get } from 'http';
 
 // 接收cursorShow属性
 defineProps({
@@ -64,7 +63,7 @@ const settings = siteSettings();
 const status = siteStatus();
 
 // 从store获取状态
-const { playState, isPureLyricMode, coverTheme,playSeek } = storeToRefs(status);
+const { playState, pureLyricMode, coverTheme,playSeek } = storeToRefs(status);
 const { 
   useAMSpring, 
   lyricsBlur, 
