@@ -75,7 +75,7 @@
               class="name" 
               depth="2"
               :style="type !== 'dj' && !item.path ? 'cursor: pointer' : ''"
-              @click.stop="type !== 'dj' && !item.path ? window.location.href = `/song?id=${item.id}` : null"
+              @click.stop="type !== 'dj' && !item.path ? songDetailRef?.openDetail(item.id) : null"
             >
               {{ item?.name || "未知曲目" }}
             </n-text>
@@ -350,6 +350,7 @@ const pageNumber = ref(1);
 // 子组件
 const songListDrawerRef = ref(null);
 const songListDropdownRef = ref(null);
+const songDetailRef = ref(null);
 
 // 当前索引
 const songsIndex = computed(() => {
@@ -810,3 +811,9 @@ onBeforeUnmount(() => {
   }
 }
 </style>
+
+<!-- 歌曲详情 -->
+<SongDetail ref="songDetailRef" />
+</template>
+
+import SongDetail from '@/components/Modal/SongDetail.vue';
