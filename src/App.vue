@@ -81,13 +81,13 @@ import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { darkTheme, NButton } from "naive-ui";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { checkPlatform, updateWebFont } from "@/utils/helper";
+import { checkPlatform, updateWebFont, updateFontBold } from "@/utils/helper";
 import { initPlayer } from "@/utils/Player";
 import userSignIn from "@/utils/userSignIn";
 import globalShortcut from "@/utils/globalShortcut";
 import globalEvents from "@/utils/globalEvents";
 import packageJson from "@/../package.json";
-import { checkWebUpdates, getWebUpdates, updateFontBold } from "@/api/other";
+import { checkWebUpdates, getWebUpdates } from "@/api/other";
 
 const router = useRouter();
 const music = musicData();
