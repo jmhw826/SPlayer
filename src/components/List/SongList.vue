@@ -279,6 +279,7 @@
       <n-skeleton :repeat="10" text />
     </div>
   </Transition>
+<SongDetail ref="songDetailRef" />
 </template>
 
 <script setup>
@@ -289,6 +290,7 @@ import { addSongToPlayList } from "@/api/playlist";
 import { siteData, siteSettings, musicData, siteStatus } from "@/stores";
 import { initPlayer, fadePlayOrPause, addSongToNext } from "@/utils/Player";
 import { djFormatDate } from "@/utils/timeTools";
+import SongDetail from '@/components/Modal/SongDetail.vue';
 
 const router = useRouter();
 const music = musicData();
@@ -812,8 +814,4 @@ onBeforeUnmount(() => {
 }
 </style>
 
-<!-- 歌曲详情 -->
-<SongDetail ref="songDetailRef" />
-</template>
 
-import SongDetail from '@/components/Modal/SongDetail.vue';
