@@ -81,13 +81,13 @@ import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { darkTheme, NButton } from "naive-ui";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { checkPlatform } from "@/utils/helper";
+import { checkPlatform, updateWebFont } from "@/utils/helper";
 import { initPlayer } from "@/utils/Player";
 import userSignIn from "@/utils/userSignIn";
 import globalShortcut from "@/utils/globalShortcut";
 import globalEvents from "@/utils/globalEvents";
 import packageJson from "@/../package.json";
-import { checkWebUpdates, getWebUpdates } from "@/api/other";
+import { checkWebUpdates, getWebUpdates, updateFontBold } from "@/api/other";
 
 const router = useRouter();
 const music = musicData();
@@ -174,6 +174,14 @@ const checkUpdatesWeb = () => {
   }
 }; 
 
+// 进入网站时更新字体
+const initFont = () => {
+  const val = settings.webFonts;
+  updateWebFont(val);
+  const bold = settings.isFontBold;
+  updateFontBold(bold);
+};
+
 // 站点源代码出现错误 or 网络出现问题
 const canNotConnect = (error) => {
   console.error("网络连接错误：", error.message);
@@ -215,6 +223,8 @@ onMounted(async () => {
   showAnnouncements();
   // 检查PWA更新
   checkUpdatesWeb();
+  // 加载字体
+  initFont();
 });
 
 onUnmounted(() => {

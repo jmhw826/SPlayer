@@ -1,3 +1,4 @@
+import { settings } from "@/stores";
 import JSZip from "jszip";
 
 // BlobUrl
@@ -433,4 +434,29 @@ export const getBlobUrlFromUrl = async (url) => {
     console.error("获取 Blob 链接遇到错误：" + error);
     throw error;
   }
+};
+
+/**
+ * 更新全局字体
+ * @param {string} font - 字体名称
+ */
+export const updateWebFont = async (font) => {
+  const settings = useSiteSettingsStore();
+  settings.wenFonts = font;
+  document.documentElement.style.setProperty(
+    "--main-font-family",
+    `"${font}", "HarmonyOS_Regular", system-ui, -apple-system, sans-serif`,
+  );
+};
+
+/**
+ * 更新加粗字体
+ */
+export const updateFontBold = async (val) => {
+  const settings = useSiteSettingsStore();
+  settings.isFontsBold = val;
+  document.documentElement.style.setProperty(
+    "--main-font-weight",
+    val ? "bold" : "normal",
+  );
 };
