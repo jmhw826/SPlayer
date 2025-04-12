@@ -928,5 +928,15 @@ onUnmounted(() => {
     flex-direction: column;
     justify-content: center;
   }
+  &.pure {
+    text-align: center;
+    :deep(.am-lyric) {
+      margin: 0;
+      padding: 0 80px;
+      div {
+        transform-origin: center !important;
+      }
+    }
+  }
 }
 </style>
