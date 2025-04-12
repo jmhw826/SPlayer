@@ -74,8 +74,8 @@
             <n-text 
               class="name" 
               depth="2"
-              :style="type !== 'dj' && !item.path ? 'cursor: pointer' : ''"
-              @click.stop="type !== 'dj' && !item.path ? songDetailRef?.openDetail(item.id) : null"
+              :style="type !== 'dj' && !item.path && item?.id ? 'cursor: pointer' : ''"
+              @click.stop="type !== 'dj' && !item.path && item?.id ? songDetailRef?.openDetail(item.id) : null"
             >
               {{ item?.name || "未知曲目" }}
             </n-text>

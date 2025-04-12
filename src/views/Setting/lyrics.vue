@@ -198,8 +198,7 @@ const {
 } = storeToRefs(settings);
 
 // 更新全局歌词字体
-const updateLyricsFont = (font) => {
-  lyricsFont = font;
-  document.documentElement.style.setProperty('--main-font-family-lyric', `"${font}", system-ui, -apple-system, sans-serif`);
+const updateLyricsFont = () => {
+  document.documentElement.style.setProperty('--main-font-family-lyric', `"${settings.lyricsFont}", system-ui, -apple-system, sans-serif`);
 }
 </script>
