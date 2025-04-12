@@ -46,6 +46,10 @@
       />
     </n-card>
     <n-card class="set-item">
+      <div class="name">字体加粗</div>
+      <n-switch v-model:value="settings.fontBold" :round="false" @update:value="updateWebFont(settings.webFonts)" />
+    </n-card>
+    <n-card class="set-item">
       <div class="name">明暗模式是否跟随系统</div>
       <n-switch
         v-model:value="themeAuto"
@@ -185,6 +189,7 @@ const osThemeRef = useOsTheme();
 const updateWebFont = (font) => {
   settings.webFonts = font;
   document.documentElement.style.setProperty('--main-font-family', `"${font}", system-ui, -apple-system, sans-serif`);
+  document.documentElement.style.setProperty('font-weight', settings.fontBold ? 'bold' : 'normal');
 };
 
 // 封面自动跟随变化

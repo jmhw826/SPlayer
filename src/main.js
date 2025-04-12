@@ -70,5 +70,18 @@ pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
 // router
 app.use(router);
+
+// 初始化字体设置
+const settings = JSON.parse(localStorage.getItem('siteSettings'));
+if (settings) {
+  const { webFonts, fontBold } = settings;
+  if (webFonts) {
+    document.documentElement.style.setProperty('--main-font-family', `"${webFonts}", system-ui, -apple-system, sans-serif`);
+  }
+  if (typeof fontBold === 'boolean') {
+    document.documentElement.style.setProperty('font-weight', fontBold ? 'bold' : 'normal');
+  }
+}
+
 // app
 app.mount("#app");
