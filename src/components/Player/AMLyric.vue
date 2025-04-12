@@ -17,7 +17,7 @@
         :enableInterludeDots="true"
         :style="{
           '--amll-lyric-view-color': mainColor,
-          '--amll-lyric-player-font-size': lyricsFontSize + 'px',
+          '--amll-lyric-player-font-size': isMobile ? '36px' : lyricsFontSize + 'px',
           'font-weight': lyricsFontBold ? 'bold' : 'normal',
           'font-family': lyricsFont !== 'PingFang SC' ? lyricsFont : '',
           'visibility': 'visible',
@@ -71,7 +71,7 @@ const {
   showYrc, 
   lyricsFontBold, 
   lyricsFont,
-  lyricsFontSize = 46 // 默认字体大小
+  lyricsFontSize = 36 // 默认字体大小
 } = storeToRefs(settings);
 const { playSongLyric } = storeToRefs(music);
 
@@ -168,6 +168,12 @@ watch(() => status.playSeek, (newTime: number) => {
   if (lyricPlayerRef.value) {
     lyricPlayerRef.value.setCurrentTime?.(timeMs);
   }
+});
+
+// 检测移动端
+const isMobile = computed(() => {
+  if (window.innerWidth <= 768) return true;
+  return false;
 });
 
 onMounted(() => {
