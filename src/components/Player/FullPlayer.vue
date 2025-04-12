@@ -931,7 +931,7 @@ onUnmounted(() => {
   &.pure {
     text-align: center;
     :deep(.am-lyric) {
-      heigh: calc(100vh - 200px);
+      height: calc(100vh - 200px);
       margin: 0;
       padding: 0 80px;
       div {

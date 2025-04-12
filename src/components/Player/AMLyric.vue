@@ -190,7 +190,7 @@ onBeforeUnmount(() => {
 .amll-lyric {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 200px);
   overflow: visible;
   padding: 0 20px;
   box-sizing: border-box;
@@ -210,7 +210,7 @@ onBeforeUnmount(() => {
   z-index: 1;
   :deep(.am-lyric) {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 200px);
     position: absolute;
     left: 0;
     top: 0;
@@ -252,13 +252,13 @@ onBeforeUnmount(() => {
 .amll-lyric-container {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: calc(100vh - 200px);
   overflow: hidden;
   margin-bottom: 20px;
   
   .am-lyric {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 200px);
     position: relative;
     padding: 0 20px;
     box-sizing: border-box;
