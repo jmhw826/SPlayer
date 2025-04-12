@@ -21,6 +21,31 @@
       />
     </n-card>
     <n-card class="set-item">
+      <div class="name">
+        全局字体
+        <n-text class="tip">选择您偏好的字体</n-text>
+      </div>
+      <n-select
+        v-model:value="webFonts"
+        :options="[
+          {
+            label: 'HarmonyOS Sans',
+            value: 'HarmonyOS Sans', 
+          },
+          {
+            label: 'LXGW WenKai',
+            value: 'LXGW WenKai',
+          },
+          {
+            label: 'PingFang SC',
+            value: 'PingFang SC',
+          },
+        ]"
+        class="set"
+        @update:value="settings.webFonts"
+      />
+    </n-card>
+    <n-card class="set-item">
       <div class="name">明暗模式是否跟随系统</div>
       <n-switch
         v-model:value="themeAuto"
