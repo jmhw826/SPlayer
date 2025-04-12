@@ -45,6 +45,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       // 歌词部分
       lrcMousePause: false, // 鼠标移入歌词区域暂停滚动
       lyricsFontSize: 46, // 歌词大小
+      lyricsFont: "PingFang SC", // 歌词字体
       lyricsBlur: true, // 歌词模糊
       lyricsBold: true, // 歌词加粗
       showYrc: true, // 是否显示逐字歌词
@@ -86,8 +87,8 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       }
     },
     // 更改系统字体
-    changeSystemFonts(font = this.systemFonts) {
-      this.systemFonts = font;
+    changeSystemFonts(font = this.webFonts) {
+      this.webFonts = font;
       const root = document.documentElement;
       if (!root) return false;
       // 若仅歌词生效
@@ -107,7 +108,17 @@ const useSiteSettingsStore = defineStore("siteSettings", {
         `"${font}", "HarmonyOS_Regular", system-ui, -apple-system, sans-serif`,
       );
     },
+    changeLyricsFonts(font = this.lyricsFont) {
+      this.lyricsFont = font;
+      const root = document.documentElement;
+      if (!root) return false;
+      root.style.setProperty(
+        "--main-font-family-lyric",
+        `"${font}", "HarmonyOS_Regular", system-ui, -apple-system, sans-serif`,
+      );
+    }
   },
+  
   // 数据持久化
   persist: [
     {

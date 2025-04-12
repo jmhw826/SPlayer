@@ -191,7 +191,6 @@ const updateWebFont = (font) => {
   document.documentElement.style.setProperty('--main-font-family', `"${font}", system-ui, -apple-system, sans-serif`);
   document.documentElement.style.setProperty('font-weight', settings.fontBold ? 'bold' : 'normal');
 };
-
 // 封面自动跟随变化
 const themeAutoCoverChange = (val) => {
   if ($changeThemeColor !== "undefined" && Object.keys(coverTheme.value)?.length) {

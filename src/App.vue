@@ -202,9 +202,10 @@ onMounted(async () => {
   // 初始化字体设置
   try {
     const storedSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
-    const { webFonts, fontBold } = storedSettings;
-    if (webFonts) {
+    const { webFonts, fontBold, lyricsFont } = storedSettings;
+    if (webFonts && lyricsFont) {
       document.documentElement.style.setProperty('--main-font-family', `"${webFonts}", system-ui, -apple-system, sans-serif`);
+      document.documentElement.style.setProperty('--main-font-family-lyric', `"${lyricsFont}", system-ui, -apple-system, sans-serif`);
     }
     if (typeof fontBold === 'boolean') {
       document.documentElement.style.setProperty('--font-weight', fontBold ? 'bold' : 'normal');
