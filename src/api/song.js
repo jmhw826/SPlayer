@@ -13,7 +13,7 @@ export const getSongDetail = (ids) => {
   return axios({
     method: "POST",
     url: `/song/detail?timestamp=${timestamp}`,
-    data: {
+    params: {
       ids,
     },
   });
