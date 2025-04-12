@@ -3,7 +3,16 @@
     v-model:show="show"
     class="song-detail"
     preset="card"
-    :style="{ width: '80vw', maxWidth: '1200px' }"
+    :style="{
+      width: '80vw',
+      maxWidth: '1200px',
+      '@media screen and (max-width: 768px)': {
+        width: '100vw !important',
+        maxWidth: '100vw !important',
+        margin: '0 !important',
+        borderRadius: '0 !important'
+      }
+    }"
     :bordered="false"
     size="huge"
     :segmented="{ content: true }"
@@ -203,23 +212,23 @@ const hotCommentData = ref([]);
 const simiPlayList = ref([]);
 
 // 获取歌曲详情
-const getSongDetailData = async (id) => {
-  if (!id) {
+const getSongDetailData = async (ids) => {
+  if (!ids) {
     $message.error("歌曲ID不能为空");
     return;
   }
 
   try {
-    const detail = await getSongDetail(id);
+    const detail = await getSongDetail(ids);
     if (!detail?.songs?.length) {
       throw new Error("未找到歌曲信息");
     }
     const data = formatData(detail.songs[0], "song");
     songDetail.value = data?.[0] ?? null;
     // 获取热门评论
-    getHotCommentData(id);
+    getHotCommentData(ids);
     // 获取相似歌单
-    getSimiPlayListData(id);
+    getSimiPlayListData(ids);
   } catch (error) {
     console.error("获取歌曲详情失败：", error);
     songDetail.value = null;
