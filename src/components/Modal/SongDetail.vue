@@ -204,9 +204,17 @@ const simiPlayList = ref([]);
 
 // 获取歌曲详情
 const getSongDetailData = async (id) => {
+  if (!id) {
+    $message.error("歌曲ID不能为空");
+    return;
+  }
+
   try {
     const detail = await getSongDetail(id);
-    const data = formatData(detail?.songs?.[0], "song");
+    if (!detail?.songs?.length) {
+      throw new Error("未找到歌曲信息");
+    }
+    const data = formatData(detail.songs[0], "song");
     songDetail.value = data?.[0] ?? null;
     // 获取热门评论
     getHotCommentData(id);
@@ -214,7 +222,8 @@ const getSongDetailData = async (id) => {
     getSimiPlayListData(id);
   } catch (error) {
     console.error("获取歌曲详情失败：", error);
-    $message.error("获取歌曲详情失败");
+    songDetail.value = null;
+    $message.error(error.message === "未找到歌曲信息" ? error.message : "获取歌曲详情失败，请稍后重试");
   }
 };
 
