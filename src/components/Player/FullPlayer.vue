@@ -918,7 +918,7 @@ onUnmounted(() => {
   
   .am-lyric {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 200px);
     position: relative;
     padding: 0 20px;
     box-sizing: border-box;
@@ -931,6 +931,7 @@ onUnmounted(() => {
   &.pure {
     text-align: center;
     :deep(.am-lyric) {
+      heigh: calc(100vh - 200px);
       margin: 0;
       padding: 0 80px;
       div {
