@@ -829,7 +829,7 @@ onUnmounted(() => {
 
 .player-control {
   @media (max-width: 768px)  {
-    margin-bottom: 45px;
+    margin-bottom: 20px;
   }
 }
 .amll-tip {
