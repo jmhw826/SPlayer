@@ -810,6 +810,11 @@ onUnmounted(() => {
         }
       }
     }
+    @media (max-width: 700px) {
+      .player-control {
+        margin-bottom: 80px;
+      }
+    }
   }
 }
 // 局外样式
