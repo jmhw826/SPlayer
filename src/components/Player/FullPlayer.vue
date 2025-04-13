@@ -812,7 +812,7 @@ onUnmounted(() => {
     }
     @media (max-width: 700px) {
       .player-control {
-        margin-bottom: 80px;
+        margin-bottom: 100px;
       }
     }
   }
