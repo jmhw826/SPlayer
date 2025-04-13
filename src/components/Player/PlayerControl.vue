@@ -48,20 +48,6 @@
         </n-icon>
       </div>
       <div class="center">
-        <!-- 进度条 -->
-        <div class="slider">
-          <span>{{ playTimeData.played }}</span>
-          <vue-slider
-            v-model="playTimeData.bar"
-            :use-keyboard="false"
-            tooltip="none"
-            width="100%"
-            @drag-start="fadePlayOrPause('pause')"
-            @drag-end="sliderDragEnd"
-            @click.stop="songTimeSliderUpdate(playTimeData.bar)"
-          />
-          <span>{{ playTimeData.durationTime }}</span>
-        </div>
         <div class="btn">
           <Transition name="fade" mode="out-in">
             <!-- 上一曲 -->
@@ -106,6 +92,20 @@
           <n-icon class="play-next" size="24" @click.stop="changePlayIndexDebounce('next')">
             <SvgIcon icon="skip-next-rounded" />
           </n-icon>
+        </div>
+        <!-- 进度条 -->
+        <div class="slider">
+          <span>{{ playTimeData.played }}</span>
+          <vue-slider
+            v-model="playTimeData.bar"
+            :use-keyboard="false"
+            tooltip="none"
+            width="100%"
+            @drag-start="fadePlayOrPause('pause')"
+            @drag-end="sliderDragEnd"
+            @click.stop="songTimeSliderUpdate(playTimeData.bar)"
+          />
+          <span>{{ playTimeData.durationTime }}</span>
         </div>
       </div>
       <div class="right">
@@ -472,6 +472,7 @@ const jumpToComment = () => {
     }
     .center {
       width: 100%;
+      flex-direction: column-reverse;
     }
   }
 }

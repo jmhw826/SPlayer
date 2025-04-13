@@ -281,7 +281,7 @@
         </div>
       </Transition>
       <!-- 控制中心 -->
-      <PlayerControl />
+      <PlayerControl class="player-control" />
       <!-- 音乐频谱 -->
       <Spectrum v-if="showSpectrums" :show="!playerControlShow" :height="60" />
       <!-- 设置弹窗 -->
@@ -558,6 +558,10 @@ onUnmounted(() => {
         margin-top: 24px;
         padding: 0 2px;
         box-sizing: border-box;
+        @media screen and (max-width: 700px) {
+          margin-top: 0;
+          padding-top: 0;
+        }
         .desc {
           display: flex;
           flex-direction: column;
@@ -939,6 +943,14 @@ onUnmounted(() => {
         transform-origin: center !important;
       }
     }
+  }
+}
+.player-control {
+  position: relative;
+  margin-bottom: 20px;
+  
+  @media screen and (max-width: 700px) {
+    margin-bottom: 60px;
   }
 }
 </style>
