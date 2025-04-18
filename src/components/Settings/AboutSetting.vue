@@ -5,7 +5,7 @@
       <n-card class="set-item">
         <n-flex align="center" class="about">
           <SvgIcon name="SPlayer" size="26" />
-          <n-text class="logo-name">云音乐</n-text>
+          <n-text class="logo-name">SPlayer</n-text>
           <n-tag :bordered="false" size="small" type="primary">
             {{ packageJson.version }}
           </n-tag>
@@ -43,10 +43,10 @@
 import type { UpdateLogType } from "@/types/main";
 import { getUpdateLog, isElectron, openLink } from "@/utils/helper";
 import { debounce } from "lodash-es";
-import { useStatusStore } from "@/stores";
-import packageJson from "@/../package.json";
+import { useSiteStatusStore } from "@/stores";
+import packageJson from "../../package.json";
 
-const statusStore = useStatusStore();
+const statusStore = useSiteStatusStore();
 
 // 社区数据
 const communityData = [

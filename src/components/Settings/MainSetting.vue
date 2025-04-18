@@ -34,10 +34,6 @@
         <PlaySetting v-else-if="activeKey === 'play'" />
         <!-- 歌词 -->
         <LyricsSetting v-else-if="activeKey === 'lyrics'" />
-        <!-- 快捷键 >
-        <KeyboardSetting v-else-if="activeKey === 'keyboard'" /-->
-        <!-- 本地 >
-        <LocalSetting v-else-if="activeKey === 'local'" /-->
         <!-- 其他 -->
         <OtherSetting v-else-if="activeKey === 'other'" />
         <!-- 关于 -->
