@@ -55,7 +55,12 @@ export const getSongUrl = (id, level = "standard") => {
  */
 export const getMusicNumUrl = async (id) => {
   const server = "pyncmd,kuwo";
-  const url = `${import.meta.env.VITE_UNM_API}match?id=${id}&server=${server}`;
+  if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === true) {
+    var unmurl = "/"
+  } else {
+    var unmurl = `${import.meta.env.VITE_UNM_API}`
+  }
+  const url = `${unmurl}match?id=${id}&server=${server}`;
   const response = await fetch(url, {
     method: "GET",
     headers: {
