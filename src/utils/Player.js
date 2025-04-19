@@ -260,11 +260,16 @@ export const createPlayer = async (src, autoPlay = true) => {
     // 获取播放链接（非电台及云盘歌曲）
     const songUrl =
       useMusicCache && playMode !== "dj" && !playSongData.pc ? await getBlobUrlFromUrl(src) : src;
-    console.log("播放地址：", songUrl);
+    const processedUrl = songUrl;
+    if (songUrl.includes('music.126.net')) {
+      processedUrl = songUrl.replace(/m804\.music\.126\.net/g, 'm801.music.126.net')
+                       .replace(/m704\.music\.126\.net/g, 'm701.music.126.net');
+    };
+    console.log("播放地址：", processedUrl);
     // 初始化播放器
     if (player) soundStop();
     player = new Howl({
-      src: [songUrl],
+      src: [processedUrl],
       format: ["mp3", "flac", "dolby", "webm"],
       html5: true,
       preload: "metadata",
