@@ -260,10 +260,10 @@ export const createPlayer = async (src, autoPlay = true) => {
     // 获取播放链接（非电台及云盘歌曲）
     const songUrl =
       useMusicCache && playMode !== "dj" && !playSongData.pc ? await getBlobUrlFromUrl(src) : src;
-    const processedUrl = songUrl;
+    let processedUrl = songUrl;
     // 处理音乐链接，将特定域名替换为其他域名
     let finalUrl = processedUrl;
-    if (songUrl.includes('music.126.net')) {
+    if (songUrl.includes('m804.music.126.net') || songUrl.includes('m704.music.126.net')) {
       finalUrl = songUrl.replace(/m804\.music\.126\.net/g, 'm801.music.126.net')
                        .replace(/m704\.music\.126\.net/g, 'm701.music.126.net');
       processedUrl = finalUrl;
