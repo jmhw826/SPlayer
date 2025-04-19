@@ -56,7 +56,7 @@ export const getSongUrl = (id, level = "standard") => {
 export const getMusicNumUrl = async (id) => {
   const server = "pyncmd,kuwo";
   if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true") {
-    var unmurl = "/unblock/";
+    var unmurl = "/api/unblock/";
   } else {
     var unmurl = `${import.meta.env.VITE_UNM_API}`;
   }

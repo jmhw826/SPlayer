@@ -5,11 +5,11 @@
       "destination": "/index.html"
     },
     {
-      "source": "/ncmapi/:apiurl*",
+      "source": "/api/netease/:apiurl*",
       "destination": "https://music-api.focalors.ltd/:apiurl*"
     },
     {
-      "source": "/unblock/:match*",
+      "source": "/api/unblock/:match*",
       "destination": "https://unm-server.focalors.ltd/:match*"
     }
   ],

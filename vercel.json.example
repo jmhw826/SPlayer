@@ -5,12 +5,12 @@
       "destination": "/index.html"
     },
     {
-      "source": "/ncmapi/:apiurl*",
-      "destination": "https://music-api.example.com/:apiurl*"
+      "source": "/api/netease/:apiurl*",
+      "destination": "https://api.example.com/:apiurl*"
     },
     {
-      "source": "/unblock/:match*",
-      "destination": "https://unm-server.example.com/:match*"
+      "source": "/api/unblock/:match*",
+      "destination": "https://unm.example.com/:match*"
     }
   ],
   "headers": [
