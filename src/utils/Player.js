@@ -283,18 +283,6 @@ export const createPlayer = async (src, autoPlay = true) => {
     const audioDom = player._sounds[0]._node;
     // 设置跨域访问策略
     audioDom.crossOrigin = "anonymous";
-    // 尝试添加CORS headers
-    if(audioDom.src) {
-      const headers = new Headers();
-      headers.append('Access-Control-Allow-Origin', '*');
-      headers.append('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-      headers.append('Access-Control-Allow-Headers', 'Content-Type');
-      
-      fetch(audioDom.src, {
-        method: 'HEAD',
-        headers: headers
-      }).catch(err => console.warn('CORS预检请求失败:', err));
-    }
     // 写入播放历史
     if (playMode !== "dj") music.setPlayHistory(playSongData);
     // 生成音乐频谱
