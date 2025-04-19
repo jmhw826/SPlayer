@@ -4,7 +4,7 @@ import { siteSettings } from "@/stores";
 import axios from "axios";
 
 // 全局地址
-if (checkPlatform.electron() || import.meta.env["RENDERER_VITE_SITE_ROOT"] === true) {
+if (checkPlatform.electron() || import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true" || import.meta.env["RENDERER_VITE_SITE_ROOT"] === true) {
   axios.defaults.baseURL = "/api/netease";
 } else {
   axios.defaults.baseURL = import.meta.env["RENDERER_VITE_SERVER_URL"];
