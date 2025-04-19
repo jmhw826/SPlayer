@@ -199,6 +199,7 @@ export const likePlaylist = (t, id) => {
   return axios({
     method: "GET",
     url: "/playlist/subscribe",
+    noCookie: true, // 不发送cookie
     params: {
       t,
       id,
