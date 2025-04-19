@@ -5,11 +5,11 @@
       "destination": "/index.html"
     },
     {
-      "source": "/api/netease/:apiurl*",
+      "source": "/ncmapi/api/:apiurl*",
       "destination": "${process.env.RENDERER_VITE_SERVER_URL}/:apiurl*"
     },
     {
-      "source": "/api/unblock/:match*",
+      "source": "/ncmapi/unblock/:match*",
       "destination": "${process.env.VITE_UNM_API}:match*"
     }
   ],
