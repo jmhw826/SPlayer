@@ -78,7 +78,7 @@
       ]
     },
     {
-      "source": "https://*.music.126.net/(.*)",
+      "source": "https://music.126.net/(.*)",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
