@@ -234,7 +234,7 @@ const canNotConnect = (error) => {
     positiveText: "刷新网页",
   });
   $message.error("网络连接错误：" + error.message, {
-    duration: 2000,
+    duration: 0,
     closable: true, 
   })
 };
