@@ -6,11 +6,11 @@
     },
     {
       "source": "/ncmapi/:apiurl*",
-      "destination": "https://music-api.focalors.ltd/:apiurl*"
+      "destination": "https://music-api.example.com/:apiurl*"
     },
     {
       "source": "/unblock/:match*",
-      "destination": "https://unm-server.focalors.ltd/:match*"
+      "destination": "https://unm-server.example.com/:match*"
     }
   ],
   "headers": [
