@@ -98,7 +98,6 @@ export const getSongLyric = async (id) => {
  * @param {number} id - 要替换播放链接的音乐ID
  * @param {number} br - 码率, 默认设置了 999000 即最大码率, 如果要 320k 则可设置为 320000, 其他类推
  */
-// song.js 完整修复版
 export const getSongDownloadNew = async (params) => {
   // 参数校验
   if (!params?.id || !params?.br) {
@@ -111,8 +110,13 @@ export const getSongDownloadNew = async (params) => {
   const encodedBr = encodeURIComponent(br);
 
   // 构建 URL
+  if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true") {
+    var unmurl = "/api/unblock/";
+  } else {
+    var unmurl = `${import.meta.env.VITE_UNM_API}`;
+  };
   const url = `${
-    import.meta.env.VITE_UNM_API
+    unmurl
   }ncmget?id=${encodedId}&br=${encodedBr}`;
 
   try {
@@ -173,8 +177,6 @@ export const getSongOtherUrl = async (songName, artistName) => {
  * @param {number} br - 码率, 默认设置了 999000 即最大码率, 如果要 320k 则可设置为 320000, 其他类推
  */
 export const getSongDownload = (id, br = 999000) => {
-  const server = "pyncmd,kuwo";
-  const durl = `${import.meta.env.VITE_UNM_API}match?id=${id}&server=${server}`;
   return axios({
     method: "GET",
     url: "/song/download/url",

@@ -199,7 +199,7 @@ const getFromUnblockMusic = async (data, status, playNow) => {
       console.log(response);
       if (response?.code === 200 && response?.data) {
         if (response.data.proxyUrl) {
-          musicUrl = response.data.proxyUrl; 
+          musicUrl = response.data.url.replace(/^http:\/\/lx\.sycdn\.kuwo\.cn\//, "/"); 
         } else {
           musicUrl = response.data.url;
         };
