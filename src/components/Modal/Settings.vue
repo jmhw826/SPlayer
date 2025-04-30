@@ -6,7 +6,9 @@
     :style="{
       width: isMobile ? '100vw' : '800px',
       maxWidth: '90vw',
-      backgroundColor: 'var(--n-color-modal)',
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       borderRadius: isMobile ? '16px 16px 0 0' : '8px',
       margin: isMobile ? 'auto auto 0 auto' : 'auto',
     }"
@@ -184,8 +186,8 @@ defineExpose({ showModal: openModal });
 .settings-modal {
   display: flex;
   flex-direction: column;
-  height: 70vh;
-  background-color: var(--divider-color);
+  height: calc(100vh - 64px);
+  background-color: transparent;
   transition: all 0.3s ease;
   .n-base-selection {
     border-radius: 8px;
@@ -195,8 +197,8 @@ defineExpose({ showModal: openModal });
   .mobile-selector {
     flex-shrink: 0;
     padding: 16px 16px 8px;
-    background-color: var(--divider-color);
-    border-bottom: 1px solid var(--divider-color);
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
     :deep(.n-select) {
       width: 100%;
@@ -209,8 +211,8 @@ defineExpose({ showModal: openModal });
 
   .tabs-container {
     flex-shrink: 0;
-    border-bottom: 1px solid var(--divider-color);
-    background-color: var(--divider-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: transparent;
     position: relative;
 
     :deep(.n-tabs-nav) {
@@ -245,12 +247,12 @@ defineExpose({ showModal: openModal });
     flex: 1;
     overflow: hidden;
     padding: 16px 24px;
-    background-color: var(--divider-color);
+    background-color: transparent;
     transition: padding 0.3s ease;
 
     .n-scrollbar {
       padding-right: 12px;
-      background-color: var(--main-second-color);
+      background-color: rgba(255, 255, 255, 0.05);
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }

@@ -110,14 +110,6 @@
         <div class="name">
           <div class="dev">
             显示逐字歌词
-            <n-tag :bordered="false" round size="small" type="warning">
-              开发中
-              <template #icon>
-                <n-icon>
-                  <SvgIcon icon="code" />
-                </n-icon>
-              </template>
-            </n-tag>
           </div>
           <n-text class="tip">是否在具有逐字歌词时显示</n-text>
         </div>
@@ -127,14 +119,6 @@
         <div class="name">
           <div class="dev">
             显示逐字歌词动画
-            <n-tag :bordered="false" round size="small" type="warning">
-              开发中
-              <template #icon>
-                <n-icon>
-                  <SvgIcon icon="code" />
-                </n-icon>
-              </template>
-            </n-tag>
           </div>
           <n-text class="tip">可能会造成卡顿等性能问题，手机端建议关闭</n-text>
         </div>
@@ -155,21 +139,21 @@
         <n-switch v-model:value="showRoma" :disabled="useAMLyrics" :round="false" />
       </n-card>
     </n-collapse-item>
-    <n-collapse-item title="渲染设置">
+    <n-collapse-item title="歌词渲染设置">
       <n-card class="set-item">
         <n-collapse>
           <n-collapse-item title="Apple Music Like Lyrics 设置">
             <div class="name">
-              是否使用Apple-Music-Like-Lyrics渲染器
+              使用Apple Music-Like Lyrics渲染器
               <n-text class="tip">
-                Apple-Music-Like-Lyrics渲染器可能会造成卡顿等性能问题，手机端建议关闭
+                Apple Music-Like Lyrics渲染器可能会造成卡顿等性能问题，手机端建议关闭
               </n-text>
             </div>
             <n-switch v-model:value="useAMLyrics" :round="false" />
             <div class="name" style="margin-top: 16px;">
-              是否使用AMLL弹簧渲染效果
+              使用AMLL弹簧渲染效果
               <n-text class="tip">
-                是否使用Apple-Music-Like-Lyrics组件的弹簧效果
+                开启本项会使用Apple Music-Like Lyrics组件的弹簧效果
               </n-text>
             </div>
             <n-switch v-model:value="useAMSpring" :round="false" />

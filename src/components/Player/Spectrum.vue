@@ -38,46 +38,72 @@ const isKeepDrawing = ref(true);
  * 绘制音乐频谱图
  * @param {Array} data - 包含音频频谱数据的数组
  */
+// 用于存储上一帧的频谱数据
+const prevData = ref(new Array(1024).fill(0));
+
+// 平滑处理频谱数据
+const smoothData = (data, prevData, smoothingFactor = 0.3) => {
+  if (!data) return prevData;
+  return data.map((value, i) => {
+    const smoothedValue = value * smoothingFactor + prevData[i] * (1 - smoothingFactor);
+    prevData[i] = smoothedValue;
+    return smoothedValue;
+  });
+};
+
 const drawSpectrum = (data) => {
   if (!data) return;
   if (!isKeepDrawing.value) return;
-  // 去除频谱前5项
-  data = data.slice(5);
+
+  // 去除频谱前10项并进行平滑处理
+  data = smoothData(data.slice(10), prevData.value);
+
   // 设置画布宽度，最大为 1600
   canvasRef.value.width = document.body.clientWidth >= 1600 ? 1600 : document.body.clientWidth;
-  // 设置画布高度
   canvasRef.value.height = props.height;
-  // 获取2D上下文
+
   const ctx = canvasRef.value.getContext("2d");
-  // 画布宽高
   const canvasWidth = canvasRef.value.width;
   const canvasHeight = canvasRef.value.height;
-  // 频谱数量
-  const numBars = spectrumsData.value.length / 2.5;
-  // 圆角半径
+
+  // 优化频谱数量计算
+  const numBars = Math.min(Math.floor(canvasWidth / 12), Math.floor(data.length / 2));
   const cornerRadius = props.radius;
-  // 柱形宽度
-  const barWidth = canvasWidth / numBars / 2;
-  // 清除画布
+  const gap = 2; // 柱体间距
+  const barWidth = Math.max((canvasWidth / numBars / 2) - gap, 2); // 确保最小宽度
+
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-  // 遍历音频频谱数据
+
+  // 获取主题颜色
+  const themeColor = status.coverTheme?.light?.shadeTwo || "239, 239, 239";
+
   for (let i = 0; i < numBars; i++) {
-    // 计算柱形高度
-    const barHeight = (data[i] / 255) * canvasHeight;
-    // 计算柱形的 x 和 y 坐标
-    const x1 = i * barWidth + canvasWidth / 2;
-    const x2 = canvasWidth / 2 - (i + 1) * barWidth;
+    // 使用对数计算提升低频显示效果
+    const dataIndex = Math.floor(i * (data.length / numBars));
+    const value = data[dataIndex];
+    const barHeight = Math.min((Math.log(value + 1) / Math.log(256)) * canvasHeight, canvasHeight);
+
+    const x1 = i * (barWidth + gap) + canvasWidth / 2;
+    const x2 = canvasWidth / 2 - ((i + 1) * (barWidth + gap));
     const y = canvasHeight - barHeight;
-    // 设置柱形颜色，如果未设置则使用默认颜色
-    ctx.fillStyle = `rgb(${status.coverTheme?.light?.shadeTwo})` || "#efefef";
-    // 检查柱形高度是否大于0，避免绘制高度为0的柱形
+
+    // 创建渐变色
+    const gradient1 = ctx.createLinearGradient(x1, y, x1, canvasHeight);
+    const gradient2 = ctx.createLinearGradient(x2, y, x2, canvasHeight);
+
+    gradient1.addColorStop(0, `rgba(${themeColor}, 0.8)`);
+    gradient1.addColorStop(1, `rgba(${themeColor}, 0.2)`);
+    gradient2.addColorStop(0, `rgba(${themeColor}, 0.8)`);
+    gradient2.addColorStop(1, `rgba(${themeColor}, 0.2)`);
+
     if (barHeight > 0) {
-      // 调用绘制圆角矩形的函数
-      roundRect(ctx, x1, y, barWidth - 3, barHeight, cornerRadius);
-      roundRect(ctx, x2, y, barWidth - 3, barHeight, cornerRadius);
+      ctx.fillStyle = gradient1;
+      roundRect(ctx, x1, y, barWidth, barHeight, cornerRadius);
+      ctx.fillStyle = gradient2;
+      roundRect(ctx, x2, y, barWidth, barHeight, cornerRadius);
     }
   }
-  // 请求下一帧
+
   requestAnimationFrame(() => {
     drawSpectrum(spectrumsData.value);
   });
