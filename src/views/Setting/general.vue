@@ -252,6 +252,8 @@ const themeAutoCoverChange = (val) => {
   .set-item {
     margin-bottom: 12px;
     background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
 

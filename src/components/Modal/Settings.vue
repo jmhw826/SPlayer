@@ -186,7 +186,7 @@ defineExpose({ showModal: openModal });
 .settings-modal {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 100px);
   background-color: transparent;
   transition: all 0.3s ease;
   .n-base-selection {
