@@ -51,58 +51,85 @@ const smoothData = (data, prevData, smoothingFactor = 0.3) => {
   });
 };
 
+// 缓存画布尺寸和计算结果
+let lastWidth = 0;
+let lastHeight = 0;
+let cachedGradients = new Map();
+let animationFrameId = null;
+
 const drawSpectrum = (data) => {
-  if (!data) return;
-  if (!isKeepDrawing.value) return;
+  if (!data || !isKeepDrawing.value || !canvasRef.value) return;
 
   // 去除频谱前10项并进行平滑处理
   data = smoothData(data.slice(10), prevData.value);
 
-  // 设置画布宽度，最大为 1600
-  canvasRef.value.width = document.body.clientWidth >= 1600 ? 1600 : document.body.clientWidth;
-  canvasRef.value.height = props.height;
+  const currentWidth = document.body.clientWidth >= 1600 ? 1600 : document.body.clientWidth;
+  const currentHeight = props.height;
 
-  const ctx = canvasRef.value.getContext("2d");
-  const canvasWidth = canvasRef.value.width;
-  const canvasHeight = canvasRef.value.height;
+  // 仅在尺寸变化时重新设置画布
+  if (currentWidth !== lastWidth || currentHeight !== lastHeight) {
+    canvasRef.value.width = currentWidth;
+    canvasRef.value.height = currentHeight;
+    lastWidth = currentWidth;
+    lastHeight = currentHeight;
+    cachedGradients.clear(); // 清除缓存的渐变
+  }
+
+  const ctx = canvasRef.value.getContext("2d", { alpha: false });
+  const canvasWidth = currentWidth;
+  const canvasHeight = currentHeight;
 
   // 优化频谱数量计算
-  const numBars = Math.min(Math.floor(canvasWidth / 12), Math.floor(data.length / 2));
+  const numBars = Math.min(Math.floor(canvasWidth / 16), Math.floor(data.length / 3));
   const cornerRadius = props.radius;
-  const gap = 2; // 柱体间距
-  const barWidth = Math.max((canvasWidth / numBars / 2) - gap, 2); // 确保最小宽度
+  const gap = 2;
+  const barWidth = Math.max((canvasWidth / numBars / 2) - gap, 2);
 
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
   // 获取主题颜色
   const themeColor = status.coverTheme?.light?.shadeTwo || "239, 239, 239";
 
+  // 批量处理绘制操作
+  ctx.beginPath();
+  
   for (let i = 0; i < numBars; i++) {
-    // 使用对数计算提升低频显示效果
     const dataIndex = Math.floor(i * (data.length / numBars));
     const value = data[dataIndex];
-    const barHeight = Math.min((Math.log(value + 1) / Math.log(256)) * canvasHeight, canvasHeight);
+    const barHeight = Math.min((Math.log(value + 1) / Math.log(256)) * canvasHeight * 0.8, canvasHeight);
+
+    if (barHeight <= 0) continue;
 
     const x1 = i * (barWidth + gap) + canvasWidth / 2;
     const x2 = canvasWidth / 2 - ((i + 1) * (barWidth + gap));
     const y = canvasHeight - barHeight;
 
-    // 创建渐变色
-    const gradient1 = ctx.createLinearGradient(x1, y, x1, canvasHeight);
-    const gradient2 = ctx.createLinearGradient(x2, y, x2, canvasHeight);
-
-    gradient1.addColorStop(0, `rgba(${themeColor}, 0.8)`);
-    gradient1.addColorStop(1, `rgba(${themeColor}, 0.2)`);
-    gradient2.addColorStop(0, `rgba(${themeColor}, 0.8)`);
-    gradient2.addColorStop(1, `rgba(${themeColor}, 0.2)`);
-
-    if (barHeight > 0) {
-      ctx.fillStyle = gradient1;
-      roundRect(ctx, x1, y, barWidth, barHeight, cornerRadius);
-      ctx.fillStyle = gradient2;
-      roundRect(ctx, x2, y, barWidth, barHeight, cornerRadius);
+    // 使用缓存的渐变
+    let gradientKey = `${x1}-${y}-${canvasHeight}`;
+    let gradient1 = cachedGradients.get(gradientKey);
+    if (!gradient1) {
+      gradient1 = ctx.createLinearGradient(x1, y, x1, canvasHeight);
+      gradient1.addColorStop(0, `rgba(${themeColor}, 0.8)`);
+      gradient1.addColorStop(1, `rgba(${themeColor}, 0.2)`);
+      cachedGradients.set(gradientKey, gradient1);
     }
+
+    gradientKey = `${x2}-${y}-${canvasHeight}`;
+    let gradient2 = cachedGradients.get(gradientKey);
+    if (!gradient2) {
+      gradient2 = ctx.createLinearGradient(x2, y, x2, canvasHeight);
+      gradient2.addColorStop(0, `rgba(${themeColor}, 0.8)`);
+      gradient2.addColorStop(1, `rgba(${themeColor}, 0.2)`);
+      cachedGradients.set(gradientKey, gradient2);
+    }
+
+    ctx.fillStyle = gradient1;
+    roundRect(ctx, x1, y, barWidth, barHeight, cornerRadius);
+    ctx.fillStyle = gradient2;
+    roundRect(ctx, x2, y, barWidth, barHeight, cornerRadius);
   }
+
+  ctx.fill();
 
   requestAnimationFrame(() => {
     drawSpectrum(spectrumsData.value);
