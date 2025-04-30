@@ -136,7 +136,7 @@
 
    ```dotenv
    RENDERER_VITE_SERVER_URL = "https://api.example.com";
-   VITE_UNM_API = "https://unm.example.com/"; # 注意要加 /
+   VITE_UNM_API = "https://unm.example.com";
    RENDERER_VITE_SITE_URL = "https://player.example.com";
    ```
 > [!IMPORTANT]

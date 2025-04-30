@@ -49,7 +49,7 @@
 import { h, ref } from "vue";
 import type { MenuOption, NScrollbar } from "naive-ui";
 import type { SettingType } from "@/types/main.d.ts";
-import packageJson from "../../package.json";
+import packageJson from "../../../package.json";
 import SvgIcon from "@/components/Global/SvgIcon";
 
 const props = defineProps<{ type: SettingType }>();
