@@ -91,7 +91,6 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { storeToRefs } from "pinia";
 import { siteSettings, siteStatus, musicData } from "@/stores";
 import debounce from "@/utils/debounce";
-import packageJson from "@/../package.json";
 // 设置子项
 import General from "@/views/Setting/general.vue";
 import System from "@/views/Setting/system.vue";
@@ -105,7 +104,6 @@ const music = musicData();
 const status = siteStatus();
 const settings = siteSettings();
 const { showPlayBar } = storeToRefs(status);
-const { themeAutoCover } = storeToRefs(settings);
 
 // 响应式布局
 const isMobile = ref(false);
@@ -167,11 +165,7 @@ const allSetScroll = debounce((e) => {
   });
 }, 100);
 
-/* 跳转
-const jump = () => {
-  window.open(packageJson.github);
-};
-*/
+
 // 方法：显示弹窗
 const openModal = () => {
   showModal.value = true;
@@ -184,14 +178,6 @@ const openWebSettings = () => {
 };
 
 defineExpose({ showModal: openModal });
-import { watch } from 'vue';
-
-// 监听主题变化
-watch(() => settings.themeType, (newTheme) => {
-  const isDark = newTheme === 'dark';
-  document.documentElement.style.setProperty('--main-second-color', isDark ? '#1f1f1f' : '#f5f5f5');
-  // 更新其他相关样式变量
-}, { immediate: true });
 </script>
 
 <style lang="scss" scoped>
@@ -220,7 +206,7 @@ watch(() => settings.themeType, (newTheme) => {
     flex-shrink: 0;
     border-bottom: 1px solid var(--divider-color);
     background-color: var(--divider-color);
-    position: relative; /* 添加相对定位 */
+    position: relative;
 
     :deep(.n-tabs-nav) {
       padding: 0 20px;
@@ -235,7 +221,6 @@ watch(() => settings.themeType, (newTheme) => {
       font-weight: 600;
     }
     
-    /* 添加按钮样式 */
     .web-settings-btn {
       position: absolute;
       right: 16px;
@@ -267,14 +252,6 @@ watch(() => settings.themeType, (newTheme) => {
   }
 }
 
-.modal-actions {
-  padding: 16px 24px;
-  border-top: 1px solid var(--divider-color);
-  text-align: center;
-  background-color: var(--main-second-color);
-  transition: all 0.3s ease;
-}
-
 /* 移动端样式 */
 @media (max-width: 768px) {
   .settings-modal {
@@ -297,17 +274,6 @@ watch(() => settings.themeType, (newTheme) => {
           transform: scale(0.98);
         }
       }
-    }
-  }
-
-  .modal-actions {
-    padding: 16px;
-
-    :deep(.n-button) {
-      width: 100%;
-      height: 44px;
-      font-size: 16px;
-      border-radius: 8px;
     }
   }
 

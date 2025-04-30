@@ -91,7 +91,7 @@
         <div class="dev">
           全局动态取色
           <n-tag :bordered="false" round size="small" type="warning">
-            可能网站取色与实际预期效果不同
+            开发中
             <template #icon>
               <n-icon>
                 <SvgIcon icon="code" />
