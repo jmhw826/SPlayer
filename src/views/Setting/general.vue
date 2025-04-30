@@ -3,7 +3,9 @@
   <div class="set-type">
     <n-h3 prefix="bar"> 常规 </n-h3>
     <n-card class="set-item">
-      <div class="name">明暗模式</div>
+      <div class="name">明暗模式
+        <n-text class="tip">单击切换开关切换主题明暗模式</n-text>
+      </div>
       <n-select
         v-model:value="themeType"
         :options="[
@@ -23,7 +25,7 @@
     <n-card class="set-item">
       <div class="name">
         全局字体
-        <n-text class="tip">选择您偏好的字体</n-text>
+        <n-text class="tip">选择您偏好的网页全局字体</n-text>
       </div>
       <n-select
         v-model:value="settings.webFonts"
@@ -46,7 +48,9 @@
       />
     </n-card>
     <n-card class="set-item">
-      <div class="name">字体加粗</div>
+      <div class="name">字体加粗
+        <n-text class="tip">开启后网页字体将会被加粗</n-text>
+      </div>
       <n-switch v-model:value="settings.fontBold" :round="false" @update:value="updateWebFont(settings.webFonts)" />
     </n-card>
     <n-card class="set-item">
@@ -76,7 +80,9 @@
       <n-switch v-model:value="siderShowCover" :disabled="!showSider" :round="false" />
     </n-card>
     <n-card class="set-item">
-      <div class="name">显示搜索历史</div>
+      <div class="name">显示搜索历史
+        <n-text class="tip">开启后将会在搜索框展示搜索历史</n-text>
+      </div>
       <n-switch v-model:value="showSearchHistory" :round="false" />
     </n-card>
     <n-card class="set-item">

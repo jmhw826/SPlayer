@@ -1,178 +1,190 @@
 <template>
   <div class="set-type">
     <n-h3 prefix="bar"> 歌词 </n-h3>
-    <n-card class="set-item" :content-style="{
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-      }">
-      <div class="name">
-        歌词文本大小
-        <n-text :style="{ fontSize: lyricsFontSize + 'px', fontWeight: 'bold' }" class="tip">
-          歌词显示测试
-        </n-text>
-      </div>
-      <n-slider v-model:value="lyricsFontSize" :tooltip="false" :max="56" :min="36" :step="1" :marks="{
-          36: '最小',
-          46: '默认',
-          56: '最大',
-        }" />
-    </n-card>
-         <n-card class="set-item">
-      <div class="name">
-        歌词字体
-        <n-text class="tip">选择您偏好的字体</n-text>
-      </div>
-      <n-select
-        v-model:value="lyricsFont"
-        :options="[
-          {
-            label: 'LXGW WenKai',
-            value: 'LXGW WenKai',
-          },
-          {
-            label: 'HarmonyOS Sans',
-            value: 'HarmonyOS Sans', 
-          },
-          {
-            label: 'PingFang SC',
-            value: 'PingFang SC',
-          },
-        ]"
-        class="set"
-        @update:value="updateLyricsFont"
-      />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        智能暂停滚动
-        <n-text class="tip">鼠标移入歌词区域是否暂停滚动</n-text>
-      </div>
-      <n-switch v-model:value="lrcMousePause" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        歌词位置
-        <n-text class="tip">歌词的默认垂直位置</n-text>
-      </div>
-      <n-select v-model:value="lyricsPosition" :options="[
-          {
-            label: '居左',
-            value: 'left',
-          },
-          {
-            label: '居中',
-            value: 'center',
-          },
-          {
-            label: '居右',
-            value: 'right',
-          },
-        ]" class="set" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        歌词滚动位置
-        <n-text class="tip">歌词高亮时所处的位置</n-text>
-      </div>
-      <n-select 
-        :options="[
-          {
-            label: '靠近顶部',
-            value: 'start',
-          },
-          {
-            label: '水平居中', 
-            value: 'center',
-          },
-        ]"
-        :value="lyricsBlock"
-        @update:value="(val) => {
-          lyricsBlock = val;
-          alignAnchor = val === 'start' ? 'top' : 'center';
-        }"
-        class="set" 
-      />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        歌词字体加粗
-        <n-text class="tip">是否将歌词字体加粗显示，部分字体可能显示异常</n-text>
-      </div>
-      <n-switch v-model:value="lyricsBold" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        <div class="dev">
-          显示逐字歌词
-          <n-tag :bordered="false" round size="small" type="warning">
-            开发中
-            <template #icon>
-              <n-icon>
-                <SvgIcon icon="code" />
-              </n-icon>
-            </template>
-          </n-tag>
+    <n-collapse>
+      <n-collapse-item title="字体设置">
+        <n-card class="set-item" :content-style="{
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }">
+          <div class="name">
+            歌词文本大小
+            <n-text :style="{ fontSize: lyricsFontSize + 'px', fontWeight: 'bold' }" class="tip">
+              歌词显示测试
+            </n-text>
+          </div>
+          <n-slider v-model:value="lyricsFontSize" :tooltip="false" :max="56" :min="36" :step="1" :marks="{
+              36: '最小',
+              46: '默认',
+              56: '最大',
+            }" />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            歌词字体
+            <n-text class="tip">选择您偏好的字体</n-text>
+          </div>
+          <n-select
+            v-model:value="lyricsFont"
+            :options="[
+              {
+                label: 'LXGW WenKai',
+                value: 'LXGW WenKai',
+              },
+              {
+                label: 'HarmonyOS Sans',
+                value: 'HarmonyOS Sans', 
+              },
+              {
+                label: 'PingFang SC',
+                value: 'PingFang SC',
+              },
+            ]"
+            class="set"
+            @update:value="updateLyricsFont"
+          />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            歌词字体加粗
+            <n-text class="tip">是否将歌词字体加粗显示，部分字体可能显示异常</n-text>
+          </div>
+          <n-switch v-model:value="lyricsBold" :round="false" />
+        </n-card>
+      </n-collapse-item>
+      <n-collapse-item title="显示设置">
+        <n-card class="set-item">
+          <div class="name">
+            歌词位置
+            <n-text class="tip">歌词的默认垂直位置</n-text>
+          </div>
+          <n-select v-model:value="lyricsPosition" :options="[
+              {
+                label: '居左',
+                value: 'left',
+              },
+              {
+                label: '居中',
+                value: 'center',
+              },
+              {
+                label: '居右',
+                value: 'right',
+              },
+            ]" class="set" />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            歌词滚动位置
+            <n-text class="tip">歌词高亮时所处的位置</n-text>
+          </div>
+          <n-select 
+            :options="[
+              {
+                label: '靠近顶部',
+                value: 'start',
+              },
+              {
+                label: '水平居中', 
+                value: 'center',
+              },
+            ]"
+            :value="lyricsBlock"
+            @update:value="(val) => {
+              lyricsBlock = val;
+              alignAnchor = val === 'start' ? 'top' : 'center';
+            }"
+            class="set" 
+          />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            智能暂停滚动
+            <n-text class="tip">鼠标移入歌词区域是否暂停滚动</n-text>
+          </div>
+          <n-switch v-model:value="lrcMousePause" :round="false" />
+        </n-card>
+      </n-collapse-item>
+    <n-collapse-item title="歌词类型设置">
+      <n-card class="set-item">
+        <div class="name">
+          <div class="dev">
+            显示逐字歌词
+            <n-tag :bordered="false" round size="small" type="warning">
+              开发中
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="code" />
+                </n-icon>
+              </template>
+            </n-tag>
+          </div>
+          <n-text class="tip">是否在具有逐字歌词时显示</n-text>
         </div>
-        <n-text class="tip">是否在具有逐字歌词时显示</n-text>
-      </div>
-      <n-switch v-model:value="showYrc" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        是否使用Apple-Music-Like-Lyrics渲染器
-        <n-text class="tip">
-          Apple-Music-Like-Lyrics渲染器可能会造成卡顿等性能问题，手机端建议关闭
-        </n-text>
-      </div>
-      <n-switch v-model:value="useAMLyrics" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        是否使用AMLL弹簧渲染效果
-        <n-text class="tip">
-          是否使用Apple-Music-Like-Lyrics组件的弹簧效果
-        </n-text>
-      </div>
-      <n-switch v-model:value="useAMSpring" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        <div class="dev">
-          显示逐字歌词动画
-          <n-tag :bordered="false" round size="small" type="warning">
-            开发中
-            <template #icon>
-              <n-icon>
-                <SvgIcon icon="code" />
-              </n-icon>
-            </template>
-          </n-tag>
+        <n-switch v-model:value="showYrc" :round="false" />
+      </n-card>
+      <n-card class="set-item">
+        <div class="name">
+          <div class="dev">
+            显示逐字歌词动画
+            <n-tag :bordered="false" round size="small" type="warning">
+              开发中
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="code" />
+                </n-icon>
+              </template>
+            </n-tag>
+          </div>
+          <n-text class="tip">可能会造成卡顿等性能问题，手机端建议关闭</n-text>
         </div>
-        <n-text class="tip">可能会造成卡顿等性能问题，手机端建议关闭</n-text>
-      </div>
-      <n-switch v-model:value="showYrcAnimation" :disabled="!showYrc" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        显示歌词翻译
-        <n-text class="tip">是否在具有翻译歌词时显示</n-text>
-      </div>
-      <n-switch v-model:value="showTransl" :disabled="useAMLyrics" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        显示歌词音译
-        <n-text class="tip">是否在具有音译歌词时显示</n-text>
-      </div>
-      <n-switch v-model:value="showRoma" :disabled="useAMLyrics" :round="false" />
-    </n-card>
-    <n-card class="set-item">
-      <div class="name">
-        歌词自动聚焦
-        <n-text class="tip">是否聚焦显示当前播放行，其他行将模糊显示, 手机端建议关闭</n-text>
-      </div>
-      <n-switch v-model:value="lyricsBlur" :round="false" />
-    </n-card>
+        <n-switch v-model:value="showYrcAnimation" :disabled="!showYrc" :round="false" />
+      </n-card>
+      <n-card class="set-item">
+        <div class="name">
+          显示歌词翻译
+          <n-text class="tip">是否在具有翻译歌词时显示</n-text>
+        </div>
+        <n-switch v-model:value="showTransl" :disabled="useAMLyrics" :round="false" />
+      </n-card>
+      <n-card class="set-item">
+        <div class="name">
+          显示歌词音译
+          <n-text class="tip">是否在具有音译歌词时显示</n-text>
+        </div>
+        <n-switch v-model:value="showRoma" :disabled="useAMLyrics" :round="false" />
+      </n-card>
+    </n-collapse-item>
+    <n-collapse-item title="渲染设置">
+      <n-card class="set-item">
+        <n-collapse>
+          <n-collapse-item title="Apple Music Like Lyrics 设置">
+            <div class="name">
+              是否使用Apple-Music-Like-Lyrics渲染器
+              <n-text class="tip">
+                Apple-Music-Like-Lyrics渲染器可能会造成卡顿等性能问题，手机端建议关闭
+              </n-text>
+            </div>
+            <n-switch v-model:value="useAMLyrics" :round="false" />
+            <div class="name" style="margin-top: 16px;">
+              是否使用AMLL弹簧渲染效果
+              <n-text class="tip">
+                是否使用Apple-Music-Like-Lyrics组件的弹簧效果
+              </n-text>
+            </div>
+            <n-switch v-model:value="useAMSpring" :round="false" />
+          </n-collapse-item>
+        </n-collapse>
+      </n-card>
+      <n-card class="set-item">
+        <div class="name">
+          歌词自动聚焦
+          <n-text class="tip">是否聚焦显示当前播放行，其他行将模糊显示, 手机端建议关闭</n-text>
+        </div>
+        <n-switch v-model:value="lyricsBlur" :round="false" />
+      </n-card>
+    </n-collapse-item>
+  </n-collapse>
   </div>
 </template>
 

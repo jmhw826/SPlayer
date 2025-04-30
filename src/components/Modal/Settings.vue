@@ -187,6 +187,10 @@ defineExpose({ showModal: openModal });
   height: 70vh;
   background-color: var(--divider-color);
   transition: all 0.3s ease;
+  .n-base-selection {
+    border-radius: 8px;
+    background-color: transparent;
+  }
 
   .mobile-selector {
     flex-shrink: 0;
@@ -198,6 +202,7 @@ defineExpose({ showModal: openModal });
       width: 100%;
       .n-base-selection {
         border-radius: 8px;
+        background-color: transparent;
       }
     }
   }
