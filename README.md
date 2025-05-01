@@ -127,16 +127,21 @@
 2. 点击本仓库右上角的 `Fork`，复制本仓库到你的 `GitHub` 账号
 3. 复制 `/.env.example` 文件并重命名为 `/.env`
 4. 将 `.env` 文件中的 `RENDERER_VITE_SERVER_URL` 和 `VITE_UNM_API` 改为第一步得到的 API 地址
+> [!WARNING]
+> 
+> TMD`.env`文件已经明确表示不要用自带的`API`了, 我的`Vercel`的**500GB流量**就是被你们给耗光的
+> 下次再让我见到这种情况, 我就把你们的网易云cookie公开出来!
+>
 5. 将 `.env` 文件中的 `RENDERER_VITE_SITE_URL` 改为您的站点地址, 用于解决跨域问题
 
    ```dotenv
    RENDERER_VITE_SERVER_URL = "https://api.example.com";
-   VITE_UNM_API = "https://unm.example.com/"; # 注意要加 /
+   VITE_UNM_API = "https://unm.example.com";
    RENDERER_VITE_SITE_URL = "https://player.example.com";
    ```
 > [!IMPORTANT]
 >
-> 同时API也有另一只填入方式, 请在`vercel.json`里面
+> 同时API也有另一种填入方式, 请在`vercel.json`里面
 >
 >```json
 >
