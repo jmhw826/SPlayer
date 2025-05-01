@@ -55,9 +55,9 @@ import settings from "@/components/Modal/Settings.vue"
 
 const data = siteData();
 const router = useRouter();
-const settings = siteSettings();
+const setting = siteSettings();
 const { userLoginStatus, userData, userLikeData } = storeToRefs(data);
-const { themeType } = storeToRefs(settings);
+const { themeType } = storeToRefs(setting);
 
 // 菜单数据
 const userMenuShow = ref(false);
