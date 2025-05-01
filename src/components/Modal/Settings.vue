@@ -11,7 +11,7 @@
       WebkitBackdropFilter: 'blur(10px)',
       borderRadius: isMobile ? '16px 16px 0 0' : '8px',
       margin: isMobile ? 'auto auto 0 auto' : 'auto',
-      marginBottom: '100px',
+      marginBottom: isMobile ? '100px' : '0px',
     }"
   >
     <div class="settings-modal">
