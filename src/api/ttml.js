@@ -9,14 +9,24 @@ export const getSongTTML = async (id) => {
         var lyricurl = `${import.meta.env.VITE_TTML_API}`;
     }
     const url = `${lyricurl}/api/search?id=${id}&fixedVersion=ttml`;
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    if (!response.ok) {
-        return Promise.reject(new Error());
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: "cors",
+            credentials: "include"
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching TTML:", error);
+        throw error;
     }
-    return await response.json();
 }
