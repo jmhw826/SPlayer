@@ -268,10 +268,10 @@ export function parseTTMLToAMLL(ttmlContent: string): AMLLLyricLine[] {
   try {
     // 使用AMLL核心库的parseTTML函数解析TTML内容
     const parsedLines = parseTTML(ttmlContent);
-    
+    console.log(parsedLines);
     // 确保parsedLines是一个数组
     if (!Array.isArray(parsedLines)) {
-      console.error('TTML解析结果不是数组格式');
+      console.error('TTML解析结果不是数组格式', parsedLines);
       return [];
     }
     
