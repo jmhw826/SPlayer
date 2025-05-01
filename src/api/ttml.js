@@ -16,8 +16,7 @@ export const getSongTTML = async (id) => {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            mode: "cors",
-            credentials: "include"
+            mode: "no-cors",
         });
         
         if (!response.ok) {
