@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { useRafFn } from '@vueuse/core';
 import { ref } from "vue";
-import { useSiteStatusStore } from "@/stores";
+import { siteStatus } from "@/stores";
 
 const props = defineProps<{
   show: boolean;
@@ -16,7 +16,7 @@ const props = defineProps<{
   color?: string;
 }>();
 
-const statusStore = useSiteStatusStore();
+const statusStore = siteStatus();
 
 // canvas
 const canvasRef = ref<HTMLCanvasElement | null>(null);
