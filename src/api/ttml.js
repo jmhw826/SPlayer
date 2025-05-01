@@ -8,6 +8,9 @@ export const getSongTTML = async (id) => {
     } else {
         var lyricurl = `${import.meta.env.VITE_TTML_API}`;
     }
+    if (import.meta.env["VITE_TTML_API"] === '') {
+        return null;
+    }
     const url = `${lyricurl}/api/search?id=${id}&fixedVersion=ttml`;
     try {
         const response = await fetch(url);
@@ -23,6 +26,6 @@ export const getSongTTML = async (id) => {
         return data;
     } catch (error) {
         console.error("Error fetching TTML:", error);
-        throw error;
+        return null;
     }
 }

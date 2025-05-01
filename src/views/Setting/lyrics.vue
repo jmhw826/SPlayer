@@ -173,7 +173,7 @@
                 开启本项后，歌词将使用TTML格式歌词, 会从SteveXMH的歌词仓库获取TTML歌词, 如果没有TTML歌词则回退使用LRC歌词
               </n-text>
             </div>
-            <n-switch v-model:value="useTTMLFormat" :round="false" />
+            <n-switch v-model:value="useTTMLFormat" :disabled="import.meta.env['VITE_TTML_API']" :round="false" />
           </n-collapse-item>
         </n-collapse>
         <n-card class="set-item">
@@ -349,7 +349,9 @@ const updateLyricsFont = () => {
         border-radius: 4px;
 
         @media screen and (max-width: 768px) {
-          max-width: 100%;
+          max-width: none;
+          padding: 4px 8px;
+          margin-top: 4px;
         }
 
         &:hover, &:focus {
@@ -358,6 +360,10 @@ const updateLyricsFont = () => {
 
         .n-input-wrapper {
           padding: 0 8px;
+
+          @media screen and (max-width: 768px) {
+            padding: 0 4px;
+          }
         }
 
         .n-input__input {
@@ -367,12 +373,17 @@ const updateLyricsFont = () => {
 
           @media screen and (max-width: 768px) {
             height: 36px;
+            font-size: 14px;
           }
         }
 
         .n-input-number-suffix, 
         .n-input-number-prefix {
           color: rgba(255, 255, 255, 0.5);
+
+          @media screen and (max-width: 768px) {
+            font-size: 12px;
+          }
         }
       }
     }
