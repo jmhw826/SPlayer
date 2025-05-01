@@ -43,7 +43,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
 import { LyricLine } from '@applemusic-like-lyrics/core';
 import { musicData, siteSettings, siteStatus } from '@/stores';
-import { parseTTMLToAMLL } from '@/utils/processTTML.ts';
+import { parseTTMLToAMLL } from '@/utils/lyric.ts';
 import { setSeek, getSeek, fadePlayOrPause } from '@/utils/Player.js';
 import { storeToRefs } from 'pinia';
 import type { LyricClickEvent, LyricPlayerRef } from '@/types/amll.ts';
@@ -144,6 +144,7 @@ const currentLyrics = computed<LyricLine[]>(() => {
   // 检查是否有TTML格式的歌词
   if (playSongLyric.value?.ttml) {
     const ttmlLyrics = parseTTMLToAMLL(playSongLyric.value.ttml);
+    console.log('TTML歌词解析结果:', ttmlLyrics);
     // 检查是否为纯音乐歌词
     return isPureInstrumental(ttmlLyrics) ? [] : ttmlLyrics;
   }
@@ -151,6 +152,8 @@ const currentLyrics = computed<LyricLine[]>(() => {
   // 使用歌词处理逻辑
   const isYrc = showYrc.value && playSongLyric.value.hasYrc && playSongLyric.value.yrc?.length > 0;
   const lyrics = isYrc ? playSongLyric.value.yrcAMData : playSongLyric.value.lrcAMData;
+  console.log('当前使用的歌词类型:', isYrc ? 'YRC' : 'LRC');
+  console.log('歌词数据:', lyrics);
   
   // 检查是否为纯音乐歌词
   return isPureInstrumental(lyrics) ? [] : lyrics;

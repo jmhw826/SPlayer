@@ -644,6 +644,7 @@ const getSongLyricData = async (islocal, data) => {
   try {
     const music = musicData();
     if (islocal) {
+      /* 不要再拿local误导人啦 */
       const lyricData = await electron.ipcRenderer.invoke("getMusicLyric", data?.path);
       if (lyricData) {
         // 使用parseLyric.js处理本地歌词
