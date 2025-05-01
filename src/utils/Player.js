@@ -670,10 +670,11 @@ const getSongLyricData = async (islocal, data) => {
         // 使用lyric.ts处理AMLL格式
         let amllLyric = parseLyricsData(lyricResponse.original);
         // 使用processTTML来处理AMLL格式
-        const ttmlLyric = parseTTMLToAMLL(getSongTTML.content);
-        if (ttmlLyric) {
+        const ttmlLyric = parseTTMLToAMLL(lyricTTML.content);
+        if (lyricTTML.content && ttmlLyric) {
           amllLyric = ttmlLyric;
-        }
+          console.info("TTML歌词解析成功", amllLyric);
+        };
         // 合并结果
         music.playSongLyric = {
           lrc: parsedLyric.lrc,
