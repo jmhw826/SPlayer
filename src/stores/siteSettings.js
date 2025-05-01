@@ -57,8 +57,9 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       showRoma: true, // 是否显示歌词音译
       useAMLyrics: false, // 使用苹果音乐歌词
       useAMSpring: false, // 使用苹果音乐歌词弹簧动画
-      // AMLL歌词参数设置
-      springParams: {
+      /* AMLL歌词参数设置 */
+      useTTMLFormat: false, // 使用TTML格式歌词
+      springParams: { // 弹簧参数
         posX: {
           mass: 1,
           damping: 10,

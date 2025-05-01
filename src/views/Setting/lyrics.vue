@@ -157,6 +157,23 @@
               </n-text>
             </div>
             <n-switch v-model:value="useAMSpring" :round="false" />
+            <div class="name" style="margin-top: 16px;">
+              <div class="dev">
+                使用TTML格式歌词
+                <n-tag :bordered="false" round size="small" type="warning">
+                开发中
+                <template #icon>
+                  <n-icon>
+                    <SvgIcon icon="code" />
+                  </n-icon>
+                </template>
+              </n-tag>
+              </div>
+              <n-text class="tip">
+                开启本项后，歌词将使用TTML格式歌词, 会从SteveXMH的歌词仓库获取TTML歌词, 如果没有TTML歌词则回退使用LRC歌词
+              </n-text>
+            </div>
+            <n-switch v-model:value="useTTMLFormat" :round="false" />
           </n-collapse-item>
         </n-collapse>
         <n-card class="set-item">

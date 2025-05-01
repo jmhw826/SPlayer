@@ -670,9 +670,10 @@ const getSongLyricData = async (islocal, data) => {
         const parsedLyric = parseLyric(lyricLegacy);
         // 使用lyric.ts处理AMLL格式
         let amllLyric = parseLyricsData(lyricResponse.original);
-        
+        // 为了使用TTML歌词添加一个开关
+        const settings = siteSettings();
         // 处理TTML歌词
-        if (lyricTTML?.content) {
+        if (lyricTTML?.content && settings.useTTMLFormat) {
           try {
             const ttmlLyric = parseTTMLToAMLL(lyricTTML.content);
             if (ttmlLyric && ttmlLyric.length > 0) {
