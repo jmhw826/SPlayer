@@ -8,7 +8,7 @@ export const getSongTTML = async (id) => {
     } else {
         var lyricurl = `${import.meta.env.VITE_TTML_API}`;
     }
-    const url = `${lyricurl}/api/search?id=${id}`;
+    const url = `${lyricurl}/api/search?id=${id}&fixedVersion=ttml`;
     const response = await fetch(url, {
         method: "GET",
         headers: {
