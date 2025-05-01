@@ -16,14 +16,17 @@ export const getSongTTML = async (id) => {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            mode: "no-cors",
+            credentials: "include"
         });
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorMessage = `TTML API请求失败: ${response.status} ${response.statusText}`;
+            console.error(errorMessage);
+            throw new Error(errorMessage);
         }
         
-        return await response.json();
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.error("Error fetching TTML:", error);
         throw error;
