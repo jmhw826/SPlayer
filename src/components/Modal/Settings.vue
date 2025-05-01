@@ -85,6 +85,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from "pinia";
 import { siteSettings, siteStatus, musicData } from "@/stores";
 import debounce from "@/utils/debounce";
@@ -95,10 +96,10 @@ import Lyrics from "@/views/Setting/lyrics.vue";
 import Download from "@/views/Setting/download.vue";
 import Other from "@/views/Setting/other.vue";
 
+const router = useRouter();
 const music = musicData();
 const status = siteStatus();
-const settings = siteSettings();
-const { showPlayBar } = storeToRefs(status);
+const { showPlayBar, showFullPlayer } = storeToRefs(status);
 
 // 响应式布局
 const isMobile = ref(false);
@@ -166,9 +167,9 @@ const openModal = () => {
 
 // 新增打开网页端设置方法
 const openWebSettings = () => {
-  const siteStatus = siteStatus();
-  siteStatus.showFullPlayer = false;
-  window.location.href = "/#/setting";
+  showFullPlayer = false;
+  router.push({ path: "/settings" });
+  showModal.value = false;
 };
 
 defineExpose({ showModal: openModal });
