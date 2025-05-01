@@ -232,6 +232,7 @@ const {
   useAMLyrics,
   useAMSpring,
   lyricsFont,
+  springParams,
 } = storeToRefs(settings);
 
 // 更新全局歌词字体
