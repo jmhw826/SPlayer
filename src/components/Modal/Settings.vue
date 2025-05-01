@@ -33,12 +33,10 @@
           @update:value="settingTabChange"
         >
           <n-tab name="setTab1">常规</n-tab>
-          <n-tab name="setTab2">系统</n-tab>
-          <n-tab name="setTab3">播放</n-tab>
-          <n-tab name="setTab4">歌词</n-tab>
-          <n-tab name="setTab5">下载</n-tab>
-          <n-tab name="setTab6">其他</n-tab>
-          <!--n-tab name="setTab7">TestOptions</n-tab-->
+          <n-tab name="setTab2">播放</n-tab>
+          <n-tab name="setTab3">歌词</n-tab>
+          <n-tab name="setTab4">下载</n-tab>
+          <n-tab name="setTab5">其他</n-tab>
         </n-tabs>
         
         <!-- 添加跳转按钮 -->
@@ -70,8 +68,6 @@
         >
           <!-- 常规 -->
           <General />
-          <!-- 系统 -->
-          <System />
           <!-- 播放 -->
           <Player />
           <!-- 歌词 -->
@@ -80,8 +76,6 @@
           <Download />
           <!-- 其他 -->
           <Other />
-          <!--TestOptions-->
-          <!--TestOptions /-->
         </n-scrollbar>
       </div>
     </div>
@@ -95,12 +89,10 @@ import { siteSettings, siteStatus, musicData } from "@/stores";
 import debounce from "@/utils/debounce";
 // 设置子项
 import General from "@/views/Setting/general.vue";
-import System from "@/views/Setting/system.vue";
 import Player from "@/views/Setting/player.vue";
 import Lyrics from "@/views/Setting/lyrics.vue";
 import Download from "@/views/Setting/download.vue";
 import Other from "@/views/Setting/other.vue";
-// import TestOptions from "@/views/Setting/testoptions.vue";
 
 const music = musicData();
 const status = siteStatus();
@@ -132,12 +124,10 @@ const showModal = ref(false);
 // 标签选项
 const tabOptions = computed(() => [
   { label: '常规', value: 'setTab1' },
-  { label: '系统', value: 'setTab2' },
-  { label: '播放', value: 'setTab3' },
-  { label: '歌词', value: 'setTab4' },
-  { label: '下载', value: 'setTab5' },
-  { label: '其他', value: 'setTab6' }
-  // { label: 'TestOptions', value: 'setTab7' }
+  { label: '播放', value: 'setTab2' },
+  { label: '歌词', value: 'setTab3' },
+  { label: '下载', value: 'setTab4' },
+  { label: '其他', value: 'setTab5' }
 ]);
 
 // 计算滚动区域高度
