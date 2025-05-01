@@ -268,7 +268,7 @@ export function parseTTMLToAMLL(ttmlContent: string): AMLLLyricLine[] {
   try {
     // 使用AMLL核心库的parseTTML函数解析TTML内容
     const parsedLines = parseTTML(ttmlContent);
-    console.log(parsedLines);
+    
     // 确保parsedLines是一个数组
     if (!Array.isArray(parsedLines)) {
       console.error('TTML解析结果不是数组格式', parsedLines);
@@ -276,15 +276,34 @@ export function parseTTMLToAMLL(ttmlContent: string): AMLLLyricLine[] {
     }
     
     // 转换为AMLL格式的歌词行
-    return parsedLines.map(line => ({
-      words: Array.isArray(line?.words) ? line.words : [],
-      startTime: line?.words?.[0]?.startTime ?? 0,
-      endTime: line?.words?.[line?.words?.length - 1]?.endTime ?? (line?.words?.[0]?.startTime + 5000),
-      translatedLyric: line?.translatedLyric || '',
-      romanLyric: line?.romanLyric || '',
-      isBG: line?.isBG ?? false,
-      isDuet: line?.isDuet ?? false
-    }))
+    return parsedLines.map(line => {
+      // 确保line是一个有效对象
+      if (!line || typeof line !== 'object') {
+        console.warn('无效的歌词行数据:', line);
+        return null;
+      }
+
+      // 处理words数组
+      const words = Array.isArray(line.words) ? line.words.map(word => ({
+        word: word?.word?.trim() || '',
+        startTime: typeof word?.startTime === 'number' ? word.startTime : 0,
+        endTime: typeof word?.endTime === 'number' ? word.endTime : 0
+      })) : [];
+
+      // 计算开始和结束时间
+      const startTime = words[0]?.startTime ?? 0;
+      const endTime = words[words.length - 1]?.endTime ?? (startTime + 5000);
+
+      return {
+        words,
+        startTime,
+        endTime,
+        translatedLyric: typeof line.translatedLyric === 'string' ? line.translatedLyric : '',
+        romanLyric: typeof line.romanLyric === 'string' ? line.romanLyric : '',
+        isBG: typeof line.isBG === 'boolean' ? line.isBG : false,
+        isDuet: typeof line.isDuet === 'boolean' ? line.isDuet : false
+      };
+    }).filter(line => line !== null) as AMLLLyricLine[]
   } catch (error) {
     console.error('解析TTML时发生错误：', error);
     return [];
