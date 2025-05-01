@@ -15,6 +15,9 @@
         :enableBlur="lyricsBlur"
         :alignAnchor="'top'"
         :enableInterludeDots="true"
+        :linePosXSpringParams="settings.springParams.posX"
+        :linePosYSpringParams="settings.springParams.posY" 
+        :lineScaleSpringParams="settings.springParams.scale" 
         :style="{
           '--amll-lyric-view-color': mainColor,
           '--amll-lyric-player-font-size': isMobile ? '25px' : lyricsFontSize + 'px',

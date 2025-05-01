@@ -159,6 +159,47 @@
             <n-switch v-model:value="useAMSpring" :round="false" />
           </n-collapse-item>
         </n-collapse>
+        <n-card class="set-item">
+        <div class="name">
+          弹簧动画参数
+          <span class="tip">调整歌词动画的弹性效果</span>
+        </div>
+        <n-collapse>
+          <n-collapse-item title="横向移动">
+            <n-form-item label="质量">
+              <n-input-number v-model:value="springParams.posX.mass" :min="0.1" :step="0.1" />
+            </n-form-item>
+            <n-form-item label="阻尼">
+              <n-input-number v-model:value="springParams.posX.damping" :min="0" :step="1" />
+            </n-form-item>
+            <n-form-item label="刚度">
+              <n-input-number v-model:value="springParams.posX.stiffness" :min="0" :step="1" />
+            </n-form-item>
+          </n-collapse-item>
+          <n-collapse-item title="纵向移动">
+            <n-form-item label="质量">
+              <n-input-number v-model:value="springParams.posY.mass" :min="0.1" :step="0.1" />
+            </n-form-item>
+            <n-form-item label="阻尼">
+              <n-input-number v-model:value="springParams.posY.damping" :min="0" :step="1" />
+            </n-form-item>
+            <n-form-item label="刚度">
+              <n-input-number v-model:value="springParams.posY.stiffness" :min="0" :step="1" />
+            </n-form-item>
+          </n-collapse-item>
+          <n-collapse-item title="缩放">
+            <n-form-item label="质量">
+              <n-input-number v-model:value="springParams.scale.mass" :min="0.1" :step="0.1" />
+            </n-form-item>
+            <n-form-item label="阻尼">
+              <n-input-number v-model:value="springParams.scale.damping" :min="0" :step="1" />
+            </n-form-item>
+            <n-form-item label="刚度">
+              <n-input-number v-model:value="springParams.scale.stiffness" :min="0" :step="1" />
+            </n-form-item>
+          </n-collapse-item>
+        </n-collapse>
+      </n-card>
       </n-card>
       <n-card class="set-item">
         <div class="name">
