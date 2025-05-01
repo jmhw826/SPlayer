@@ -166,6 +166,7 @@ const openModal = () => {
 
 // 新增打开网页端设置方法
 const openWebSettings = () => {
+  const siteStatus = siteStatus();
   siteStatus.showFullPlayer = false;
   window.location.href = "/#/setting";
 };
