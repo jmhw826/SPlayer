@@ -664,17 +664,34 @@ const getSongLyricData = async (islocal, data) => {
       const lyricResponse = await getSongLyric(data?.id);
       const lyricLegacy = await getSongLyricLegacy(data?.id);
       const lyricTTML = await getSongTTML(data?.id);
-      if (lyricResponse?.original || lyricLegacy || lyricTTML) {
+      if (lyricResponse?.original || lyricLegacy || lyricTTML?.content) {
         // 使用parseLyric.js处理基础歌词
         const parsedLyric = parseLyric(lyricLegacy);
         // 使用lyric.ts处理AMLL格式
         let amllLyric = parseLyricsData(lyricResponse.original);
-        // 使用processTTML来处理AMLL格式
-        const ttmlLyric = parseTTMLToAMLL(lyricTTML.content);
-        if (lyricTTML.content && ttmlLyric) {
-          amllLyric = ttmlLyric;
-          console.info("TTML歌词解析成功", amllLyric);
-        };
+        
+        // 处理TTML歌词
+        if (lyricTTML?.content) {
+          try {
+            const ttmlLyric = parseTTMLToAMLL(lyricTTML.content);
+            if (ttmlLyric && ttmlLyric.length > 0) {
+              // 将TTML歌词转换为AMLL格式
+              amllLyric = {
+                lrcData: [],
+                yrcData: [],
+                lrcAMData: ttmlLyric,
+                yrcAMData: [],
+                hasLrcTran: ttmlLyric.some(line => line.translatedLyric),
+                hasLrcRoma: ttmlLyric.some(line => line.romanLyric),
+                hasYrc: false
+              };
+              console.info("TTML歌词解析成功", amllLyric);
+            }
+          } catch (error) {
+            console.error("TTML歌词解析失败:", error);
+          }
+        }
+        
         // 合并结果
         music.playSongLyric = {
           lrc: parsedLyric.lrc,
@@ -682,9 +699,9 @@ const getSongLyricData = async (islocal, data) => {
           lrcAMData: amllLyric.lrcAMData,
           yrcAMData: amllLyric.yrcAMData,
           // 保留原始歌词属性
-          hasLrcTran: parsedLyric.hasLrcTran,
-          hasLrcRoma: parsedLyric.hasLrcRoma,
-          hasYrc: parsedLyric.hasYrc,
+          hasLrcTran: amllLyric.hasLrcTran || parsedLyric.hasLrcTran,
+          hasLrcRoma: amllLyric.hasLrcRoma || parsedLyric.hasLrcRoma,
+          hasYrc: amllLyric.hasYrc || parsedLyric.hasYrc,
           hasYrcTran: parsedLyric.hasYrcTran,
           hasYrcRoma: parsedLyric.hasYrcRoma
         };

@@ -2,7 +2,7 @@
  * 歌词处理工具
  * 整合了原来的多个歌词处理文件的功能
  */
-import { LyricLine, parseLrc, parseYrc } from "@applemusic-like-lyrics/lyric";
+import { LyricLine, parseLrc, parseYrc, parseTTML } from "@applemusic-like-lyrics/core";
 import type { LyricLine as AMLLLyricLine } from '@/types/amll';
 import { siteSettings } from "@/stores";
 import { msToS } from "./time.ts";
@@ -266,84 +266,21 @@ export function parseTTMLToAMLL(ttmlContent: string): AMLLLyricLine[] {
   }
 
   try {
-    // 创建一个临时的DOM解析器来解析TTML内容
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(ttmlContent, 'text/xml');
+    // 使用AMLL核心库的parseTTML函数解析TTML内容
+    const parsedLines = parseTTML(ttmlContent);
     
-    // 检查解析是否成功
-    if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
-      return [];
-    }
-
-    // 获取所有的p标签（歌词行）
-    const pElements = xmlDoc.getElementsByTagName('p');
-    if (!pElements || pElements.length === 0) {
-      return [];
-    }
-
     // 转换为AMLL格式的歌词行
-    const amllLines: AMLLLyricLine[] = [];
-    for (let i = 0; i < pElements.length; i++) {
-      const p = pElements[i];
-      const beginAttr = p.getAttribute('begin');
-      const endAttr = p.getAttribute('end');
-      
-      if (!beginAttr || !endAttr) {
-        continue;
-      }
-
-      // 解析时间（格式可能是 mm:ss.sss 或 hh:mm:ss.sss）
-      const startTime = parseTimeToMs(beginAttr);
-      const endTime = Math.max(startTime + 100, parseTimeToMs(endAttr)); // 确保结束时间大于开始时间
-      
-      if (isNaN(startTime) || isNaN(endTime)) {
-        continue;
-      }
-
-      // 获取主要歌词内容和翻译/音译内容
-      let mainContent = p.textContent?.trim() || '';
-      let translatedLyric = '';
-      let romanLyric = '';
-      
-      // 查找翻译和音译标签
-      const translationSpan = p.querySelector('.translation');
-      const romajiSpan = p.querySelector('.romaji');
-      
-      if (translationSpan) {
-        translatedLyric = translationSpan.textContent?.trim() || '';
-        // 从主内容中移除翻译部分
-        mainContent = mainContent.replace(translatedLyric, '').trim();
-      }
-      
-      if (romajiSpan) {
-        romanLyric = romajiSpan.textContent?.trim() || '';
-        // 从主内容中移除音译部分
-        mainContent = mainContent.replace(romanLyric, '').trim();
-      }
-
-      // 创建AMLL格式的歌词行
-      const amllLine: AMLLLyricLine = {
-        startTime,
-        endTime,
-        words: [{
-          word: mainContent || '♪',
-          startTime,
-          endTime
-        }],
-        translatedLyric,
-        romanLyric,
-        isBG: false,
-        isDuet: false
-      };
-
-      amllLines.push(amllLine);
-    }
-
-    // 确保歌词行按时间排序
-    amllLines.sort((a, b) => a.startTime - b.startTime);
-
-    return amllLines;
+    return parsedLines.map(line => ({
+      words: line.words || [],
+      startTime: line.words?.[0]?.startTime ?? 0,
+      endTime: line.words?.[line.words.length - 1]?.endTime ?? (line.words?.[0]?.startTime + 5000),
+      translatedLyric: line.translatedLyric || '',
+      romanLyric: line.romanLyric || '',
+      isBG: line.isBG ?? false,
+      isDuet: line.isDuet ?? false
+    }));
   } catch (error) {
+    console.error('解析TTML时发生错误：', error);
     return [];
   }
 }
