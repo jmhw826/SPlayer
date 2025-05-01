@@ -267,16 +267,16 @@ export function parseTTMLToAMLL(ttmlContent: string): AMLLLyricLine[] {
 
   try {
     // 使用AMLL核心库的parseTTML函数解析TTML内容
-    const parsedLines = parseTTML(ttmlContent);
+    const parsedResult = parseTTML(ttmlContent);
     
-    // 确保parsedLines是一个数组
-    if (!Array.isArray(parsedLines)) {
-      console.error('TTML解析结果不是数组格式', parsedLines);
+    // 检查解析结果是否包含lines数组
+    if (!parsedResult || !parsedResult.lines || !Array.isArray(parsedResult.lines)) {
+      console.error('TTML解析结果格式无效', parsedResult);
       return [];
     }
     
     // 转换为AMLL格式的歌词行
-    return parsedLines.map(line => {
+    return parsedResult.lines.map(line => {
       // 确保line是一个有效对象
       if (!line || typeof line !== 'object') {
         console.warn('无效的歌词行数据:', line);
