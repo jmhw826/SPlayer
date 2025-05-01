@@ -5,9 +5,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { siteStatus } from "@/stores";
+import { useRafFn } from '@vueuse/core';
 
 const props = defineProps({
   show: {
@@ -38,102 +39,55 @@ const isKeepDrawing = ref(true);
  * 绘制音乐频谱图
  * @param {Array} data - 包含音频频谱数据的数组
  */
-// 用于存储上一帧的频谱数据
-const prevData = ref(new Array(1024).fill(0));
-
-// 平滑处理频谱数据
-const smoothData = (data, prevData, smoothingFactor = 0.3) => {
-  if (!data) return prevData;
-  return data.map((value, i) => {
-    const smoothedValue = value * smoothingFactor + prevData[i] * (1 - smoothingFactor);
-    prevData[i] = smoothedValue;
-    return smoothedValue;
-  });
-};
-
-// 缓存画布尺寸和计算结果
-let lastWidth = 0;
-let lastHeight = 0;
-let cachedGradients = new Map();
-let animationFrameId = null;
-
 const drawSpectrum = (data) => {
   if (!data || !isKeepDrawing.value || !canvasRef.value) return;
-
-  // 去除频谱前10项并进行平滑处理
-  data = smoothData(data.slice(10), prevData.value);
-
-  const currentWidth = document.body.clientWidth >= 1600 ? 1600 : document.body.clientWidth;
-  const currentHeight = props.height;
-
-  // 仅在尺寸变化时重新设置画布
-  if (currentWidth !== lastWidth || currentHeight !== lastHeight) {
-    canvasRef.value.width = currentWidth;
-    canvasRef.value.height = currentHeight;
-    lastWidth = currentWidth;
-    lastHeight = currentHeight;
-    cachedGradients.clear(); // 清除缓存的渐变
-  }
-
-  const ctx = canvasRef.value.getContext("2d", { alpha: false });
-  const canvasWidth = currentWidth;
-  const canvasHeight = currentHeight;
-
-  // 优化频谱数量计算
-  const numBars = Math.min(Math.floor(canvasWidth / 16), Math.floor(data.length / 3));
+  
+  // 去除频谱前10项
+  data = data.slice(10);
+  
+  // 设置画布宽度，最大为1600
+  canvasRef.value.width = document.body.clientWidth >= 1600 ? 1600 : document.body.clientWidth;
+  // 设置画布高度
+  canvasRef.value.height = props.height;
+  
+  // 获取2D上下文
+  const ctx = canvasRef.value.getContext("2d");
+  if (!ctx) return;
+  
+  // 画布宽高
+  const canvasWidth = canvasRef.value.width;
+  const canvasHeight = canvasRef.value.height;
+  
+  // 频谱数量
+  const numBars = spectrumsData.value.length / 2.5;
+  // 圆角半径
   const cornerRadius = props.radius;
-  const gap = 2;
-  const barWidth = Math.max((canvasWidth / numBars / 2) - gap, 2);
-
+  // 柱形宽度
+  const barWidth = canvasWidth / numBars / 2;
+  
+  // 清除画布
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
+  
   // 获取主题颜色
   const themeColor = status.coverTheme?.light?.shadeTwo || "239, 239, 239";
-
-  // 批量处理绘制操作
-  ctx.beginPath();
+  ctx.fillStyle = `rgba(${themeColor}, 0.8)`;
   
+  // 遍历音频频谱数据
   for (let i = 0; i < numBars; i++) {
-    const dataIndex = Math.floor(i * (data.length / numBars));
-    const value = data[dataIndex];
-    const barHeight = Math.min((Math.log(value + 1) / Math.log(256)) * canvasHeight * 0.8, canvasHeight);
-
-    if (barHeight <= 0) continue;
-
-    const x1 = i * (barWidth + gap) + canvasWidth / 2;
-    const x2 = canvasWidth / 2 - ((i + 1) * (barWidth + gap));
+    // 计算柱形高度
+    const barHeight = (data[i] / 255) * canvasHeight;
+    // 计算柱形的x和y坐标
+    const x1 = i * barWidth + canvasWidth / 2;
+    const x2 = canvasWidth / 2 - (i + 1) * barWidth;
     const y = canvasHeight - barHeight;
-
-    // 使用缓存的渐变
-    let gradientKey = `${x1}-${y}-${canvasHeight}`;
-    let gradient1 = cachedGradients.get(gradientKey);
-    if (!gradient1) {
-      gradient1 = ctx.createLinearGradient(x1, y, x1, canvasHeight);
-      gradient1.addColorStop(0, `rgba(${themeColor}, 0.8)`);
-      gradient1.addColorStop(1, `rgba(${themeColor}, 0.2)`);
-      cachedGradients.set(gradientKey, gradient1);
+    
+    // 检查柱形高度是否大于0，避免绘制高度为0的柱形
+    if (barHeight > 0) {
+      // 调用绘制圆角矩形的函数
+      roundRect(ctx, x1, y, barWidth - 3, barHeight, cornerRadius);
+      roundRect(ctx, x2, y, barWidth - 3, barHeight, cornerRadius);
     }
-
-    gradientKey = `${x2}-${y}-${canvasHeight}`;
-    let gradient2 = cachedGradients.get(gradientKey);
-    if (!gradient2) {
-      gradient2 = ctx.createLinearGradient(x2, y, x2, canvasHeight);
-      gradient2.addColorStop(0, `rgba(${themeColor}, 0.8)`);
-      gradient2.addColorStop(1, `rgba(${themeColor}, 0.2)`);
-      cachedGradients.set(gradientKey, gradient2);
-    }
-
-    ctx.fillStyle = gradient1;
-    roundRect(ctx, x1, y, barWidth, barHeight, cornerRadius);
-    ctx.fillStyle = gradient2;
-    roundRect(ctx, x2, y, barWidth, barHeight, cornerRadius);
   }
-
-  ctx.fill();
-
-  requestAnimationFrame(() => {
-    drawSpectrum(spectrumsData.value);
-  });
 };
 
 /**
@@ -160,12 +114,17 @@ const roundRect = (ctx, x, y, width, height, radius) => {
   ctx.fill();
 };
 
-onMounted(() => {
+// 开始绘制频谱
+const { pause: pauseDraw, resume: resumeDraw } = useRafFn(() => {
   drawSpectrum(spectrumsData.value);
 });
 
+onMounted(() => {
+  resumeDraw();
+});
+
 onBeforeUnmount(() => {
-  isKeepDrawing.value = false;
+  pauseDraw();
 });
 </script>
 
