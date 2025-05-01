@@ -293,15 +293,30 @@ const updateLyricsFont = () => {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
 
+    @media screen and (max-width: 768px) {
+      margin-bottom: 8px;
+      padding: 12px !important;
+    }
+
     .name {
       margin-bottom: 8px;
       font-size: 14px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
 
       .tip {
         display: block;
         margin-top: 4px;
         font-size: 12px;
         opacity: 0.6;
+
+        @media screen and (max-width: 768px) {
+          font-size: 11px;
+          margin-top: 2px;
+        }
       }
     }
 
@@ -312,9 +327,18 @@ const updateLyricsFont = () => {
     :deep(.n-form-item) {
       margin-bottom: 12px;
       
+      @media screen and (max-width: 768px) {
+        margin-bottom: 8px;
+      }
+
       .n-form-item-label {
         font-size: 14px;
         padding-bottom: 4px;
+
+        @media screen and (max-width: 768px) {
+          font-size: 13px;
+          padding-bottom: 2px;
+        }
       }
 
       .n-input-number {
@@ -323,6 +347,10 @@ const updateLyricsFont = () => {
         background-color: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 4px;
+
+        @media screen and (max-width: 768px) {
+          max-width: 100%;
+        }
 
         &:hover, &:focus {
           border-color: rgba(255, 255, 255, 0.2);
@@ -336,12 +364,43 @@ const updateLyricsFont = () => {
           height: 32px;
           padding: 0;
           color: rgba(255, 255, 255, 0.9);
+
+          @media screen and (max-width: 768px) {
+            height: 36px;
+          }
         }
 
         .n-input-number-suffix, 
         .n-input-number-prefix {
           color: rgba(255, 255, 255, 0.5);
         }
+      }
+    }
+
+    :deep(.n-collapse) {
+      @media screen and (max-width: 768px) {
+        .n-collapse-item__header {
+          padding: 8px;
+          font-size: 14px;
+        }
+
+        .n-collapse-item__content-inner {
+          padding: 8px;
+        }
+      }
+    }
+
+    :deep(.n-switch) {
+      @media screen and (max-width: 768px) {
+        height: 24px;
+        min-width: 44px;
+      }
+    }
+
+    :deep(.n-tag) {
+      @media screen and (max-width: 768px) {
+        font-size: 11px;
+        padding: 0 6px;
       }
     }
   }
