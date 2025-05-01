@@ -290,6 +290,42 @@ const updateLyricsFont = () => {
     .set {
       width: 100%;
     }
+
+    :deep(.n-form-item) {
+      margin-bottom: 12px;
+      
+      .n-form-item-label {
+        font-size: 14px;
+        padding-bottom: 4px;
+      }
+
+      .n-input-number {
+        width: 100%;
+        max-width: 200px;
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+
+        &:hover, &:focus {
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .n-input-wrapper {
+          padding: 0 8px;
+        }
+
+        .n-input__input {
+          height: 32px;
+          padding: 0;
+          color: rgba(255, 255, 255, 0.9);
+        }
+
+        .n-input-number-suffix, 
+        .n-input-number-prefix {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+    }
   }
 }
 </style>

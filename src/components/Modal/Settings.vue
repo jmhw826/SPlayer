@@ -11,6 +11,7 @@
       WebkitBackdropFilter: 'blur(10px)',
       borderRadius: isMobile ? '16px 16px 0 0' : '8px',
       margin: isMobile ? 'auto auto 0 auto' : 'auto',
+      marginBottom: '100px',
     }"
   >
     <div class="settings-modal">
@@ -61,7 +62,7 @@
         <n-scrollbar
           ref="setScrollRef"
           :style="{
-            height: `calc(100vh - ${getScrollHeight()}px)`,
+            height: '100%'
           }"
           class="all-set"
           @scroll="allSetScroll"
