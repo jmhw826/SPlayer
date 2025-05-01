@@ -13,9 +13,10 @@ export const getSongTTML = async (id) => {
         const response = await fetch(url);
         
         if (!response.ok) {
-            const errorMessage = `TTML API请求失败: ${response.status} ${response.statusText}`;
+            const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${response.status} ${response.statusText}`;
             console.error(errorMessage);
-            throw new Error(errorMessage);
+            console.log("将会使用默认歌词");
+            return null;
         }
         
         const data = await response.json();

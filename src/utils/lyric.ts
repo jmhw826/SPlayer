@@ -269,16 +269,22 @@ export function parseTTMLToAMLL(ttmlContent: string): AMLLLyricLine[] {
     // 使用AMLL核心库的parseTTML函数解析TTML内容
     const parsedLines = parseTTML(ttmlContent);
     
+    // 确保parsedLines是一个数组
+    if (!Array.isArray(parsedLines)) {
+      console.error('TTML解析结果不是数组格式');
+      return [];
+    }
+    
     // 转换为AMLL格式的歌词行
     return parsedLines.map(line => ({
-      words: line.words || [],
-      startTime: line.words?.[0]?.startTime ?? 0,
-      endTime: line.words?.[line.words.length - 1]?.endTime ?? (line.words?.[0]?.startTime + 5000),
-      translatedLyric: line.translatedLyric || '',
-      romanLyric: line.romanLyric || '',
-      isBG: line.isBG ?? false,
-      isDuet: line.isDuet ?? false
-    }));
+      words: Array.isArray(line?.words) ? line.words : [],
+      startTime: line?.words?.[0]?.startTime ?? 0,
+      endTime: line?.words?.[line?.words?.length - 1]?.endTime ?? (line?.words?.[0]?.startTime + 5000),
+      translatedLyric: line?.translatedLyric || '',
+      romanLyric: line?.romanLyric || '',
+      isBG: line?.isBG ?? false,
+      isDuet: line?.isDuet ?? false
+    }))
   } catch (error) {
     console.error('解析TTML时发生错误：', error);
     return [];
