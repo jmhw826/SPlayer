@@ -41,12 +41,24 @@
         "
       >
         <!-- 序号 -->
-        <n-text v-if="music.getPlaySongData?.id !== item?.id" class="num" depth="3">
-          {{ songsIndex + index + 1 }}
-        </n-text>
-        <n-icon v-else class="num" size="22">
-          <SvgIcon icon="music-note" />
-        </n-icon>
+        <div class="num-wrapper" @mouseenter="hoveredIndex = index" @mouseleave="hoveredIndex = null">
+          <template v-if="music.getPlaySongData?.id !== item?.id">
+            <n-text v-show="hoveredIndex !== index || window.innerWidth <= 700" class="num" depth="3">
+              {{ songsIndex + index + 1 }}
+            </n-text>
+            <n-icon 
+              v-show="hoveredIndex === index && window.innerWidth > 700" 
+              class="num play-icon" 
+              size="22"
+              @click.stop="music.getPlaySongData?.id !== item?.id && window.innerWidth > 700 ? playSong(data, item, songsIndex + index) : null"
+            >
+              <SvgIcon icon="play" />
+            </n-icon>
+          </template>
+          <n-icon v-else class="num" size="22">
+            <SvgIcon icon="music-note" />
+          </n-icon>
+        </div>
         <!-- 封面 -->
         <div v-if="item.cover && showCover" class="cover">
           <n-image
@@ -348,6 +360,7 @@ const props = defineProps({
 
 // 分页数据
 const pageNumber = ref(1);
+const hoveredIndex = ref(null);
 
 // 子组件
 const songListDrawerRef = ref(null);
@@ -588,15 +601,28 @@ onBeforeUnmount(() => {
         }
       }
     }
-    .num {
+    .num-wrapper {
       width: 30px;
       height: 30px;
       min-width: 30px;
-      border-radius: 8px;
       margin-right: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative;
+      .num {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &.play-icon {
+          cursor: pointer;
+          transition: transform 0.3s;
+          &:hover {
+            transform: scale(1.15);
+            color: var(--main-color);
+          }
+        }
+      }
     }
     .info {
       flex: 1;
