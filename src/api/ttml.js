@@ -10,14 +10,7 @@ export const getSongTTML = async (id) => {
     }
     const url = `${lyricurl}/api/search?id=${id}&fixedVersion=ttml`;
     try {
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            credentials: "include"
-        });
+        const response = await fetch(url);
         
         if (!response.ok) {
             const errorMessage = `TTML API请求失败: ${response.status} ${response.statusText}`;
