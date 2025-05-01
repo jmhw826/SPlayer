@@ -2,7 +2,7 @@
  * 歌词处理工具
  * 整合了原来的多个歌词处理文件的功能
  */
-import { LyricLine, parseLrc, parseYrc, parseTTML } from "@applemusic-like-lyrics/core";
+import { parseLrc, parseYrc, parseTTML, LyricLine } from "@applemusic-like-lyrics/lyric";
 import type { LyricLine as AMLLLyricLine } from '@/types/amll';
 import { siteSettings } from "@/stores";
 import { msToS } from "./time.ts";
