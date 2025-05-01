@@ -6,7 +6,7 @@
     },
     {
       "source": "/api/netease/:apiurl*",
-      "destination": "https://music-api.focalors.ltd/:apiurl*"
+      "destination": "https://api-sample.focalors.ltd/:apiurl*"
     },
     {
       "source": "/api/unblock/:match*",
