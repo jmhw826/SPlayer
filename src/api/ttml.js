@@ -3,7 +3,7 @@
  * @param {number} id - 要获取歌词的音乐ID
  */
 export const getSongTTML = async (id) => {
-    if (1 === 2 && import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true") {
+    if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true") {
         var lyricurl = "/api/ttml";
     } else {
         var lyricurl = `${import.meta.env.VITE_TTML_API}`;
