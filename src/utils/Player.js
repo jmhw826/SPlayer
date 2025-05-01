@@ -7,9 +7,8 @@ import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/timeTools";
 import { getCoverGradient } from "@/utils/cover-color";
 import { isLogin } from "@/utils/auth";
-import { parseLyricsData, parseLocalLyric } from "@/utils/lyric.ts";
+import { parseLyricsData, parseLocalLyric, parseTTMLToAMLL } from "@/utils/lyric.ts";
 import { parseLyric } from "@/utils/parseLyric";
-import { parseTTMLToAMLL } from "./lyric";
 
 // 全局播放器
 let player;
