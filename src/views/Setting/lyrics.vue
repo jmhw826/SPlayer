@@ -143,77 +143,72 @@
       <n-card class="set-item">
         <n-collapse>
           <n-collapse-item title="Apple Music Like Lyrics 设置">
-            <div class="name">
-              使用Apple Music-Like Lyrics渲染器
-              <n-text class="tip">
-                Apple Music-Like Lyrics渲染器可能会造成卡顿等性能问题，手机端建议关闭
-              </n-text>
-            </div>
-            <n-switch v-model:value="useAMLyrics" :round="false" />
-            <div class="name" style="margin-top: 16px;">
-              使用AMLL弹簧渲染效果
-              <n-text class="tip">
-                开启本项会使用Apple Music-Like Lyrics组件的弹簧效果
-              </n-text>
-            </div>
-            <n-switch v-model:value="useAMSpring" :round="false" />
-            <div class="name" style="margin-top: 16px;">
-              <div class="dev">
-                使用TTML格式歌词
-                <n-tag :bordered="false" round size="small" type="warning">
-                开发中
-                <template #icon>
-                  <n-icon>
-                    <SvgIcon icon="code" />
-                  </n-icon>
-                </template>
-              </n-tag>
-              </div>
-              <n-text class="tip">
-                开启本项后，歌词将使用TTML格式歌词, 会从SteveXMH的歌词仓库获取TTML歌词, 如果没有TTML歌词则回退使用LRC歌词
-              </n-text>
-            </div>
-            <n-switch v-model:value="useTTMLFormat" :round="false" />
-          </n-collapse-item>
-        </n-collapse>
-        <n-card class="set-item">
         <div class="name">
-          弹簧动画参数
-          <span class="tip">调整歌词动画的弹性效果</span>
+          使用Apple Music-Like Lyrics渲染器
+          <n-text class="tip">
+            Apple Music-Like Lyrics渲染器可能会造成卡顿等性能问题，手机端建议关闭
+          </n-text>
         </div>
-        <n-collapse>
+        <n-switch v-model:value="useAMLyrics" :round="false" />
+        <div class="name" style="margin-top: 16px;">
+          使用AMLL弹簧渲染效果
+          <n-text class="tip">
+            开启本项会使用Apple Music-Like Lyrics组件的弹簧效果
+          </n-text>
+        </div>
+        <n-switch v-model:value="useAMSpring" :round="false" />
+        <div class="name" style="margin-top: 16px;">
+          <div class="dev">
+            使用TTML格式歌词
+            <n-tag :bordered="false" round size="small" type="warning">
+            开发中
+            <template #icon>
+          <n-icon>
+            <SvgIcon icon="code" />
+          </n-icon>
+            </template>
+          </n-tag>
+          </div>
+          <n-text class="tip">
+            开启本项后，歌词将使用TTML格式歌词, 会从SteveXMH的歌词仓库获取TTML歌词, 如果没有TTML歌词则回退使用LRC歌词, 会在下一首歌曲生效
+          </n-text>
+        </div>
+        <n-switch v-model:value="useTTMLFormat" :round="false" />
+        <n-collapse class="set-item" title="AMLL弹簧动画参数">
           <n-collapse-item title="横向移动">
             <n-form-item label="质量">
-              <n-input-number v-model:value="springParams.posX.mass" :min="0.1" :step="0.1" />
+          <n-input-number v-model:value="springParams.posX.mass" :min="0.1" :step="0.1" />
             </n-form-item>
             <n-form-item label="阻尼">
-              <n-input-number v-model:value="springParams.posX.damping" :min="0" :step="1" />
+          <n-input-number v-model:value="springParams.posX.damping" :min="0" :step="1" />
             </n-form-item>
             <n-form-item label="刚度">
-              <n-input-number v-model:value="springParams.posX.stiffness" :min="0" :step="1" />
+          <n-input-number v-model:value="springParams.posX.stiffness" :min="0" :step="1" />
             </n-form-item>
           </n-collapse-item>
           <n-collapse-item title="纵向移动">
             <n-form-item label="质量">
-              <n-input-number v-model:value="springParams.posY.mass" :min="0.1" :step="0.1" />
+          <n-input-number v-model:value="springParams.posY.mass" :min="0.1" :step="0.1" />
             </n-form-item>
             <n-form-item label="阻尼">
-              <n-input-number v-model:value="springParams.posY.damping" :min="0" :step="1" />
+          <n-input-number v-model:value="springParams.posY.damping" :min="0" :step="1" />
             </n-form-item>
             <n-form-item label="刚度">
-              <n-input-number v-model:value="springParams.posY.stiffness" :min="0" :step="1" />
+          <n-input-number v-model:value="springParams.posY.stiffness" :min="0" :step="1" />
             </n-form-item>
           </n-collapse-item>
           <n-collapse-item title="缩放">
             <n-form-item label="质量">
-              <n-input-number v-model:value="springParams.scale.mass" :min="0.1" :step="0.1" />
+          <n-input-number v-model:value="springParams.scale.mass" :min="0.1" :step="0.1" />
             </n-form-item>
             <n-form-item label="阻尼">
-              <n-input-number v-model:value="springParams.scale.damping" :min="0" :step="1" />
+          <n-input-number v-model:value="springParams.scale.damping" :min="0" :step="1" />
             </n-form-item>
             <n-form-item label="刚度">
-              <n-input-number v-model:value="springParams.scale.stiffness" :min="0" :step="1" />
+          <n-input-number v-model:value="springParams.scale.stiffness" :min="0" :step="1" />
             </n-form-item>
+          </n-collapse-item>
+        </n-collapse>
           </n-collapse-item>
         </n-collapse>
       </n-card>

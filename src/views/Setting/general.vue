@@ -7,35 +7,37 @@
       <n-collapse-item title="主题设置" name="theme">
         <n-card class="set-item">
           <div class="name">明暗模式
-            <n-text class="tip">单击切换开关切换主题明暗模式</n-text>
+            <n-text class="tip">这个还是算了吧, 感觉白天模式太难看了</n-text>
           </div>
-          <n-select
+            <n-select
             v-model:value="themeType"
             :options="[
               {
-                label: '浅色模式',
-                value: 'light',
+              label: '浅色模式',
+              value: 'light',
               },
               {
-                label: '深色模式',
-                value: 'dark',
+              label: '深色模式',
+              value: 'dark',
               },
             ]"
             class="set"
+            :disabled="true"
             @update:value="themeAuto = false"
-          />
+            />
         </n-card>
         <n-card class="set-item">
-          <div class="name">明暗模式是否跟随系统</div>
-          <n-switch
+          <div class="name">明暗模式是否跟随系统, 同上</div>
+            <n-switch
             v-model:value="themeAuto"
             :round="false"
+            :disabled="true"
             @update:value="
               (val) => {
-                if (val) themeType = osThemeRef;
+              if (val) themeType = osThemeRef;
               }
             "
-          />
+            />
         </n-card>
         <n-card class="set-item">
           <div class="name">
