@@ -60,6 +60,10 @@
         <div v-show="playerControlShow" class="menu">
           <div class="left">
             <!-- 歌词模式 -->
+            <!-- 设置按钮 -->
+            <n-icon size="28" @click="showSettings" class="settings-icon">
+              <SvgIcon icon="round-settings" />
+            </n-icon>
             <n-icon
               v-if="isHasLrc && playMode !== 'dj'"
               :class="['lrc-open', { open: pureLyricMode }]"
@@ -67,10 +71,6 @@
               @click="pureLyricMode = !pureLyricMode"
             >
               <SvgIcon icon="lrc-text" />
-            </n-icon>
-            <!-- 设置按钮 -->
-            <n-icon size="28" @click="showSettings" class="settings-icon">
-              <SvgIcon icon="round-settings" />
             </n-icon>
           </div>
           <div class="center" />

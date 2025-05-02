@@ -167,7 +167,7 @@ const openModal = () => {
 
 // 新增打开网页端设置方法
 const openWebSettings = () => {
-  showFullPlayer = false;
+  showFullPlayer.value = false;
   router.push({ path: "/settings" });
   showModal.value = false;
 };
