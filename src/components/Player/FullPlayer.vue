@@ -59,16 +59,17 @@
       <Transition name="fade" mode="out-in">
         <div v-show="playerControlShow" class="menu">
           <div class="left">
-            <!-- 歌词模式 -->
             <!-- 设置按钮 -->
-            <n-icon size="28" @click="showSettings" class="settings-icon">
+            <n-icon size="28" @click="showSettings">
               <SvgIcon icon="round-settings" />
             </n-icon>
+            <!-- 歌词模式 -->
             <n-icon
               v-if="isHasLrc && playMode !== 'dj'"
               :class="['lrc-open', { open: pureLyricMode }]"
               size="28"
               @click="pureLyricMode = !pureLyricMode"
+              class="settings-icon"
             >
               <SvgIcon icon="lrc-text" />
             </n-icon>
