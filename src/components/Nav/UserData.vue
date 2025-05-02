@@ -56,6 +56,7 @@ import settings from "@/components/Modal/Settings.vue"
 const data = siteData();
 const router = useRouter();
 const setting = siteSettings();
+const settingsRef = ref(null); // 全局设置
 const { userLoginStatus, userData, userLikeData } = storeToRefs(data);
 const { themeType } = storeToRefs(setting);
 
