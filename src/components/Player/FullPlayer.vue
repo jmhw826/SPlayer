@@ -933,7 +933,6 @@ onUnmounted(() => {
     width: 100%;
     height: calc(100vh - 200px);
     position: relative;
-    padding: 0 20px;
     box-sizing: border-box;
     overflow: visible;
     /* 确保内容在容器内正确显示 */
@@ -946,7 +945,6 @@ onUnmounted(() => {
     :deep(.am-lyric) {
       height: calc(100vh - 250px);
       margin: 0;
-      padding: 0 80px;
       div {
         transform-origin: center !important;
       }
