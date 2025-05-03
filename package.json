@@ -104,5 +104,11 @@
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^0.17.5",
     "vue": "3.4.8"
+  },
+    "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild"
+    ]
   }
 }
