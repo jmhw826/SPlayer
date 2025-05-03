@@ -29,7 +29,7 @@
           '--amll-lyric-player-height': '100%',
           '--amll-lyric-player-width': '100%',
           'height': '100%',
-          'width': '100%',
+          'width': isMobile ? '100%' : '100%',
         }"
         class="am-lyric"
         @line-click="handleLineClick"
