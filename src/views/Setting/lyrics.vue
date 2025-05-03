@@ -232,10 +232,12 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { watch } from "vue";
 import { siteSettings } from "@/stores";
 
 const settings = siteSettings();
 const {
+  alignAnchor,
   showYrc,
   showYrcAnimation,
   showTransl,
@@ -252,6 +254,13 @@ const {
   springParams,
   useTTMLFormat,
 } = storeToRefs(settings);
+
+// 监听TTML格式开关状态
+watch(useTTMLFormat, (newVal) => {
+  if (newVal) {
+    showYrc.value = true;
+  }
+});
 
 // 更新全局歌词字体
 const updateLyricsFont = () => {
