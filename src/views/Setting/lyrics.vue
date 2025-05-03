@@ -113,7 +113,7 @@
           </div>
           <n-text class="tip">是否在具有逐字歌词时显示</n-text>
         </div>
-        <n-switch v-model:value="showYrc" :round="false" />
+        <n-switch v-model:value="showYrc" :disabled="useTTMLFormat" :round="false" />
       </n-card>
       <n-card class="set-item">
         <div class="name">
