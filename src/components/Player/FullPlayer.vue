@@ -553,6 +553,10 @@ onUnmounted(() => {
       transition:
         transform 0.3s,
         opacity 0.3s;
+      margin-right: -20px;
+      @media (min-width: 700px) {
+        margin-left: -75px;
+      }
       .data {
         width: 70%;
         max-width: 55vh;
@@ -677,6 +681,7 @@ onUnmounted(() => {
     .right {
       width: 50%;
       transition: width 0.3s;
+      margin-left: -20px;
       .data {
         padding: 0 80px 0 24px;
         margin-bottom: 26px;
@@ -924,7 +929,7 @@ onUnmounted(() => {
 /* AMLL歌词样式 */
 .amll-lyric-container {
   position: relative;
-  width: 100%;
+  width: calc(100vh - 90px);
   height: calc(100vh - 200px);
   overflow: hidden;
   margin-bottom: 20px;

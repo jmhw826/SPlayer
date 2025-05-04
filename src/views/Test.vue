@@ -1,5 +1,6 @@
 <template>
   <div class="test">
+  <PageTransition>
     <n-h1>Test Page</n-h1>
     <n-card title="歌词数据" style="margin-bottom: 20px">
       <n-scrollbar style="max-height: 300px">
@@ -75,10 +76,12 @@
     <n-card title="频谱图">
       <canvas ref="canvasRef" class="avBars" style="width: 100%" />
     </n-card>
-  </div>
+    </PageTransition>
+</div>
 </template>
 
-<script setup>
+<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
+
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { siteStatus, musicData } from "@/stores";
 import { LyricPlayer } from '@applemusic-like-lyrics/vue';
