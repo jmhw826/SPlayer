@@ -173,7 +173,7 @@
                 开启本项后，歌词将使用TTML格式歌词, 会从SteveXMH的歌词仓库获取TTML歌词, 如果没有TTML歌词则回退使用LRC歌词
               </n-text>
             </div>
-            <n-switch v-model:value="useTTMLFormat" :round="false" />
+            <n-switch v-model:value="useTTMLFormat" :disabled="!useAMLyrics" :round="false" />
           </n-collapse-item>
         </n-collapse>
         <n-card class="set-item">
@@ -259,6 +259,12 @@ const {
 watch(useTTMLFormat, (newVal) => {
   if (newVal) {
     showYrc.value = true;
+  }
+});
+
+watch(useAMLyrics, (newVal) => {
+  if (newVal === false) {
+    useTTMLFormat.value = false;
   }
 });
 
