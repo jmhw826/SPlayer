@@ -4,8 +4,7 @@
 </Transition>
 </template>
 
-<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
-
+<script setup>
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import SongDetail from '@/components/Modal/SongDetail.vue';
