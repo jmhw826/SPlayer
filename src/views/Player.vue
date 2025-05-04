@@ -1,6 +1,7 @@
 <!-- 视频 - 播放页 -->
 <template>
   <div class="video-player">
+  <PageTransition>
     <div class="player">
       <!-- 视频信息 -->
       <Transition name="fade" mode="out-in">
@@ -175,7 +176,8 @@
               <template #placeholder>
                 <div class="cover-loading">
                   <img class="loading-img" src="/imgs/pic/avatar.png?assest" alt="song" />
-                </div>
+                  </PageTransition>
+</div>
               </template>
             </n-image>
             <div class="desc">
@@ -212,7 +214,8 @@
   </div>
 </template>
 
-<script setup>
+<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
+
 import { NIcon } from "naive-ui";
 import { storeToRefs } from "pinia";
 import {

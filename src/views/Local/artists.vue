@@ -31,10 +31,12 @@
   </n-tabs>
   <div v-else class="not">
     <n-text>未找到歌手</n-text>
-  </div>
+    </PageTransition>
+</div>
 </template>
 
-<script setup>
+<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
+
 import { NIcon } from "naive-ui";
 import { musicData, siteStatus } from "@/stores";
 import SvgIcon from "@/components/Global/SvgIcon";

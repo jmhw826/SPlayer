@@ -1,6 +1,7 @@
 <!-- 单曲页面 -->
 <template>
   <div class="song" v-if="songDetail">
+  <PageTransition>
     <Transition name="fade" mode="out-in">
       <div class="detail">
         <div class="pic">
@@ -13,7 +14,8 @@
             <template #placeholder>
               <div class="cover-loading">
                 <n-spin />
-              </div>
+                </PageTransition>
+</div>
             </template>
           </n-image>
           <n-image
@@ -170,7 +172,8 @@
   <AddPlaylist ref="addPlaylistRef" />
 </template>
 
-<script setup>
+<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
+
 import { useRouter, onBeforeRouteLeave } from "vue-router";
 import { getSongDetail, getSimiPlayList } from "@/api/song";
 import { getHotComment } from "@/api/comment";

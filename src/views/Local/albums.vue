@@ -46,7 +46,8 @@
   </Transition>
 </template>
 
-<script setup>
+<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
+
 import { musicData, siteStatus } from "@/stores";
 import { getLocalCoverData } from "@/utils/helper";
 import debounce from "@/utils/debounce";

@@ -1,6 +1,7 @@
 <!-- 本地歌曲 -->
 <template>
   <div class="local">
+  <PageTransition>
     <n-h1 class="title">本地歌曲</n-h1>
     <!-- 数据统计 -->
     <n-flex class="num">
@@ -192,10 +193,12 @@
         </n-flex>
       </template>
     </n-modal>
-  </div>
+    </PageTransition>
+</div>
 </template>
 
-<script setup>
+<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
+
 import { musicData, indexedDBData } from "@/stores";
 import { useRouter } from "vue-router";
 import { fuzzySearch } from "@/utils/helper";
