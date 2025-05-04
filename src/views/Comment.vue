@@ -1,7 +1,6 @@
 <!-- 歌曲评论 -->
 <template>
   <div class="comment">
-  <PageTransition>
     <!-- 歌曲信息 -->
     <Transition name="fade" mode="out-in">
       <n-card
@@ -28,8 +27,7 @@
           <template #placeholder>
             <div class="cover-loading">
               <img class="loading-img" src="/imgs/pic/song.jpg?assest" alt="loading-img" />
-              </PageTransition>
-</div>
+            </div>
           </template>
         </n-image>
         <div class="content">
@@ -93,8 +91,7 @@
   </div>
 </template>
 
-<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
-
+<script setup>
 import { useRouter } from "vue-router";
 import { getSongDetail } from "@/api/song";
 import { getDjProgramDetail } from "@/api/dj";
