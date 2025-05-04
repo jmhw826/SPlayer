@@ -1,6 +1,5 @@
 <template>
   <div v-if="artistId" class="artist">
-  <PageTransition>
     <Transition name="fade" mode="out-in">
       <div v-if="artistData && Object.keys(artistData)?.length" class="detail">
         <div class="cover">
@@ -20,8 +19,7 @@
             <template #placeholder>
               <div class="cover-loading">
                 <img class="loading-img" src="/imgs/pic/avatar.png?assest" alt="avatar" />
-                </PageTransition>
-</div>
+              </div>
             </template>
           </n-image>
           <!-- 头像背板 -->
@@ -125,8 +123,7 @@
   </div>
 </template>
 
-<script setup>import PageTransition from "@/components/Global/PageTransition.vue";
-
+<script setup>
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { getArtistDetail, likeArtist } from "@/api/artist";
