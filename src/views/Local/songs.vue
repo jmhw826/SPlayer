@@ -1,10 +1,8 @@
 <!-- 本地歌曲 - 歌曲 -->
 <template>
   <div class="local-songs">
-  <PageTransition>
     <SongList :data="songList" />
-    </PageTransition>
-</div>
+  </div>
 </template>
 
 <script setup>
