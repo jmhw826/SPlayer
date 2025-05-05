@@ -24,7 +24,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       themeAuto: false,
       themeTypeName: "red",
       themeTypeData: {},
-      themeAutoCover: true, // 主题色跟随封面
+      themeAutoCover: false, // 主题色跟随封面
       themeAutoCoverType: "secondary",
       // 播放部分
       playCoverType: "cover", // 播放器样式
