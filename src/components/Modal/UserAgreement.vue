@@ -138,7 +138,7 @@ const message = useMessage();
 const showModal = ref(true);
 const close = () => {
   showModal.value = false;
-  settings.readProtocol.value = true;
+  settings.readProtocol = true;
   message.success("感谢您同意使用本网站！");
 };
 

@@ -84,7 +84,7 @@ import { darkTheme, NButton } from "naive-ui";
 import { musicData, siteStatus, siteSettings } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import { initPlayer } from "@/utils/Player";
-import userAgreement from "./components/Modal/UserAgreement.vue";
+import userAgreement from "@/components/Modal/UserAgreement.vue";
 import userSignIn from "@/utils/userSignIn";
 import globalShortcut from "@/utils/globalShortcut";
 import globalEvents from "@/utils/globalEvents";
@@ -252,7 +252,8 @@ onMounted(async () => {
   }
   // 更改全局字体
   settings.changeSystemFonts();
-  if (settings.readProtocol !== true) {
+  const storedSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+  if (storedSettings.readProtocol !== true) {
     userAgreementRef.value.showModal = true;
   }
   // 全局事件
