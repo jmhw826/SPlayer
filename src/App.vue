@@ -1,6 +1,6 @@
 <template>
   <Provider>
-    <userAgreement ref="userAgreementRef"/>
+    <!--userAgreement ref="userAgreementRef"/-->
     <!-- 主框架 -->
     <n-layout :class="['all-layout', { 'full-player': showFullPlayer }]">
       <!-- 导航栏 -->
