@@ -62,7 +62,7 @@
     </n-config-provider>
     <Playlist v-else />
     <!-- 全局水印 -->
-    <n-watermark
+    <!--n-watermark
       :font-size="16"
       :line-height="16"
       :width="384"
@@ -72,7 +72,8 @@
       content="当前版本为测试版本, 不代表最终品质"
       cross
       fullscreen="false"
-    />
+    /-->
+  <userAgreement ref="userAgreementRef"/>  
   </Provider>
 </template>
 
@@ -83,12 +84,11 @@ import { darkTheme, NButton } from "naive-ui";
 import { musicData, siteStatus, siteSettings } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
 import { initPlayer } from "@/utils/Player";
+import userAgreement from "./components/Modal/userAgreement.vue";
 import userSignIn from "@/utils/userSignIn";
 import globalShortcut from "@/utils/globalShortcut";
 import globalEvents from "@/utils/globalEvents";
 import packageJson from "@/../package.json";
-import { checkWebUpdates, getWebUpdates } from "@/api/other";
-import { not } from "ajv/dist/compile/codegen";
 
 const router = useRouter();
 const music = musicData();
@@ -96,6 +96,7 @@ const status = siteStatus();
 const settings = siteSettings();
 const { autoPlay, showSider, autoSignIn, autoCheckUpdates } = storeToRefs(settings);
 const { showPlayBar, asideMenuCollapsed, showFullPlayer } = storeToRefs(status);
+const userAgreementRef = ref(null);
 
 // 公告数据
 const annShow =
@@ -177,20 +178,6 @@ const showAnnouncements = () => {
   }
 };
 
-// 原代码注释留存
-/*
-const checkUpdatesWeb = () => {
-  const isLatest = checkWebUpdates();
-  const updates = getWebUpdates();
-  if (isLatest === false && updates !== null) {
-    $message.warning("有 v."+ updates + " 的版本更新, 请前往 GitHub 仓库同步最新版本并在设置页面清除PWA缓存或者等待PWA更新推送")
-  } else {
-    $message.info("当前已是最新版本 v." + packageJson.version, {
-      duration: 2000, 
-    })
-  }
-}; 
-*/
 
 // 检查PWA更新
 const checkUpdatesWeb = async () => {
@@ -265,6 +252,9 @@ onMounted(async () => {
   }
   // 更改全局字体
   settings.changeSystemFonts();
+  if (settings.readProtocol !== true) {
+    userAgreementRef.value.showModal = true;
+  }
   // 全局事件
   globalEvents(router);
   // 键盘监听
