@@ -139,6 +139,10 @@ const showModal = ref(true);
 const close = () => {
   showModal.value = false;
   settings.readProtocol = true;
+  // 保存到 localStorage
+  const storedSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+  storedSettings.readProtocol = true;
+  localStorage.setItem('siteSettings', JSON.stringify(storedSettings));
   message.success("感谢您同意使用本网站！");
 };
 
