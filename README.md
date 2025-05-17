@@ -76,42 +76,35 @@
 <details>
 <summary>主页面</summary>
 
-![主页面](/screenshots/SPlayer%20-%20主页面.jpg)
+![主页面](/screenshots/SPlayer%20-%20主页面.png)
 
 </details>
 
 <details>
 <summary>播放页面</summary>
 
-![播放页面](/screenshots/SPlayer%20-%20播放页面.jpg)
+![播放页面](/screenshots/SPlayer%20-%20播放页面.png)
 
 </details>
 
 <details>
 <summary>发现页面</summary>
 
-![发现页面](/screenshots/SPlayer%20-%20发现页面.jpg)
+![发现页面](/screenshots/SPlayer%20-%20发现页面.png)
 
 </details>
 
 <details>
 <summary>歌单页面</summary>
 
-![发现页面](/screenshots/SPlayer%20-%20歌单页面.jpg)
+![发现页面](/screenshots/SPlayer%20-%20歌单页面.png)
 
 </details>
 
 <details>
 <summary>评论页面</summary>
 
-![发现页面](/screenshots/SPlayer%20-%20评论页面.jpg)
-
-</details>
-
-<details>
-<summary>本地音乐</summary>
-
-![发现页面](/screenshots/SPlayer%20-%20本地音乐.jpg)
+![发现页面](/screenshots/SPlayer%20-%20评论页面.png)
 
 </details>
 
@@ -180,7 +173,7 @@
 
 6. 将 `Build and Output Settings` 中的 `Output Directory` 改为 `out/renderer`
 
-   ![build](/screenshots/build.jpg)
+   ![build](/screenshots/build.png)
 
 7. 点击 `Deploy`，即可成功部署
 
