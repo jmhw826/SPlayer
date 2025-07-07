@@ -25,7 +25,7 @@
 - 欢迎各位大佬 `Star` 😍
 
 ## 👀 Demo
-- [SPlayer](https://player.focalors.ltd/)
+- [SPlayer](https://player.focalors.ltd/)   
 **本项目 CDN 加速及安全防护由 [Tencent EdgeOne](https://edgeone.ai/zh?from=github) 赞助**
    
 ![edgeone](https://edgeone.ai/media/34fe3a45-492d-4ea4-ae5d-ea1087ca7b4b.png)
