@@ -25,9 +25,8 @@
 - 欢迎各位大佬 `Star` 😍
 
 ## 👀 Demo
-本项目 CDN 加速及安全防护由 [Tencent EdgeOne](https://edgeone.ai/zh?from=github) 赞助   
+**本项目 CDN 加速及安全防护由 [Tencent EdgeOne](https://edgeone.ai/zh?from=github) 赞助**   
 - [SPlayer](https://player.focalors.ltd/)
-  > 该版本为dev分支
 
 ## 🎉 功能
 
