@@ -139,11 +139,6 @@ const userMenuOptions = computed(() => [
     key: "d1",
   },
   {
-    label: themeType.value === "dark" ? "浅色模式" : "深色模式",
-    key: "darkOrlight",
-    icon: renderIcon(themeType.value === "dark" ? "round-wb-sunny" : "round-dark-mode"),
-  },
-  {
     label: "全局设置",
     key: "setting",
     icon: renderIcon("round-settings"),
