@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@UnblockNeteaseMusic/server':
-        specifier: npm:@unblockneteasemusic/server@0.27.8-patch.1
-        version: '@unblockneteasemusic/server@0.27.8-patch.1'
       '@applemusic-like-lyrics/core':
         specifier: latest
         version: 0.1.3(@pixi/app@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3))(@pixi/filter-blur@7.4.3(@pixi/core@7.4.3))(@pixi/filter-bulge-pinch@5.1.1(@pixi/core@7.4.3))(@pixi/filter-color-matrix@7.4.3(@pixi/core@7.4.3))(@pixi/sprite@7.4.3(@pixi/core@7.4.3)(@pixi/display@7.4.3(@pixi/core@7.4.3)))(jss-preset-default@10.10.0)(jss@10.10.0)
@@ -59,9 +56,6 @@ importers:
       '@vueuse/core':
         specifier: ^13.5.0
         version: 13.5.0(vue@3.5.17(typescript@5.8.3))
-      NeteaseCloudMusicApi:
-        specifier: ^4.27.0
-        version: 4.27.0
       axios:
         specifier: ^1.10.0
         version: 1.10.0
@@ -1873,11 +1867,6 @@ packages:
     engines: {node: '>= 12'}
     hasBin: true
 
-  '@unblockneteasemusic/server@0.27.8-patch.1':
-    resolution: {integrity: sha512-UI+fmtMc+HuJZ1Df5PAXzSaJEFxokn9r8RqUq+QljB/gQptO4E8w9naRbanRbxyC5Vy0nZmCFENv4Je2sU0qNQ==}
-    engines: {node: '>= 12'}
-    hasBin: true
-
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
@@ -1942,11 +1931,6 @@ packages:
   '@xmldom/xmldom@0.8.10':
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
     engines: {node: '>=10.0.0'}
-
-  NeteaseCloudMusicApi@4.27.0:
-    resolution: {integrity: sha512-SRduMpAYnq5K/qyMxZ7iB/SfFPqEDLUnmForqDOGLpyJFdXKfuXBjIErRfa9gxNYN3OjxtZ5yV5H0zbPxjDkJw==}
-    engines: {node: '>=12'}
-    hasBin: true
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -7060,12 +7044,6 @@ snapshots:
       pino: 6.14.0
       pino-pretty: 7.6.1
 
-  '@unblockneteasemusic/server@0.27.8-patch.1':
-    dependencies:
-      node-windows: 1.0.0-beta.8
-      pino: 6.14.0
-      pino-pretty: 7.6.1
-
   '@ungap/structured-clone@1.3.0': {}
 
   '@vitejs/plugin-vue@5.2.4(vite@5.4.19(@types/node@24.0.14)(sass@1.89.2)(terser@5.43.1))(vue@3.5.17(typescript@5.8.3))':
@@ -7152,25 +7130,6 @@ snapshots:
       vue: 3.5.17(typescript@5.8.3)
 
   '@xmldom/xmldom@0.8.10': {}
-
-  NeteaseCloudMusicApi@4.27.0:
-    dependencies:
-      axios: 1.10.0
-      crypto-js: 4.2.0
-      express: 4.21.2
-      express-fileupload: 1.5.2
-      md5: 2.3.0
-      music-metadata: 7.14.0
-      node-forge: 1.3.1
-      pac-proxy-agent: 7.2.0
-      qrcode: 1.5.4
-      safe-decode-uri-component: 1.2.1
-      tunnel: 0.0.6
-      xml2js: 0.6.2
-      yargs: 17.7.2
-    transitivePeerDependencies:
-      - debug
-      - supports-color
 
   abbrev@2.0.0: {}
 
