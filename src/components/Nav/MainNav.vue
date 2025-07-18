@@ -133,11 +133,7 @@ const openSettings = () => {
     settingsRef.value.showModal();
   }
 };
-/*
-const openSettings = () => {
-  window.location.href = "/#/setting"; 
-}
-*/
+
 
 // 主菜单渲染
 const mainMenuShow = ref(false);
