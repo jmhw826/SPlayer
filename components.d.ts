@@ -16,6 +16,7 @@ declare module 'vue' {
     CoverDropdown: typeof import('./src/components/Cover/CoverDropdown.vue')['default']
     CoverPlayBtn: typeof import('./src/components/Cover/CoverPlayBtn.vue')['default']
     CreatePlaylist: typeof import('./src/components/Modal/CreatePlaylist.vue')['default']
+    DonateCreator: typeof import('./src/components/Modal/DonateCreator.vue')['default']
     DownloadSong: typeof import('./src/components/Modal/DownloadSong.vue')['default']
     FullPlayer: typeof import('./src/components/Player/FullPlayer.vue')['default']
     Login: typeof import('./src/components/Modal/Login.vue')['default']
