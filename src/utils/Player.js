@@ -196,11 +196,11 @@ const getFromUnblockMusic = async (data, status, playNow) => {
     // 调用解灰
     let musicUrl = null;
     try {
-      let response = await getMusicNumUrl(data.id);
+      const settings = siteSettings();
+      let response = await getMusicNumUrl(data.id, settings.customMusicSource);
       console.log(response);
       if (response?.code === 200 && response?.data) {
         if (response.data.proxyUrl) {
-          // musicUrl = response.data.url.replace(/^http:\/\/lx\.sycdn\.kuwo\.cn\//, "/api/kuwourl/songcdn/"); 
           musicUrl = response.data.proxyUrl
         } else {
           musicUrl = response.data.url;

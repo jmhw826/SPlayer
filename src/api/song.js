@@ -56,8 +56,7 @@ export const getSongUrl = (id, level = "standard") => {
  * 网易云解灰
  * @param {number} id - 要替换播放链接的音乐ID
  */
-export const getMusicNumUrl = async (id) => {
-  const server = "pyncmd,kuwo";
+export const getMusicNumUrl = async (id,source="pyncmd,qq,kuwo,migu,kugou") => {
   const settings = siteSettings();
   if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "false" && settings.useCustomUNMServer) {
     var unmurl = settings.unmServer;
@@ -66,7 +65,7 @@ export const getMusicNumUrl = async (id) => {
   } else {
     var unmurl = `${import.meta.env.VITE_UNM_API}`;
   }
-  const url = `${unmurl}/match?id=${id}&server=${server}`;
+  const url = `${unmurl}/match?id=${id}&server=${source}`;
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -117,14 +116,14 @@ export const getSongDownloadNew = async (params) => {
   const encodedBr = encodeURIComponent(br);
 
   // 构建 URL
-  if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true") {
+  if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "false" && settings.useCustomUNMServer) {
+    var unmurl = settings.unmServer;
+  } else if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true" && !settings.useCustomUNMServer) {
     var unmurl = "/api/unblock";
   } else {
     var unmurl = `${import.meta.env.VITE_UNM_API}`;
-  };
-  const url = `${
-    unmurl
-  }/ncmget?id=${encodedId}&br=${encodedBr}`;
+  }
+  const url = `${unmurl}/ncmget?id=${encodedId}&br=${encodedBr}`;
 
   try {
     const response = await fetch(url, {
