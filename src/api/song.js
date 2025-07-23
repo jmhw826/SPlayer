@@ -103,7 +103,7 @@ export const getSongLyric = async (id) => {
  * @param {number} id - 要替换播放链接的音乐ID
  * @param {number} br - 码率, 默认设置了 999000 即最大码率, 如果要 320k 则可设置为 320000, 其他类推
  */
-export const getSongDownloadNew = async (params) => {
+export const getSongDownloadFromPyncmd = async (params) => {
   const settings = siteSettings();
   // 参数校验
   if (!params?.id || !params?.br) {
@@ -204,3 +204,18 @@ export const getSimiSong = (id) => {
     },
   });
 };
+
+/**
+ * 获取Meting音乐源歌曲下载
+ * @param {number} id - 要下载的音乐ID
+ * @param {string} source - 音乐源，默认为 "pyncmd"，可选值包括"meting1", "meting2"
+ * @returns {string} - 返回下载链接
+ */
+export const getMetingSongDownload = async (id, source) => {
+  const metingApi = {
+    "meting1": "https://music.cenguigui.cn/?type=url&id=",
+    "meting2": "https://api.qijieya.cn/meting/?type=url&id=",
+  };
+  const url = metingApi[source] + id;
+  return url;
+}
