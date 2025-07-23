@@ -53,30 +53,21 @@ export const getSongUrl = (id, level = "standard") => {
 };
 
 /**
- * 网易云解灰
+ * 网易云解灰(新)
  * @param {number} id - 要替换播放链接的音乐ID
+ * @param {string} source - 音乐源，默认为 "pyncmd
+ * @returns {Promise} - 返回一个 Promise 对象，解析为音乐 URL
  */
-export const getMusicNumUrl = async (id,source="pyncmd,qq,kuwo,migu,kugou") => {
-  const settings = siteSettings();
-  if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "false" && settings.useCustomUNMServer) {
-    var unmurl = settings.unmServer;
-  } else if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true" && !settings.useCustomUNMServer) {
-    var unmurl = "/api/unblock";
-  } else {
-    var unmurl = `${import.meta.env.VITE_UNM_API}`;
-  }
-  const url = `${unmurl}/match?id=${id}&server=${source}`;
-  const response = await fetch(url, {
+export const getMusicNumUrlNew = async (id, source = "pyncmd") => {
+  return axios({
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
+    url: "/song/url/match",
+    params: {
+      id,
+      source,
     },
-  });
-  if (!response.ok) {
-    return Promise.reject(new Error());
-  }
-  return await response.json();
-};
+  })
+}
 
 /**
  * 获取指定音乐的歌词
@@ -115,7 +106,7 @@ export const getSongDownloadFromPyncmd = async (params) => {
   const encodedId = encodeURIComponent(id);
   const encodedBr = encodeURIComponent(br);
 
-  // 构建 URL
+  /*
   if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "false" && settings.useCustomUNMServer) {
     var unmurl = settings.unmServer;
   } else if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true" && !settings.useCustomUNMServer) {
@@ -124,18 +115,16 @@ export const getSongDownloadFromPyncmd = async (params) => {
     var unmurl = `${import.meta.env.VITE_UNM_API}`;
   }
   const url = `${unmurl}/ncmget?id=${encodedId}&br=${encodedBr}`;
-
+  */
   try {
-    const response = await fetch(url, {
+    return axios({
+      url: "/song/url/ncmget",
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      params: {
+        id: encodedId,
+        br: encodedBr,
+      },
     });
-
-    if (!response.ok) {
-      throw new Error(`请求失败，状态码：${response.status}`);
-    }
-
-    return await response.json();
   } catch (error) {
     console.error("API 请求错误:", error);
     throw new Error("下载服务暂时不可用");
@@ -219,3 +208,32 @@ export const getMetingSongDownload = async (id, source) => {
   const url = metingApi[source] + id;
   return url;
 }
+
+/* ARCHIVED CODES */
+/**
+ * 网易云解灰
+ * @param {number} id - 要替换播放链接的音乐ID
+ */
+/*
+export const getMusicNumUrl = async (id,source="pyncmd,qq,kuwo,migu,kugou") => {
+  const settings = siteSettings();
+  if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "false" && settings.useCustomUNMServer) {
+    var unmurl = settings.unmServer;
+  } else if (import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true" && !settings.useCustomUNMServer) {
+    var unmurl = "/api/song/url";
+  } else {
+    var unmurl = `${import.meta.env.VITE_UNM_API}`;
+  }
+  const url = `${unmurl}/match?id=${id}&server=${source}`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    return Promise.reject(new Error());
+  }
+  return await response.json();
+};
+*/
