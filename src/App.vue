@@ -266,7 +266,7 @@ onMounted(async () => {
   // 自动签到
   if (autoSignIn.value) await userSignIn();
   // 检查更新
-  if (autoCheckUpdates.value) checkUpdates();
+  // if (autoCheckUpdates.value) checkUpdates();
   // 显示公告
   showAnnouncements();
   // 显示用户协议
