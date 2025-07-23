@@ -1,8 +1,17 @@
 name: Publish Docker image
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master-fix
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker.yml'
+      - 'nginx.conf'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'src/**'
+  workflow_dispatch:
 
 jobs:
   push_to_registry:
