@@ -1,5 +1,10 @@
 # SPlayer
 
+> [!IMPORTANT]
+>
+> [IamFurina](https://github.com/iamfurina)作者已经被Github封号了, 仓库也404了, 这个账号主要是为了继续维护这个仓库
+> 我已经向官方发出申诉, 希望尽快回归
+
 #### 一个简约且强大的音乐播放器
 
 ![main](/screenshots/SPlayer.jpg)
@@ -141,7 +146,7 @@
 
 #### TTML歌词API部署（可选）
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/iamhutao-projects/clone?repository-url=https%3A%2F%2Fgithub.com%2FIamFurina%2FLyric-Atlas-API)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/iamhutao-projects/clone?repository-url=https%3A%2F%2Fgithub.com%2Fburial0268%2FLyric-Atlas-API)
 
 ### 🔧 部署本体
 
@@ -222,6 +227,7 @@
 
 特别感谢以下项目为本项目提供支持与灵感：
 
+- [已经死亡的SPlayer](https://github.com/iamfurina/splayer)
 - [原版SPlayer](https://github.com/imsyy/splayer)
 - [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
 - [NeteaseCloudMusicApiReborn](https://github.com/NeteaseCloudMusicApiReborn/api)
@@ -468,5 +474,7 @@
 
 
 ## ⭐ Star History
-
+### 当前仓库
+[![Star History Chart](https://api.star-history.com/svg?repos=MoeFurina/SPlayer&type=Date)](https://star-history.com/#MoeFurina/SPlayer&Date)
+### 原始仓库
 [![Star History Chart](https://api.star-history.com/svg?repos=IamFurina/SPlayer&type=Date)](https://star-history.com/#IamFurina/SPlayer&Date)
