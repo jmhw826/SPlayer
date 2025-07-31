@@ -3,10 +3,10 @@
   "version": "2.7.33",
   "description": "一个部署简单且界面美观的音乐播放器",
   "main": "./out/main/index.js",
-  "author": "IamFurina",
+  "author": "MoeFurina",
   "home": "https://www.focalors.ltd",
-  "github": "https://github.com/IamFurina/SPlayer",
-  "repository": "github:IamFurina/SPlayer",
+  "github": "https://github.com/MoeFurina/SPlayer",
+  "repository": "github:MoeFurina/SPlayer",
   "license": "AGPL-3.0",
   "license-file": "LICENSE",
   "engines": {
