@@ -15,8 +15,8 @@ export default defineConfig(async ({ mode }) => {
     return loadEnv(mode, process.cwd())[name];
   };
   // 获取端口
-  const devPort = await checkPort(getEnv("MAIN_VITE_DEV_PORT"));
-  const serverPort = await checkPort(getEnv("MAIN_VITE_SERVER_PORT"));
+  const devPort = await checkPort(getEnv("MAIN_VITE_DEV_PORT")) ?? 6944;
+  const serverPort = await checkPort(getEnv("MAIN_VITE_SERVER_PORT")) ?? 11451;
   // 返回配置
   return {
     // 主进程

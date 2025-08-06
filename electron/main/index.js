@@ -79,8 +79,8 @@ class MainProcess {
     // 启动网易云 API
     try {
       this.ncmServer = await startNcmServer({
-        port: import.meta.env.MAIN_VITE_SERVER_PORT,
-        host: import.meta.env.MAIN_VITE_SERVER_HOST,
+        port: import.meta.env.MAIN_VITE_SERVER_PORT || 11451,
+        host: import.meta.env.MAIN_VITE_SERVER_HOST || "127.0.0.1",
       });
     } catch (error) {
       console.error("启动网易云 API 失败:", error);

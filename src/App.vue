@@ -105,10 +105,10 @@ const annShow =
   import.meta.env.RENDERER_VITE_ANN_TITLE && import.meta.env.RENDERER_VITE_ANN_CONTENT
     ? true
     : false;
-const annType = import.meta.env.RENDERER_VITE_ANN_TYPE;
-const annTitle = import.meta.env.RENDERER_VITE_ANN_TITLE;
-const annContene = import.meta.env.RENDERER_VITE_ANN_CONTENT;
-const annDuration = Number(import.meta.env.RENDERER_VITE_ANN_DURATION);
+const annType = import.meta.env.RENDERER_VITE_ANN_TYPE || "error";
+const annTitle = import.meta.env.RENDERER_VITE_ANN_TITLE || "超限警告";
+const annContene = import.meta.env.RENDERER_VITE_ANN_CONTENT || "本站资源限制可能随时超出, 推荐在Github页面下载客户端或者自部署使用; 网站资源均来自第三方, 仅供学习交流使用, 请勿用于商业用途";
+const annDuration = Number(import.meta.env.RENDERER_VITE_ANN_DURATION) || 8000;
 
 // PWA
 if ("serviceWorker" in navigator) {
@@ -215,18 +215,6 @@ const readProtocol = async () => {
 // 站点源代码出现错误 or 网络出现问题
 const canNotConnect = (error) => {
   console.error("网络连接错误：", error.message);
-  /*
-  $dialog.destroyAll();
-  $dialog.error({
-    title: "呃, 好像出了点问题(っ °Д °;)っ",
-    content: "如果是源代码出现问题, 请联系开发者解决; 如果是您的网络出现问题, 请检查您的网络适配器后重试",
-    positiveText: "刷新网页",
-    negativeText: "关闭弹窗",
-    onPositiveClick: () => {
-      location.reload();
-    },
-  });
-  */
   $notification.error({
     content: "呃, 好像出了点问题(っ °Д °;)っ",
     meta: "如果是源代码出现问题, 请联系开发者解决; 如果是您的网络出现问题, 请检查您的网络适配器后重试",

@@ -3,9 +3,9 @@
     <div class="donate-content">
       <div class="donate-imgs">
         <!-- 你可以在这里添加多张图片，src为相对路径 -->
-        <img v-for="(img, idx) in donateImgs" :key="idx" :src="img" class="donate-img" alt="捐赠二维码" style="width:180px;height:180px;" />
+        <!--img v-for="(img, idx) in donateImgs" :key="idx" :src="img" class="donate-img" alt="捐赠二维码" style="width:180px;height:180px;" /-->
       </div>
-    <a href="https://github.com/iamfurina/splayer/blob/master-fix/public/imgs/pic/donate.png?raw=true" target="_blank" rel="noopener" style="margin-bottom: 8px; color: #409eff; text-decoration: underline;">
+    <a href="https://rewards.focalors.ltd/" target="_blank" rel="noopener" style="margin-bottom: 8px; color: #409eff; text-decoration: underline;">
         跳转到捐赠页面
     </a>
       <div class="donate-tip">感谢您的支持！</div>
