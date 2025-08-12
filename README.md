@@ -472,12 +472,9 @@
 - [ ] 修复imsyy的陈年老bug
 - [ ] 支持多语言
 
+
 ## ⭐ Star History
-
 ### 当前仓库
-
-[![Star History Chart](https://api.star-history.com/svg?repos=ImFurina/SPlayer&type=Date)](https://star-history.com/#ImFurina/SPlayer&Date)
-
+[![Star History Chart](https://api.star-history.com/svg?repos=MoeFurina/SPlayer&type=Date)](https://star-history.com/#MoeFurina/SPlayer&Date)
 ### 原始仓库
-
 [![Star History Chart](https://api.star-history.com/svg?repos=IamFurina/SPlayer&type=Date)](https://star-history.com/#IamFurina/SPlayer&Date)
