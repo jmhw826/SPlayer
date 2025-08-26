@@ -5,6 +5,7 @@ import { readDirAsync } from "@main/utils/readDirAsync";
 import { parseFile } from "music-metadata";
 import { download } from "electron-dl";
 import { getFonts } from "font-list";
+import openLoginWin from "./loginWin"
 import getNeteaseMusicUrl from "@main/utils/getNeteaseMusicUrl";
 import axios from "axios";
 import fs from "fs/promises";
@@ -57,7 +58,11 @@ const mainIpcMain = (win, store) => {
     }
     win.setProgressBar(val / 100);
   });
-
+  // 打开登陆页面
+  ipcMain.on("open-login-web", () => {
+    openLoginWin();
+  });
+  
   // 解灰
   ipcMain.handle("getMusicNumUrl", async (_, data) => {
     // 解析传入数据
@@ -274,7 +279,10 @@ const mainIpcMain = (win, store) => {
       console.info("取消网络代理配置");
     });
   });
+  
 };
+
+  
 
 /**
  * 从 Bilibili 视频中获取文件的 Base64 数据
