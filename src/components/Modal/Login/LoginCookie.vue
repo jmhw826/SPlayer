@@ -7,7 +7,7 @@
     </n-alert>
     <n-input v-model:value="cookie" :autosize="{ minRows: 3, maxRows: 6 }" type="textarea" placeholder="请输入 Cookie" />
     <n-flex class="menu">
-      <n-button type="primary" @click="openWeb">官网登陆</n-button>
+      <n-button type="primary" v-if="isWeb" @click="openWeb">官网登陆</n-button>
       <n-button type="primary" @click="login">登录</n-button>
     </n-flex>
   </div>
@@ -15,6 +15,8 @@
 
 <script setup>
 
+import { checkPlatform } from "@/utils/helper";
+const isWeb = !checkPlatform.electron();
 const cookie = ref("");
 const emit = defineEmits(["setLoginData"]);
 
