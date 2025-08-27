@@ -188,3 +188,18 @@ export const getMetingSongDownload = async (id, source) => {
   const url = metingApi[source] + id;
   return url;
 }
+
+export const getPythonSongDownload = async (id, source, quality) => {
+  const pythonApi = {
+    "python1": `https://music.loveu.im/Song_V1?id=${id}&level=${quality}&type=json`
+  };
+  const res = await fetch(pythonApi[source], {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  const data = await res.json();
+  console.info("Python API response:", data);
+  return { data: { url: data.data.url } };
+}

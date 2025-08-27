@@ -206,12 +206,6 @@ const checkUpdatesWeb = async () => {
   }
 };
 
-const readProtocol = async () => {
-  const storedSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
-  if (!storedSettings.readProtocol) {
-    userAgreementRef.value.showModal = true;
-  }
-}
 // 站点源代码出现错误 or 网络出现问题
 const canNotConnect = (error) => {
   console.error("网络连接错误：", error.message);
@@ -264,8 +258,6 @@ onMounted(async () => {
   // if (autoCheckUpdates.value) checkUpdates();
   // 显示公告
   showAnnouncements();
-  // 显示用户协议
-  readProtocol();
   // 检查PWA更新
   checkUpdatesWeb();
 });

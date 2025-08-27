@@ -1,16 +1,8 @@
 <!-- 歌曲下载 -->
 <template>
-  <n-modal
-    v-model:show="downloadSongShow"
-    :bordered="false"
-    :close-on-esc="false"
-    :auto-focus="false"
-    :mask-closable="!downloadStatus"
-    :on-after-leave="closeDownloadModal"
-    class="download-song"
-    preset="card"
-    title="歌曲下载"
-    :style="{
+  <n-modal v-model:show="downloadSongShow" :bordered="false" :close-on-esc="false" :auto-focus="false"
+    :mask-closable="!downloadStatus" :on-after-leave="closeDownloadModal" class="download-song" preset="card"
+    title="歌曲下载" :style="{
       width: isMobile ? '100vw' : '800px',
       maxWidth: '90vw',
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -19,13 +11,12 @@
       borderRadius: isMobile ? '16px 16px 0 0' : '8px',
       margin: isMobile ? 'auto' : 'auto',
       marginBottom: '100px'
-    }"
-  >
+    }">
     <Transition name="fade" mode="out-in">
       <div v-if="songData">
         <div class="song-info">
           <n-text class="name">{{ songData.name }}</n-text>
-          <n-text class="artist">{{ songData.artists.map(artist => artist.name).join(', ') }}</n-text>
+          <n-text class="artist">{{songData.artists.map(artist => artist.name).join(', ')}}</n-text>
         </div>
         <n-card class="set-item">
           <div class="name">
@@ -46,7 +37,7 @@
           <div class="name">
             音源选择
             <n-text class="tip">选择下载歌曲的音源</n-text>
-            <n-alert v-if="selectedSource === 'meting1' || selectedSource === 'meting2'" type="warning" show-icon>
+            <n-alert v-if="selectedSource.includes('meting')" type="warning" show-icon>
               注意: MetingAPI不支持音质选择
             </n-alert>
           </div>
@@ -99,7 +90,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyricLegacy, getSongDownloadFromPyncmd, getSongDownload, getMetingSongDownload } from "@/api/song";
+import { getSongDetail, getSongLyricLegacy, getSongDownloadFromPyncmd, getSongDownload, getMetingSongDownload, getPythonSongDownload } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
 
@@ -137,8 +128,8 @@ const {
 // 歌曲下载数据
 const songId = ref(null);
 const songData = ref(null);
-const lyricData = ref(null); // 歌词
-const tlyricData = ref(null); // 翻译歌词
+const lyricData = ref(null);
+const tlyricData = ref(null);
 const downloadStatus = ref(false);
 const downloadSongShow = ref(false);
 
@@ -156,44 +147,32 @@ const getMusicDetailData = async (id) => {
     console.error("歌曲信息获取失败：", error);
   }
 };
-// 新增音质配置 ✅
+// 新增音质配置
 const qualityOptions = ref([
-  { label: '标准音质 (128kbps)', value: 128 },
-  { label: '高清音质 (192kbps)', value: 192 },
-  { label: '超清音质 (320kbps)', value: 320 },
-  {
-    label: '无损音质 (740kbps FLAC)',
-    value: 740,
-    lossless: true,
-    description: '高品质无损格式'
-  },
-  {
-    label: 'Hi-Res (999kbps FLAC)',
-    value: 999,
-    lossless: true,
-    description: '超高解析度无损'
-  }
+  { label: '标准音质 (128kbps)', value: 128, desc: 'standard' },
+  { label: '高清音质 (192kbps)', value: 192, desc: 'high' },
+  { label: '超清音质 (320kbps)', value: 320, desc: 'exhigh' },
+  { label: '无损音质 (740kbps FLAC)', value: 740, lossless: true, desc: 'lossless', description: '高品质无损格式' },
+  { label: 'Hi-Res (999kbps FLAC)', value: 999, lossless: true, desc: 'hires', description: '超高解析度无损' }
 ]);
 // 音源选项
 const sourceOptions = ref([
   { label: '默认源 (pyncmd)', value: 'pyncmd' },
   { label: '网易云音乐 (部分歌曲需登陆黑胶账号)', value: 'netease' },
   { label: 'GD音乐台', value: 'gd' },
+  { label: '网易云音乐工具箱', value: 'python1' },
   { label: '岑鬼鬼音乐API (meting)', value: 'meting1' },
   { label: '祈杰音乐源 (meting)', value: 'meting2' },
   { label: 'injahow(meting)', value: 'meting3' },
   { label: '云海花瑶(meting)', value: 'meting4' },
 ])
 
-const selectedSource = ref('pyncmd'); // 默认选择pyncmd音源
-const selectedQuality = ref(320); // 默认选择超清音质
-
+const selectedSource = ref('pyncmd'); const selectedQuality = ref(320); const selectedQualityLabel = "exhigh"
 
 // 歌曲下载
 const toSongDownload = async (song, lyric, tlyric) => {
   try {
     const fileType = selectedQuality.value >= 740 ? 'flac' : 'mp3';
-    console.log(song, lyric, tlyric);
     downloadStatus.value = true;
     // 获取下载数据
     if (selectedSource.value === 'netease') {
@@ -203,13 +182,15 @@ const toSongDownload = async (song, lyric, tlyric) => {
         id: song?.id,
         br: selectedQuality.value
       });
-    } else if (selectedSource.value === 'gd') {  
+    } else if (selectedSource.value === 'gd') {
       var result = await getSongDownloadFromPyncmd({  // 暂时设定为pyncmd音源, 因为pyncmd就是GD音乐源
         id: song?.id,
         br: selectedQuality.value
       });
+    } else if (selectedSource.value.includes('python')) {
+      const qualityOption = qualityOptions.value.find(q => q.value === selectedQuality.value);
+      var result = await getPythonSongDownload(song?.id, selectedSource.value, qualityOption?.desc);
     } else if (selectedSource.value.includes('meting')) {
-      // meting 源直接返回下载 url
       var url = await getMetingSongDownload(song?.id, selectedSource.value);
       var result = { data: { url } };
     } else {
@@ -217,7 +198,7 @@ const toSongDownload = async (song, lyric, tlyric) => {
       downloadStatus.value = false;
       return;
     }
-    
+
     console.log("下载数据：", result);
     if (!result.data) {
       downloadStatus.value = false;
@@ -246,7 +227,6 @@ const toSongDownload = async (song, lyric, tlyric) => {
       downloadCoverToFile: downloadCoverToFile.value,
       downloadLyricsToFile: downloadLyricsToFile.value,
     });
-    console.log(lyric);
     if (isDownloaded) {
       $message.success("下载完成");
       closeDownloadModal();
@@ -362,17 +342,20 @@ defineExpose({
     color: var(--n-text-color-tertiary);
   }
 }
+
 .download-song {
   .song-info {
     .name {
       font-size: 18px;
       font-weight: bold;
     }
+
     .artist {
       font-size: 14px;
       color: #666;
     }
   }
+
   .tip {
     border-radius: 8px;
     margin-bottom: 20px;
