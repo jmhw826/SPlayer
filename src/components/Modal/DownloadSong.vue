@@ -38,13 +38,16 @@
             音源选择
             <n-text class="tip">选择下载歌曲的音源</n-text>
             <n-alert v-if="selectedSource.includes('meting')" type="warning" show-icon>
-              注意: MetingAPI不支持音质选择
+              注意: 该音源不支持音质选择
+            </n-alert>
+            <n-alert v-if="selectedSource.includes('unblock')" type="warning" show-icon>
+              注意: 该音源不支持音质选择, 音源受播放设置的影响, 有几率匹配不成功
             </n-alert>
           </div>
           <n-select v-model:value="selectedSource" :options="sourceOptions" :disabled="downloadStatus"
             placeholder="选择音源" />
         </n-card>
-        <n-card class="set-item">
+        <n-card v-if="!selectedSource.includes('unblock') && !selectedSource.includes('meting')" class="set-item">
           <div class="name">
             音质选择
             <n-tag v-if="qualityOptions.find(q => q.value === selectedQuality)?.lossless" :bordered="false" round
@@ -57,6 +60,15 @@
           <n-text class="tip" depth="3">
             当前选择：{{ selectedQuality }}kbps{{ selectedQuality >= 740 ? ' (FLAC)' : '' }}
           </n-text>
+        </n-card>
+        <n-card v-if="selectedSource==='unblock'" class="set-item">
+          <div class="name">解灰使用源
+            <n-text class="tip">多个源用逗号分隔，支持 pyncmd, qq, kuwo, migu, kugou</n-text>
+          </div>
+          <n-checkbox-group v-model:value="musicSourceChecked" style="margin-bottom: 8px;">
+            <n-checkbox v-for="item in musicSourceOptions" :key="item.value" :value="item.value">{{ item.label }}</n-checkbox>
+          </n-checkbox-group>
+          <n-input v-model:value="settings.customMusicSource" />
         </n-card>
         <n-card class="set-item">
           <div class="name">下载歌曲时同时下载封面</div>
@@ -90,7 +102,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { siteData, siteSettings } from "@/stores";
-import { getSongDetail, getSongLyricLegacy, getSongDownloadFromPyncmd, getSongDownload, getMetingSongDownload, getPythonSongDownload } from "@/api/song";
+import { getSongDetail, getSongLyricLegacy, getSongDownloadFromPyncmd, getSongDownload, getMusicNumUrlNew, getMetingSongDownload, getPythonSongDownload } from "@/api/song";
 import { downloadFile, checkPlatform } from "@/utils/helper";
 import formatData from "@/utils/formatData";
 
@@ -105,6 +117,30 @@ const isMobile = ref(false);
 const checkMobile = () => {
   isMobile.value = window.innerWidth <= 768;
 };
+
+// 音源选项
+const musicSourceOptions = [
+  { label: "第三方网易云(pyncmd)", value: "pyncmd" },
+  { label: "QQ音乐(qq)", value: "qq" },
+  { label: "酷我(kuwo)", value: "kuwo" },
+  { label: "咪咕(migu)", value: "migu" },
+  { label: "酷狗(kugou)", value: "kugou" },
+];
+
+// 复选框选中项
+const musicSourceChecked = ref(settings.customMusicSource?.split(',').map(i => i.trim()).filter(Boolean) || []);
+
+// 复选框变化时同步到输入框
+watch(musicSourceChecked, (val) => {
+  settings.customMusicSource = val.join(",");
+});
+
+// 输入框变化时同步到复选框
+watch(() => settings.customMusicSource, (val) => {
+  if (typeof val === 'string') {
+    musicSourceChecked.value = val.split(',').map(i => i.trim()).filter(Boolean);
+  }
+});
 
 // 监听窗口大小变化
 onMounted(() => {
@@ -159,6 +195,7 @@ const qualityOptions = ref([
 const sourceOptions = ref([
   { label: '默认源 (pyncmd)', value: 'pyncmd' },
   { label: '网易云音乐 (部分歌曲需登陆黑胶账号)', value: 'netease' },
+  { label: '解灰专用源 (有几率匹配不成功)', value: 'unblock' },
   { label: 'GD音乐台', value: 'gd' },
   { label: '网易云音乐工具箱', value: 'python1' },
   { label: '岑鬼鬼音乐API (meting)', value: 'meting1' },
@@ -167,7 +204,7 @@ const sourceOptions = ref([
   { label: '云海花瑶(meting)', value: 'meting4' },
 ])
 
-const selectedSource = ref('pyncmd'); const selectedQuality = ref(320); const selectedQualityLabel = "exhigh"
+const selectedSource = ref('pyncmd'); const selectedQuality = ref(320);
 
 // 歌曲下载
 const toSongDownload = async (song, lyric, tlyric) => {
@@ -182,6 +219,8 @@ const toSongDownload = async (song, lyric, tlyric) => {
         id: song?.id,
         br: selectedQuality.value
       });
+    } else if (selectedSource.value === 'unblock') {
+      var result = await getMusicNumUrlNew(song?.id, settings.customMusicSource);
     } else if (selectedSource.value === 'gd') {
       var result = await getSongDownloadFromPyncmd({  // 暂时设定为pyncmd音源, 因为pyncmd就是GD音乐源
         id: song?.id,
