@@ -83,8 +83,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 .login-cookie {
   margin-top: 20px;
-  min-height: 240px; // 添加最小高度
-  transition: height 0.3s ease; // 添加高度过渡
+  min-height: 240px;
+  transition: height 0.3s ease;
 
   .n-input,
   .n-button {

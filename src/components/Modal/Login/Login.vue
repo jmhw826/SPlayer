@@ -16,7 +16,7 @@
         <img class="logo" src="/imgs/icons/favicon.png?asset" alt="logo" />
       </div>
       <!-- 登录方式 -->
-      <n-tabs class="login-tabs" default-value="login-qr" type="segment" animated>
+      <n-tabs class="login-tabs" default-value="login-cookie" type="segment" animated>
         <n-tab-pane name="login-cookie" tab="Cookie登录">
           <loginCookie @setLoginData="setLoginData" />
         </n-tab-pane>
@@ -25,6 +25,9 @@
         </n-tab-pane>
         <n-tab-pane name="login-phone" tab="验证码登录">
           <loginPhone @setLoginData="setLoginData" />
+        </n-tab-pane>
+        <n-tab-pane name="login-uid" tab="UID登录">
+          <loginUID @setLoginData="setLoginData" />
         </n-tab-pane>
       </n-tabs>
       <!-- 关闭登录弹窗 -->

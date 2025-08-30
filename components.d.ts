@@ -23,6 +23,7 @@ declare module 'vue' {
     LoginCookie: typeof import('./src/components/Modal/Login/LoginCookie.vue')['default']
     LoginPhone: typeof import('./src/components/Modal/Login/LoginPhone.vue')['default']
     LoginQRCode: typeof import('./src/components/Modal/Login/LoginQRCode.vue')['default']
+    LoginUID: typeof import('./src/components/Modal/Login/LoginUID.vue')['default']
     Lyric: typeof import('./src/components/Player/Lyric.vue')['default']
     MainControl: typeof import('./src/components/Player/MainControl.vue')['default']
     MainCover: typeof import('./src/components/Cover/MainCover.vue')['default']

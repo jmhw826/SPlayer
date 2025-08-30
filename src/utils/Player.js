@@ -1,7 +1,6 @@
 import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrlNew, getSongLyricLegacy } from "@/api/song";
-import { getSongTTML } from "@/api/ttml";
+import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrlNew, getSongLyricLegacy, getSongTTML } from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
 import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/time.ts";
