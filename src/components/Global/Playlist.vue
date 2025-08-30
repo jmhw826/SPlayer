@@ -104,7 +104,7 @@
           </n-gi>
           <n-gi>
             <!-- 清空列表 -->
-            <n-button size="large" tag="div" strong secondary @click="showClearModal = true">
+            <n-button size="large" tag="div" strong secondary @click="cleanPlaylists()">
               <template #icon>
                 <n-icon>
                   <SvgIcon icon="delete-sweep" />

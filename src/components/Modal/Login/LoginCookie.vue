@@ -3,7 +3,7 @@
     <n-alert type="info" :bordered="bordered" style="margin-bottom: 16px;">
       可在官方的
       <n-a href="https://music.163.com/" target="_blank">网页端</n-a>
-      或者点击下方使用官方网页端登录获取cookie
+      或者点击下方使用官方网页端登录获取cookie, 格式: <code>MUSIC_U=xxxxxx;</code>
     </n-alert>
     <n-input v-model:value="cookie" :autosize="{ minRows: 3, maxRows: 6 }" type="textarea" placeholder="请输入 Cookie" />
     <n-flex class="menu">
@@ -82,6 +82,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .login-cookie {
+  margin-top: 20px;
+  min-height: 240px; // 添加最小高度
+  transition: height 0.3s ease; // 添加高度过渡
 
   .n-input,
   .n-button {
@@ -102,6 +105,8 @@ onMounted(() => {
 
   .menu {
     margin-top: 20px;
+    opacity: 1;
+    transition: opacity 0.3s ease; // 添加按钮透明度过渡
 
     .n-button {
       width: auto;

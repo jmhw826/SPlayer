@@ -1,96 +1,73 @@
 <template>
   <div class="cloud">
-  <PageTransition>
-    <n-h1 class="title">我的云盘</n-h1>
-    <!-- 基础状态 -->
-    <n-progress
-      :percentage="100 / (userCloudSpace[1] / userCloudSpace[0])"
-      class="status"
-      type="line"
-    >
-      <div class="tip">
-        <n-text class="space" depth="3">
-          云盘容量 {{ userCloudSpace[0] ?? 0 }}GB / {{ userCloudSpace[1] ?? 0 }}GB
-        </n-text>
-        <n-text class="buy" @click="goBuy"> 扩容 </n-text>
-      </div>
-    </n-progress>
-    <!-- 功能区 -->
-    <n-flex class="menu" justify="space-between">
-      <n-flex class="left">
-        <n-button
-          :disabled="userCloudData?.length === 0"
-          :focusable="false"
-          type="primary"
-          class="play"
-          tag="div"
-          circle
-          strong
-          secondary
-          @click="playAllSongs(userCloudData)"
-        >
-          <template #icon>
-            <n-icon size="32">
-              <SvgIcon icon="play-arrow-rounded" />
-            </n-icon>
-          </template>
-        </n-button>
-        <n-button size="large" round strong secondary @click="upCloudSongRef?.openUpSongModal()">
-          <template #icon>
-            <n-icon>
-              <SvgIcon icon="cloud-arrow-up" />
-            </n-icon>
-          </template>
-          上传歌曲
-        </n-button>
-        <!-- 歌曲上传弹窗 -->
-        <UpCloudSong ref="upCloudSongRef" @getUserCloudData="getUserCloudData" />
-      </n-flex>
-      <n-flex class="right">
-        <!-- 模糊搜索 -->
-        <Transition name="fade" mode="out-in">
-          <n-input
-            v-if="userCloudData?.length"
-            v-model:value="searchValue"
-            :input-props="{ autoComplete: false }"
-            class="search"
-            placeholder="模糊搜索"
-            clearable
-            @input="localSearch"
-          >
-            <template #prefix>
-              <n-icon size="18">
-                <SvgIcon icon="search-rounded" />
+    <PageTransition>
+      <n-h1 class="title">我的云盘</n-h1>
+      <!-- 基础状态 -->
+      <n-progress :percentage="100 / (userCloudSpace[1] / userCloudSpace[0])" class="status" type="line">
+        <div class="tip">
+          <n-text class="space" depth="3">
+            云盘容量 {{ userCloudSpace[0] ?? 0 }}GB / {{ userCloudSpace[1] ?? 0 }}GB
+          </n-text>
+          <n-text class="buy" @click="goBuy"> 扩容 </n-text>
+        </div>
+      </n-progress>
+      <!-- 功能区 -->
+      <n-flex class="menu" justify="space-between">
+        <n-flex class="left">
+          <n-button :disabled="userCloudData?.length === 0" :focusable="false" type="primary" class="play" tag="div"
+            circle strong secondary @click="playAllSongs(userCloudData)">
+            <template #icon>
+              <n-icon size="32">
+                <SvgIcon icon="play-arrow-rounded" />
               </n-icon>
             </template>
-          </n-input>
-        </Transition>
-      </n-flex>
-    </n-flex>
-    <!-- 列表 -->
-    <Transition name="fade" mode="out-in">
-      <div v-if="userCloudData !== 'empty'" class="list">
-        <Transition name="fade" mode="out-in">
-          <SongList v-if="!searchValue" :data="userCloudData" :showPrivilege="false" />
-          <SongList v-else-if="searchData?.length" :data="searchData" :showPrivilege="false" />
-          <n-empty
-            v-else
-            :description="`搜不到关于 ${searchValue} 的任何歌曲呀`"
-            style="margin-top: 60px"
-            size="large"
-          >
+          </n-button>
+          <n-button size="large" round strong secondary @click="upCloudSongRef?.openUpSongModal()">
             <template #icon>
               <n-icon>
-                <SvgIcon icon="search-off" />
+                <SvgIcon icon="cloud-arrow-up" />
               </n-icon>
             </template>
-          </n-empty>
-        </Transition>
-      </div>
-      <n-empty v-else class="empty" description="你还有任何歌曲，快去上传吧" />
-    </Transition>
+            上传歌曲
+          </n-button>
+          <!-- 歌曲上传弹窗 -->
+          <UpCloudSong ref="upCloudSongRef" @getUserCloudData="getUserCloudData" />
+        </n-flex>
+        <n-flex class="right">
+          <!-- 模糊搜索 -->
+          <Transition name="fade" mode="out-in">
+            <n-input v-if="userCloudData?.length" v-model:value="searchValue" :input-props="{ autoComplete: false }"
+              class="search" placeholder="模糊搜索" clearable @input="localSearch">
+              <template #prefix>
+                <n-icon size="18">
+                  <SvgIcon icon="search-rounded" />
+                </n-icon>
+              </template>
+            </n-input>
+          </Transition>
+        </n-flex>
+      </n-flex>
+      <!-- 列表 -->
+      <Transition name="fade" mode="out-in">
+        <div v-if="userCloudData !== 'empty'" class="list">
+          <div v-if="!searchValue">
+            <SongList :data="userCloudData" :showPrivilege="false" />
+          </div>
+          <div v-else>
+            <SongList v-if="searchData?.length" :data="searchData" :showPrivilege="false" />
+            <n-empty v-else :description="`搜不到关于 ${searchValue} 的任何歌曲呀`" style="margin-top: 60px" size="large">
+              <template #icon>
+                <n-icon>
+                  <SvgIcon icon="search-off" />
+                </n-icon>
+              </template>
+            </n-empty>
+          </div>
+        </div>
+        <n-empty v-else class="empty" description="你还有任何歌曲，快去上传吧" />
+      </Transition>
     </PageTransition>
-</div>
+  </div>
 </template>
 
 <script setup>import PageTransition from "@/components/Global/PageTransition.vue";
@@ -101,6 +78,7 @@ import { fuzzySearch } from "@/utils/helper";
 import { playAllSongs } from "@/utils/Player";
 import debounce from "@/utils/debounce";
 import formatData from "@/utils/formatData";
+import { messageDark } from "naive-ui";
 
 const indexedDB = indexedDBData();
 
@@ -165,6 +143,7 @@ const localSearch = debounce((val) => {
   }
   // 返回结果
   const result = fuzzySearch(searchValue, userCloudData.value);
+  $message.info(`找到 ${result.length} 首歌曲`);
   searchData.value = result;
 }, 300);
 
@@ -190,16 +169,20 @@ onMounted(() => {
     font-size: 36px;
     font-weight: bold;
   }
+
   .status {
     width: 340px;
     --n-fill-color: var(--main-color);
+
     .tip {
       display: flex;
       flex-direction: row;
       align-items: center;
+
       .buy {
         margin-left: 8px;
         cursor: pointer;
+
         &::after {
           content: ">";
           margin-left: 2px;
@@ -207,16 +190,20 @@ onMounted(() => {
       }
     }
   }
+
   .menu {
     align-items: center;
     margin: 26px 0;
+
     .left {
       align-items: center;
+
       .play {
         --n-width: 46px;
         --n-height: 46px;
       }
     }
+
     .right {
       .search {
         height: 40px;
@@ -227,6 +214,7 @@ onMounted(() => {
         transition:
           width 0.3s,
           background-color 0.3s;
+
         &.n-input--focus {
           width: 200px;
         }

@@ -5,18 +5,12 @@
       <div v-if="playListDetail && Object.keys(playListDetail)?.length" class="detail">
         <div class="cover">
           <!-- 封面 -->
-          <n-image
-            :src="playListDetail.coverSize.l"
-            :previewed-img-props="{ style: { borderRadius: '8px' } }"
-            :preview-src="playListDetail.cover"
-            class="cover-img"
-            show-toolbar-tooltip
-            @load="
+          <n-image :src="playListDetail.coverSize.l" :previewed-img-props="{ style: { borderRadius: '8px' } }"
+            :preview-src="playListDetail.cover" class="cover-img" show-toolbar-tooltip @load="
               (e) => {
                 e.target.style.opacity = 1;
               }
-            "
-          >
+            ">
             <template #placeholder>
               <div class="cover-loading">
                 <img class="loading-img" src="/imgs/pic/song.jpg?assest" alt="song" />
@@ -35,13 +29,8 @@
             }}
           </n-text>
           <div class="creator">
-            <n-avatar
-              :src="
-                (playListDetail.creator?.avatarUrl + '?param=300y$300').replace(/^http:/, 'https:')
-              "
-              fallback-src="/imgs/pic/avatar.png?assest"
-              round
-            />
+            <n-avatar :src="(playListDetail.creator?.avatarUrl + '?param=300y$300').replace(/^http:/, 'https:')
+              " fallback-src="/imgs/pic/avatar.png?assest" round />
             <n-text class="nickname">{{ playListDetail.creator?.nickname || "未知创建者" }}</n-text>
             <n-text v-if="playListDetail.createTime" class="create-time" depth="3">
               {{ getTimestampTime(playListDetail.createTime) }} 创建
@@ -49,19 +38,13 @@
           </div>
           <!-- 标签 -->
           <n-flex v-if="playListDetail?.tags" class="tags">
-            <n-tag
-              v-for="(item, index) in playListDetail.tags"
-              :key="index"
-              :bordered="false"
-              class="pl-tags"
-              round
+            <n-tag v-for="(item, index) in playListDetail.tags" :key="index" :bordered="false" class="pl-tags" round
               @click="
                 router.push({
                   path: '/discover/playlists',
                   query: { cat: item },
                 })
-              "
-            >
+                ">
               {{ item }}
             </n-tag>
           </n-flex>
@@ -87,13 +70,8 @@
             </div>
           </n-flex>
           <!-- 简介 -->
-          <n-ellipsis
-            v-if="playListDetail.description"
-            :tooltip="false"
-            class="description"
-            expand-trigger="click"
-            line-clamp="2"
-          >
+          <n-ellipsis v-if="playListDetail.description" :tooltip="false" class="description" expand-trigger="click"
+            line-clamp="2">
             <n-text depth="3">{{ playListDetail.description }}</n-text>
           </n-ellipsis>
           <n-text v-else class="description">太懒了吧，连简介都没写</n-text>
@@ -110,56 +88,27 @@
     <Transition name="fade" mode="out-in">
       <n-flex :key="isUserPLayList" class="menu" justify="space-between">
         <n-flex class="left">
-          <n-button
-            :disabled="playListData === null || playListData === 'empty' || loadingMsg !== null"
-            :focusable="false"
-            type="primary"
-            class="play"
-            tag="div"
-            circle
-            strong
-            secondary
-            @click="playAllSongs(playListData)"
-          >
+          <n-button :disabled="playListData === null || playListData === 'empty' || loadingMsg !== null"
+            :focusable="false" type="primary" class="play" tag="div" circle strong secondary
+            @click="playAllSongs(playListData)">
             <template #icon>
               <n-icon size="32">
                 <SvgIcon icon="play-arrow-rounded" />
               </n-icon>
             </template>
           </n-button>
-          <n-button
-            v-if="!isUserPLayList"
-            :focusable="false"
-            class="like"
-            size="large"
-            tag="div"
-            round
-            strong
-            secondary
-            @click="likeOrDislike(playlistId)"
-          >
+          <n-button v-if="!isUserPLayList" :focusable="false" class="like" size="large" tag="div" round strong secondary
+            @click="likeOrDislike(playlistId)">
             <template #icon>
               <n-icon>
-                <SvgIcon
-                  :icon="
-                    isLikeOrDislike(playlistId) ? 'favorite-outline-rounded' : 'favorite-rounded'
-                  "
-                />
+                <SvgIcon :icon="isLikeOrDislike(playlistId) ? 'favorite-outline-rounded' : 'favorite-rounded'
+                  " />
               </n-icon>
             </template>
             {{ isLikeOrDislike(playlistId) ? "收藏歌单" : "取消收藏" }}
           </n-button>
-          <n-button
-            v-else
-            :focusable="false"
-            class="like"
-            size="large"
-            tag="div"
-            round
-            strong
-            secondary
-            @click="playlistUpdateRef?.openUpdateModal(playListDetail)"
-          >
+          <n-button v-else :focusable="false" class="like" size="large" tag="div" round strong secondary
+            @click="playlistUpdateRef?.openUpdateModal(playListDetail)">
             <template #icon>
               <n-icon>
                 <SvgIcon icon="edit" />
@@ -168,15 +117,7 @@
             编辑歌单
           </n-button>
           <n-dropdown :options="moreOptions" trigger="hover" placement="bottom-start">
-            <n-button
-              :focusable="false"
-              class="more"
-              size="large"
-              tag="div"
-              circle
-              strong
-              secondary
-            >
+            <n-button :focusable="false" class="more" size="large" tag="div" circle strong secondary>
               <template #icon>
                 <n-icon>
                   <SvgIcon icon="format-list-bulleted" />
@@ -188,15 +129,8 @@
         <n-flex class="right">
           <!-- 模糊搜索 -->
           <Transition name="fade" mode="out-in">
-            <n-input
-              v-if="playListData !== 'empty' && playListData?.length"
-              v-model:value="searchValue"
-              :input-props="{ autoComplete: false }"
-              class="search"
-              placeholder="模糊搜索"
-              clearable
-              @input="localSearch"
-            >
+            <n-input v-if="playListData !== 'empty' && playListData?.length" v-model:value="searchValue"
+              :input-props="{ autoComplete: false }" class="search" placeholder="模糊搜索" clearable @input="localSearch">
               <template #prefix>
                 <n-icon size="18">
                   <SvgIcon icon="search-rounded" />
@@ -208,22 +142,23 @@
       </n-flex>
     </Transition>
     <!-- 列表 -->
-    <Transition name="fade" mode="out-in">
-      <SongList v-if="!searchValue" :data="playListData" :sourceId="playlistId" />
-      <SongList v-else-if="searchData?.length" :data="searchData" :sourceId="playlistId" />
-      <n-empty
-        v-else
-        :description="`搜不到关于 ${searchValue} 的任何歌曲呀`"
-        style="margin-top: 60px"
-        size="large"
-      >
-        <template #icon>
-          <n-icon>
-            <SvgIcon icon="search-off" />
-          </n-icon>
-        </template>
-      </n-empty>
-    </Transition>
+    <div class="list-container">
+      <Transition name="fade">
+        <div v-if="!searchValue" class="list">
+          <SongList :data="playListData" :sourceId="playlistId" />
+        </div>
+        <div v-else-if="searchData?.length" class="list">
+          <SongList :data="searchData" :sourceId="playlistId" />
+        </div>
+        <n-empty v-else :description="`搜不到关于 ${searchValue} 的任何歌曲呀`" style="margin-top: 60px" size="large">
+          <template #icon>
+            <n-icon>
+              <SvgIcon icon="search-off" />
+            </n-icon>
+          </template>
+        </n-empty>
+      </Transition>
+    </div>
     <!-- 歌单编辑 -->
     <PlaylistUpdate ref="playlistUpdateRef" @getPlayListDetailData="getPlayListDetailData" />
   </div>
@@ -403,6 +338,7 @@ const localSearch = debounce((val) => {
   }
   // 返回结果
   const result = fuzzySearch(searchValue, playListData.value);
+  $message.info(`找到 ${result.length} 首歌曲`);
   searchData.value = result;
 }, 300);
 
@@ -506,6 +442,7 @@ onBeforeUnmount(() => {
     flex-direction: row;
     align-items: stretch;
     margin-bottom: 20px;
+
     .cover {
       position: relative;
       display: flex;
@@ -514,6 +451,7 @@ onBeforeUnmount(() => {
       min-width: 200px;
       margin-right: 20px;
       border-radius: 8px;
+
       .cover-img {
         width: 100%;
         height: 100%;
@@ -522,15 +460,18 @@ onBeforeUnmount(() => {
         transition:
           filter 0.3s,
           transform 0.3s;
+
         :deep(img) {
           width: 100%;
           opacity: 0;
           transition: opacity 0.35s ease-in-out;
         }
+
         &:active {
           transform: scale(0.98);
         }
       }
+
       .cover-shadow {
         position: absolute;
         top: 4px;
@@ -543,37 +484,46 @@ onBeforeUnmount(() => {
         aspect-ratio: 1/1;
       }
     }
+
     .data {
       width: 100%;
+
       .name {
         font-size: 30px;
         font-weight: bold;
         margin-bottom: 12px;
         -webkit-line-clamp: 2;
       }
+
       .creator {
         display: flex;
         flex-direction: row;
         align-items: center;
+
         .n-avatar {
           width: 28px;
           height: 28px;
           margin-right: 8px;
         }
+
         .nickname {
           transition: color 0.3s;
           cursor: pointer;
+
           &:hover {
             color: var(--main-color);
           }
         }
+
         .create-time {
           margin-left: 12px;
           font-size: 13px;
         }
       }
+
       .tags {
         margin-top: 12px;
+
         .pl-tags {
           font-size: 13px;
           padding: 0 16px;
@@ -583,58 +533,71 @@ onBeforeUnmount(() => {
             transform 0.3s,
             background-color 0.3s,
             color 0.3s;
+
           &:hover {
             background-color: var(--main-second-color);
             color: var(--main-color);
           }
+
           &:active {
             transform: scale(0.95);
           }
         }
       }
+
       .num {
         margin-top: 12px;
+
         .num-item {
           display: flex;
           flex-direction: row;
           align-items: center;
+
           .n-icon {
             margin-right: 4px;
             // color: var(--main-color);
           }
         }
       }
+
       .description {
         margin-top: 12px;
         margin-left: 2px;
+
         .n-text {
           display: initial;
         }
       }
+
       :deep(.n-skeleton) {
         &:first-child {
           width: 60%;
           margin-top: 0;
           height: 40px;
         }
+
         height: 30px;
         margin-top: 12px;
         border-radius: 8px;
       }
     }
   }
+
   .menu {
     flex-wrap: nowrap;
     align-items: center;
     margin: 26px 0;
+
     .left {
       flex-wrap: nowrap;
       align-items: center;
+
       .play {
         --n-width: 46px;
         --n-height: 46px;
       }
     }
+
     .right {
       .search {
         height: 40px;
@@ -645,6 +608,7 @@ onBeforeUnmount(() => {
         transition:
           width 0.3s,
           background-color 0.3s;
+
         &.n-input--focus {
           width: 200px;
         }
@@ -659,65 +623,79 @@ onBeforeUnmount(() => {
         height: 140px;
         min-width: 140px;
       }
+
       .data {
         .name {
           font-size: 20px;
           margin-bottom: 4px;
         }
+
         .creator {
           .n-avatar {
             width: 20px;
             height: 20px;
             margin-right: 6px;
           }
+
           .nickname {
             font-size: 12px;
           }
+
           .create-time {
             margin-left: 6px;
             font-size: 12px;
           }
         }
+
         .tags {
           .pl-tags {
             font-size: 12px;
             padding: 0 12px;
           }
         }
+
         .num,
         .description {
           display: none !important;
         }
       }
     }
+
     .menu {
       margin: 20px 0;
+
       .left {
         .play {
           --n-width: 40px;
           --n-height: 40px;
+
           .n-icon {
             font-size: 22px !important;
           }
         }
+
         .like {
           --n-height: 36px;
           --n-font-size: 13px;
           --n-padding: 0 16px;
           --n-icon-size: 18px;
+
           :deep(.n-button__icon) {
             margin: 0;
           }
+
           :deep(.n-button__content) {
             display: none;
           }
         }
+
         .more {
           --n-height: 36px;
           --n-font-size: 13px;
           --n-icon-size: 18px;
         }
       }
+
       .right {
         .search {
           height: 36px;
@@ -728,15 +706,18 @@ onBeforeUnmount(() => {
     }
   }
 }
+
 .title {
   display: flex;
   flex-direction: column;
+
   .key {
     margin: 10px 0;
     font-size: 36px;
     font-weight: bold;
     margin-right: 8px;
   }
+
   .back {
     width: 98px;
   }

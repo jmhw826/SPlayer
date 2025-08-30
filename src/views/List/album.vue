@@ -5,18 +5,12 @@
       <div v-if="albumDetail && Object.keys(albumDetail)?.length" class="detail">
         <div class="cover">
           <!-- 封面 -->
-          <n-image
-            :src="albumDetail.coverSize.l"
-            :previewed-img-props="{ style: { borderRadius: '8px' } }"
-            :preview-src="albumDetail.cover"
-            class="cover-img"
-            show-toolbar-tooltip
-            @load="
+          <n-image :src="albumDetail.coverSize.l" :previewed-img-props="{ style: { borderRadius: '8px' } }"
+            :preview-src="albumDetail.cover" class="cover-img" show-toolbar-tooltip @load="
               (e) => {
                 e.target.style.opacity = 1;
               }
-            "
-          >
+            ">
             <template #placeholder>
               <div class="cover-loading">
                 <img class="loading-img" src="/imgs/pic/song.jpg?assest" alt="song" />
@@ -32,30 +26,20 @@
           </n-text>
           <n-text v-if="albumDetail.alia" class="alia" depth="3">{{ albumDetail.alia }}</n-text>
           <div v-if="albumDetail.artists" class="creator">
-            <n-text
-              v-for="(item, index) in albumDetail.artists"
-              :key="index"
-              class="ar"
-              @click="router.push(`/artist?id=${item.id}`)"
-            >
+            <n-text v-for="(item, index) in albumDetail.artists" :key="index" class="ar"
+              @click="router.push(`/artist?id=${item.id}`)">
               {{ item.name }}
             </n-text>
           </div>
           <!-- 标签 -->
           <n-flex v-if="albumDetail?.tags" class="tags">
-            <n-tag
-              v-for="(item, index) in albumDetail.tags"
-              :key="index"
-              :bordered="false"
-              class="pl-tags"
-              round
+            <n-tag v-for="(item, index) in albumDetail.tags" :key="index" :bordered="false" class="pl-tags" round
               @click="
                 router.push({
                   path: '/discover/albums',
                   query: { cat: item },
                 })
-              "
-            >
+                ">
               {{ item }}
             </n-tag>
           </n-flex>
@@ -81,13 +65,8 @@
             </div>
           </n-flex>
           <!-- 简介 -->
-          <n-ellipsis
-            v-if="albumDetail.description"
-            :tooltip="false"
-            class="description"
-            expand-trigger="click"
-            line-clamp="2"
-          >
+          <n-ellipsis v-if="albumDetail.description" :tooltip="false" class="description" expand-trigger="click"
+            line-clamp="2">
             <n-text depth="3">{{ albumDetail.description }}</n-text>
           </n-ellipsis>
           <n-text v-else class="description">太懒了吧，连简介都没写</n-text>
@@ -103,38 +82,19 @@
     <!-- 功能区 -->
     <n-flex class="menu" justify="space-between">
       <n-flex class="left">
-        <n-button
-          :disabled="albumData === 'empty'"
-          :focusable="false"
-          type="primary"
-          class="play"
-          tag="div"
-          circle
-          strong
-          secondary
-          @click="playAllSongs(albumData)"
-        >
+        <n-button :disabled="albumData === 'empty'" :focusable="false" type="primary" class="play" tag="div" circle
+          strong secondary @click="playAllSongs(albumData)">
           <template #icon>
             <n-icon size="32">
               <SvgIcon icon="play-arrow-rounded" />
             </n-icon>
           </template>
         </n-button>
-        <n-button
-          :focusable="false"
-          class="like"
-          size="large"
-          tag="div"
-          round
-          strong
-          secondary
-          @click="likeOrDislike(albumId)"
-        >
+        <n-button :focusable="false" class="like" size="large" tag="div" round strong secondary
+          @click="likeOrDislike(albumId)">
           <template #icon>
             <n-icon>
-              <SvgIcon
-                :icon="isLikeOrDislike(albumId) ? 'favorite-outline-rounded' : 'favorite-rounded'"
-              />
+              <SvgIcon :icon="isLikeOrDislike(albumId) ? 'favorite-outline-rounded' : 'favorite-rounded'" />
             </n-icon>
           </template>
           {{ isLikeOrDislike(albumId) ? "收藏专辑" : "取消收藏" }}
@@ -152,15 +112,8 @@
       <n-flex class="right">
         <!-- 模糊搜索 -->
         <Transition name="fade" mode="out-in">
-          <n-input
-            v-if="albumData !== 'empty' && albumData?.length"
-            v-model:value="searchValue"
-            :input-props="{ autoComplete: false }"
-            class="search"
-            placeholder="模糊搜索"
-            clearable
-            @input="localSearch"
-          >
+          <n-input v-if="albumData !== 'empty' && albumData?.length" v-model:value="searchValue"
+            :input-props="{ autoComplete: false }" class="search" placeholder="模糊搜索" clearable @input="localSearch">
             <template #prefix>
               <n-icon size="18">
                 <SvgIcon icon="search-rounded" />
@@ -171,27 +124,23 @@
       </n-flex>
     </n-flex>
     <!-- 列表 -->
-    <Transition name="fade" mode="out-in">
-      <SongList v-if="!searchValue" :data="albumData" :sourceId="albumId" :showAlbum="false" />
-      <SongList
-        v-else-if="searchData?.length"
-        :data="searchData"
-        :sourceId="albumId"
-        :showAlbum="false"
-      />
-      <n-empty
-        v-else
-        :description="`搜不到关于 ${searchValue} 的任何歌曲呀`"
-        style="margin-top: 60px"
-        size="large"
-      >
-        <template #icon>
-          <n-icon>
-            <SvgIcon icon="search-off" />
-          </n-icon>
-        </template>
-      </n-empty>
-    </Transition>
+    <div class="list-container">
+      <Transition name="fade">
+        <div v-if="!searchValue">
+          <SongList :data="albumData" :sourceId="albumId" :showAlbum="false" />
+        </div>
+        <div v-else-if="searchData?.length">
+          <SongList :data="searchData" :sourceId="albumId" :showAlbum="false" />
+        </div>
+        <n-empty v-else :description="`搜不到关于 ${searchValue} 的任何歌曲呀`" style="margin-top: 60px" size="large">
+          <template #icon>
+            <n-icon>
+              <SvgIcon icon="search-off" />
+            </n-icon>
+          </template>
+        </n-empty>
+      </Transition>
+    </div>
   </div>
   <div v-else class="title">
     <n-text class="key">参数不完整</n-text>
@@ -278,6 +227,7 @@ const localSearch = debounce((val) => {
   }
   // 返回结果
   const result = fuzzySearch(searchValue, albumData.value);
+  $message.info(`找到 ${result.length} 首歌曲`);
   searchData.value = result;
 }, 300);
 
@@ -332,6 +282,7 @@ onBeforeMount(() => {
     flex-direction: row;
     align-items: stretch;
     margin-bottom: 20px;
+
     .cover {
       position: relative;
       display: flex;
@@ -340,6 +291,7 @@ onBeforeMount(() => {
       min-width: 200px;
       margin-right: 20px;
       border-radius: 8px;
+
       .cover-img {
         width: 100%;
         height: 100%;
@@ -348,15 +300,18 @@ onBeforeMount(() => {
         transition:
           filter 0.3s,
           transform 0.3s;
+
         :deep(img) {
           width: 100%;
           opacity: 0;
           transition: opacity 0.35s ease-in-out;
         }
+
         &:active {
           transform: scale(0.98);
         }
       }
+
       .cover-shadow {
         position: absolute;
         top: 4px;
@@ -369,32 +324,40 @@ onBeforeMount(() => {
         aspect-ratio: 1/1;
       }
     }
+
     .data {
       width: 100%;
+
       .name {
         font-size: 30px;
         font-weight: bold;
         -webkit-line-clamp: 2;
       }
+
       .alia {
         margin-top: 4px;
         font-size: 18px;
       }
+
       .creator {
         margin-top: 8px;
         display: flex;
         flex-direction: row;
         align-items: center;
+
         .ar {
           transition: color 0.3s;
           cursor: pointer;
+
           &:hover {
             color: var(--main-color);
           }
+
           &::after {
             content: "/";
             margin: 0 4px;
           }
+
           &:last-child {
             &::after {
               display: none;
@@ -402,8 +365,10 @@ onBeforeMount(() => {
           }
         }
       }
+
       .tags {
         margin-top: 12px;
+
         .pl-tags {
           font-size: 13px;
           padding: 0 16px;
@@ -413,58 +378,71 @@ onBeforeMount(() => {
             transform 0.3s,
             background-color 0.3s,
             color 0.3s;
+
           &:hover {
             background-color: var(--main-second-color);
             color: var(--main-color);
           }
+
           &:active {
             transform: scale(0.95);
           }
         }
       }
+
       .num {
         margin-top: 12px;
+
         .num-item {
           display: flex;
           flex-direction: row;
           align-items: center;
+
           .n-icon {
             margin-right: 4px;
             // color: var(--main-color);
           }
         }
       }
+
       .description {
         margin-top: 12px;
         margin-left: 2px;
+
         .n-text {
           display: initial;
         }
       }
+
       :deep(.n-skeleton) {
         &:first-child {
           width: 60%;
           margin-top: 0;
           height: 40px;
         }
+
         height: 30px;
         margin-top: 12px;
         border-radius: 8px;
       }
     }
   }
+
   .menu {
     flex-wrap: nowrap;
     align-items: center;
     margin: 26px 0;
+
     .left {
       flex-wrap: nowrap;
       align-items: center;
+
       .play {
         --n-width: 46px;
         --n-height: 46px;
       }
     }
+
     .right {
       .search {
         height: 40px;
@@ -475,12 +453,14 @@ onBeforeMount(() => {
         transition:
           width 0.3s,
           background-color 0.3s;
+
         &.n-input--focus {
           width: 200px;
         }
       }
     }
   }
+
   @media (max-width: 700px) {
     .detail {
       .cover {
@@ -488,68 +468,83 @@ onBeforeMount(() => {
         height: 140px;
         min-width: 140px;
       }
+
       .data {
         .name {
           font-size: 20px;
           margin-bottom: 4px;
         }
+
         .alia {
           font-size: 16px;
         }
+
         .creator {
           .n-avatar {
             width: 20px;
             height: 20px;
             margin-right: 6px;
           }
+
           .nickname {
             font-size: 12px;
           }
+
           .create-time {
             margin-left: 6px;
             font-size: 12px;
           }
         }
+
         .tags {
           .pl-tags {
             font-size: 12px;
             padding: 0 12px;
           }
         }
+
         .num,
         .description {
           display: none !important;
         }
       }
     }
+
     .menu {
       margin: 20px 0;
+
       .left {
         .play {
           --n-width: 40px;
           --n-height: 40px;
+
           .n-icon {
             font-size: 22px !important;
           }
         }
+
         .like {
           --n-height: 36px;
           --n-font-size: 13px;
           --n-padding: 0 16px;
           --n-icon-size: 18px;
+
           :deep(.n-button__icon) {
             margin: 0;
           }
+
           :deep(.n-button__content) {
             display: none;
           }
         }
+
         .more {
           --n-height: 36px;
           --n-font-size: 13px;
           --n-icon-size: 18px;
         }
       }
+
       .right {
         .search {
           height: 36px;
@@ -560,15 +555,18 @@ onBeforeMount(() => {
     }
   }
 }
+
 .title {
   display: flex;
   flex-direction: column;
+
   .key {
     margin: 10px 0;
     font-size: 36px;
     font-weight: bold;
     margin-right: 8px;
   }
+
   .back {
     width: 98px;
   }

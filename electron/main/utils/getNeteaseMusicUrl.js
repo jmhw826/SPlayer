@@ -1,3 +1,9 @@
+/*
+相信我, 以后会整合在网易云音乐api enhanced里面的
+*/
+
+
+
 import { encryptQuery } from "@main/utils/kwDES";
 import axios from "axios";
 

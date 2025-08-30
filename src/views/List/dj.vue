@@ -5,18 +5,12 @@
       <div v-if="djDetail && Object.keys(djDetail)?.length" class="detail">
         <div class="cover">
           <!-- 封面 -->
-          <n-image
-            :src="djDetail.coverSize.l"
-            :previewed-img-props="{ style: { borderRadius: '8px' } }"
-            :preview-src="djDetail.cover"
-            class="cover-img"
-            show-toolbar-tooltip
-            @load="
+          <n-image :src="djDetail.coverSize.l" :previewed-img-props="{ style: { borderRadius: '8px' } }"
+            :preview-src="djDetail.cover" class="cover-img" show-toolbar-tooltip @load="
               (e) => {
                 e.target.style.opacity = 1;
               }
-            "
-          >
+            ">
             <template #placeholder>
               <div class="cover-loading">
                 <img class="loading-img" src="/imgs/pic/song.jpg?assest" alt="song" />
@@ -32,42 +26,27 @@
             {{ djDetail.name || "未知电台" }}
           </n-text>
           <div class="creator">
-            <n-avatar
-              :src="(djDetail.creator?.avatarUrl + '?param=300y$300').replace(/^http:/, 'https:')"
-              fallback-src="/imgs/pic/avatar.png?assest"
-              round
-            />
+            <n-avatar :src="(djDetail.creator?.avatarUrl + '?param=300y$300').replace(/^http:/, 'https:')"
+              fallback-src="/imgs/pic/avatar.png?assest" round />
             <n-text class="nickname">{{ djDetail.creator?.nickname || "未知创建者" }}</n-text>
             <n-text v-if="djDetail.createTime" class="create-time" depth="3">
               {{ getTimestampTime(djDetail.createTime) }} 创建
             </n-text>
             <!-- 标签 -->
-            <n-tag
-              v-if="djDetail?.tags"
-              :bordered="false"
-              class="tags"
-              round
-              @click="
-                router.push({
-                  path: '/dj-type',
-                  query: {
-                    type: djDetail.tags.id,
-                    name: djDetail.tags.name,
-                  },
-                })
-              "
-            >
+            <n-tag v-if="djDetail?.tags" :bordered="false" class="tags" round @click="
+              router.push({
+                path: '/dj-type',
+                query: {
+                  type: djDetail.tags.id,
+                  name: djDetail.tags.name,
+                },
+              })
+              ">
               {{ djDetail.tags.name }}
             </n-tag>
           </div>
           <!-- 简介 -->
-          <n-ellipsis
-            v-if="djDetail.desc"
-            :tooltip="false"
-            class="description"
-            expand-trigger="click"
-            line-clamp="2"
-          >
+          <n-ellipsis v-if="djDetail.desc" :tooltip="false" class="description" expand-trigger="click" line-clamp="2">
             <n-text depth="3">{{ djDetail.desc }}</n-text>
           </n-ellipsis>
           <n-text v-else class="description">太懒了吧，连简介都没写</n-text>
@@ -98,38 +77,19 @@
     <!-- 功能区 -->
     <n-flex class="menu" justify="space-between">
       <n-flex class="left">
-        <n-button
-          :disabled="djData === 'empty'"
-          :focusable="false"
-          type="primary"
-          class="play"
-          tag="div"
-          circle
-          strong
-          secondary
-          @click="playAllSongs(djData, 'dj')"
-        >
+        <n-button :disabled="djData === 'empty'" :focusable="false" type="primary" class="play" tag="div" circle strong
+          secondary @click="playAllSongs(djData, 'dj')">
           <template #icon>
             <n-icon size="32">
               <SvgIcon icon="play-arrow-rounded" />
             </n-icon>
           </template>
         </n-button>
-        <n-button
-          :focusable="false"
-          class="like"
-          size="large"
-          tag="div"
-          round
-          strong
-          secondary
-          @click="likeOrDislike(djId)"
-        >
+        <n-button :focusable="false" class="like" size="large" tag="div" round strong secondary
+          @click="likeOrDislike(djId)">
           <template #icon>
             <n-icon>
-              <SvgIcon
-                :icon="isLikeOrDislike(djId) ? 'favorite-outline-rounded' : 'favorite-rounded'"
-              />
+              <SvgIcon :icon="isLikeOrDislike(djId) ? 'favorite-outline-rounded' : 'favorite-rounded'" />
             </n-icon>
           </template>
           {{ isLikeOrDislike(djId) ? "订阅电台" : "取消订阅" }}
@@ -146,39 +106,27 @@
       </n-flex>
       <n-flex class="right">
         <!-- 模糊搜索 -->
-        <Transition name="fade" mode="out-in">
-          <n-input
-            v-if="djData !== 'empty' && djData?.length"
-            v-model:value="searchValue"
-            :input-props="{ autoComplete: false }"
-            class="search"
-            placeholder="模糊搜索"
-            clearable
-            @input="localSearch"
-          >
-            <template #prefix>
-              <n-icon size="18">
-                <SvgIcon icon="search-rounded" />
-              </n-icon>
-            </template>
-          </n-input>
-        </Transition>
+        <n-input v-if="djData !== 'empty' && djData?.length" v-model:value="searchValue"
+          :input-props="{ autoComplete: false }" class="search" placeholder="模糊搜索" clearable @input="localSearch">
+          <template #prefix>
+            <n-icon size="18">
+              <SvgIcon icon="search-rounded" />
+            </n-icon>
+          </template>
+        </n-input>
       </n-flex>
     </n-flex>
     <!-- 列表 -->
-    <Transition name="fade" mode="out-in">
-      <div v-if="djData !== 'empty'" class="list">
-        <Transition name="fade" mode="out-in">
-          <div v-if="!searchValue" class="song-list">
+    <div class="list-container">
+      <template v-if="djData !== 'empty'">
+        <Transition name="fade">
+          <div v-if="!searchValue" class="list">
             <SongList :data="djData" :sourceId="djId" type="dj" />
           </div>
-          <SongList v-else-if="searchData?.length" :data="searchData" :sourceId="djId" type="dj" />
-          <n-empty
-            v-else
-            :description="`搜不到关于 ${searchValue} 的任何节目`"
-            style="margin-top: 60px"
-            size="large"
-          >
+          <div v-else-if="searchData?.length" class="list">
+            <SongList :data="searchData" :sourceId="djId" type="dj" />
+          </div>
+          <n-empty v-else :description="`搜不到关于 ${searchValue} 的任何节目`" style="margin-top: 60px" size="large">
             <template #icon>
               <n-icon>
                 <SvgIcon icon="search-off" />
@@ -186,9 +134,9 @@
             </template>
           </n-empty>
         </Transition>
-      </div>
+      </template>
       <n-empty v-else class="empty" description="这个电台还没有节目哦" />
-    </Transition>
+    </div>
   </div>
   <div v-else class="title">
     <n-text class="key">参数不完整</n-text>
@@ -302,6 +250,7 @@ const localSearch = debounce((val) => {
   }
   // 返回结果
   const result = fuzzySearch(searchValue, djData.value);
+  $message.info(`找到 ${result.length} 首结果`);
   searchData.value = result;
 }, 300);
 
@@ -345,6 +294,7 @@ onMounted(async () => {
     flex-direction: row;
     align-items: stretch;
     margin-bottom: 20px;
+
     .cover {
       position: relative;
       display: flex;
@@ -353,6 +303,7 @@ onMounted(async () => {
       min-width: 200px;
       margin-right: 20px;
       border-radius: 8px;
+
       .cover-img {
         width: 100%;
         height: 100%;
@@ -361,15 +312,18 @@ onMounted(async () => {
         transition:
           filter 0.3s,
           transform 0.3s;
+
         :deep(img) {
           width: 100%;
           opacity: 0;
           transition: opacity 0.35s ease-in-out;
         }
+
         &:active {
           transform: scale(0.98);
         }
       }
+
       .cover-shadow {
         position: absolute;
         top: 4px;
@@ -382,34 +336,42 @@ onMounted(async () => {
         aspect-ratio: 1/1;
       }
     }
+
     .data {
       width: 100%;
+
       .name {
         font-size: 30px;
         font-weight: bold;
         margin-bottom: 12px;
         -webkit-line-clamp: 2;
       }
+
       .creator {
         display: flex;
         flex-direction: row;
         align-items: center;
+
         .n-avatar {
           width: 28px;
           height: 28px;
           margin-right: 8px;
         }
+
         .nickname {
           transition: color 0.3s;
           cursor: pointer;
+
           &:hover {
             color: var(--main-color);
           }
         }
+
         .create-time {
           margin-left: 12px;
           font-size: 13px;
         }
+
         .tags {
           margin-left: 12px;
           font-size: 13px;
@@ -420,55 +382,68 @@ onMounted(async () => {
             transform 0.3s,
             background-color 0.3s,
             color 0.3s;
+
           &:hover {
             background-color: var(--main-second-color);
             color: var(--main-color);
           }
+
           &:active {
             transform: scale(0.95);
           }
         }
       }
+
       .num {
         margin-top: 12px;
+
         .num-item {
           display: flex;
           flex-direction: row;
           align-items: center;
+
           .n-icon {
             margin-right: 4px;
             // color: var(--main-color);
           }
         }
       }
+
       .description {
         margin-top: 12px;
+
         .n-text {
           display: initial;
         }
       }
+
       :deep(.n-skeleton) {
         &:first-child {
           width: 60%;
           margin-top: 0;
           height: 40px;
         }
+
         height: 30px;
         margin-top: 12px;
         border-radius: 8px;
       }
     }
   }
+
   .menu {
     align-items: center;
     margin: 26px 0;
+
     .left {
       align-items: center;
+
       .play {
         --n-width: 46px;
         --n-height: 46px;
       }
     }
+
     .right {
       .search {
         height: 40px;
@@ -479,12 +454,14 @@ onMounted(async () => {
         transition:
           width 0.3s,
           background-color 0.3s;
+
         &.n-input--focus {
           width: 200px;
         }
       }
     }
   }
+
   @media (max-width: 700px) {
     .detail {
       .cover {
@@ -492,65 +469,79 @@ onMounted(async () => {
         height: 140px;
         min-width: 140px;
       }
+
       .data {
         .name {
           font-size: 20px;
           margin-bottom: 4px;
         }
+
         .creator {
           .n-avatar {
             width: 20px;
             height: 20px;
             margin-right: 6px;
           }
+
           .nickname {
             font-size: 12px;
           }
+
           .create-time {
             margin-left: 6px;
             font-size: 12px;
           }
         }
+
         .tags {
           .pl-tags {
             font-size: 12px;
             padding: 0 12px;
           }
         }
+
         .num,
         .description {
           display: none !important;
         }
       }
     }
+
     .menu {
       margin: 20px 0;
+
       .left {
         .play {
           --n-width: 40px;
           --n-height: 40px;
+
           .n-icon {
             font-size: 22px !important;
           }
         }
+
         .like {
           --n-height: 36px;
           --n-font-size: 13px;
           --n-padding: 0 16px;
           --n-icon-size: 18px;
+
           :deep(.n-button__icon) {
             margin: 0;
           }
+
           :deep(.n-button__content) {
             display: none;
           }
         }
+
         .more {
           --n-height: 36px;
           --n-font-size: 13px;
           --n-icon-size: 18px;
         }
       }
+
       .right {
         .search {
           height: 36px;
@@ -561,15 +552,18 @@ onMounted(async () => {
     }
   }
 }
+
 .title {
   display: flex;
   flex-direction: column;
+
   .key {
     margin: 10px 0;
     font-size: 36px;
     font-weight: bold;
     margin-right: 8px;
   }
+
   .back {
     width: 98px;
   }
