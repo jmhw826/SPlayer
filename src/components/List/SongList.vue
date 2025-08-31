@@ -18,28 +18,20 @@
         <n-text v-if="data[0].duration" class="duration hidden" depth="3"> 时长 </n-text>
         <n-text v-if="data[0].size" class="size hidden" depth="3"> 大小 </n-text>
       </div>
-      <n-card
-        v-for="(item, index) in data.slice(
-          (pageNumber - 1) * loadSize,
-          (pageNumber - 1) * loadSize + loadSize,
-        )"
-        :id="'song-list-' + index"
-        :key="index"
-        :content-style="{
+      <n-card v-for="(item, index) in data.slice(
+        (pageNumber - 1) * loadSize,
+        (pageNumber - 1) * loadSize + loadSize,
+      )" :id="'song-list-' + index" :key="index" :content-style="{
           padding: '16px',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-        }"
-        :class="Number(music.getPlaySongData?.id) === Number(item?.id) ? 'songs play' : 'songs'"
-        hoverable
-        @click="checkCanClick(data, item, songsIndex + index)"
-        @dblclick.stop="playSong(data, item, songsIndex + index)"
+        }" :class="Number(music.getPlaySongData?.id) === Number(item?.id) ? 'songs play' : 'songs'" hoverable
+        @click="checkCanClick(data, item, songsIndex + index)" @dblclick.stop="playSong(data, item, songsIndex + index)"
         @contextmenu="
           songListDropdownRef?.openDropdown($event, data, item, songsIndex + index, sourceId, type)
-        "
-      >
+          ">
         <!-- 序号 -->
         <n-text v-if="music.getPlaySongData?.id !== item?.id" class="num" depth="3">
           {{ songsIndex + index + 1 }}
@@ -49,17 +41,11 @@
         </n-icon>
         <!-- 封面 -->
         <div v-if="item.cover && showCover" class="cover">
-          <n-image
-            :src="item.coverSize.s"
-            class="cover-img"
-            preview-disabled
-            lazy
-            @load="
-              (e) => {
-                e.target.style.opacity = 1;
-              }
-            "
-          >
+          <n-image :src="item.coverSize.s" class="cover-img" preview-disabled lazy @load="
+            (e) => {
+              e.target.style.opacity = 1;
+            }
+          ">
             <template #placeholder>
               <div class="cover-loading">
                 <img class="loading-img" src="/imgs/pic/song.jpg?assest" alt="song" />
@@ -71,46 +57,24 @@
         <div class="info">
           <div class="title">
             <!-- 名称 -->
-            <n-text 
-              class="name" 
-              depth="2"
-              :style="type !== 'dj' && !item.path && item?.id ? 'cursor: pointer' : ''"
-              @click.stop="type !== 'dj' && !item.path && item?.id ? songDetailRef?.openDetail(item.id) : null"
-            >
+            <n-text class="name" depth="2" :style="type !== 'dj' && !item.path && item?.id ? 'cursor: pointer' : ''"
+              @click.stop="type !== 'dj' && !item.path && item?.id ? songDetailRef?.openDetail(item.id) : null">
               {{ item?.name || "未知曲目" }}
             </n-text>
             <!-- 特权 -->
-            <n-tag
-              v-if="
-                showPrivilege &&
-                item.fee === 1 &&
-                (userData.detail?.profile?.vipType !== 11 || !hiddenVipTags)
-              "
-              :bordered="false"
-              type="error"
-              size="small"
-              round
-            >
+            <n-tag v-if="
+              showPrivilege &&
+              item.fee === 1 &&
+              !hiddenVipTags &&
+              userData.detail?.profile?.vipType !== 11
+            " :bordered="false" type="error" size="small" round>
               VIP
             </n-tag>
-            <n-tag
-              v-if="showPrivilege && item.fee === 4"
-              :bordered="false"
-              type="error"
-              size="small"
-              round
-            >
+            <n-tag v-if="showPrivilege && item.fee === 4" :bordered="false" type="error" size="small" round>
               EP
             </n-tag>
             <!-- 云盘 -->
-            <n-tag
-              v-if="showPrivilege && item.pc"
-              :bordered="false"
-              class="cloud"
-              type="info"
-              size="small"
-              round
-            >
+            <n-tag v-if="showPrivilege && item.pc" :bordered="false" class="cloud" type="info" size="small" round>
               <template #icon>
                 <n-icon>
                   <SvgIcon icon="cloud" />
@@ -118,27 +82,15 @@
               </template>
             </n-tag>
             <!-- MV -->
-            <n-tag
-              v-if="item?.mv"
-              :bordered="false"
-              class="mv"
-              type="warning"
-              size="small"
-              round
-              @click.stop="router.push(`/videos-player?id=${item.mv}`)"
-            >
+            <n-tag v-if="item?.mv" :bordered="false" class="mv" type="warning" size="small" round
+              @click.stop="router.push(`/videos-player?id=${item.mv}`)">
               MV
             </n-tag>
           </div>
           <!-- 歌手 -->
           <div v-if="Array.isArray(item.artists)" class="artist">
-            <n-text
-              v-for="ar in item.artists"
-              :key="ar.id"
-              class="ar"
-              @click.stop="router.push(`/artist?id=${ar.id}`)"
-              @dblclick.stop
-            >
+            <n-text v-for="ar in item.artists" :key="ar.id" class="ar" @click.stop="router.push(`/artist?id=${ar.id}`)"
+              @dblclick.stop>
               {{ ar.name }}
             </n-text>
           </div>
@@ -153,14 +105,9 @@
         </div>
         <!-- 专辑 -->
         <template v-if="showAlbum && type !== 'dj'">
-          <n-text
-            v-if="item.album"
-            class="album hidden"
-            @click.stop="
-              typeof item.album === 'object' ? router.push(`/album?id=${item.album.id}`) : null
-            "
-            @dblclick.stop
-          >
+          <n-text v-if="item.album" class="album hidden" @click.stop="
+            typeof item.album === 'object' ? router.push(`/album?id=${item.album.id}`) : null
+            " @dblclick.stop>
             {{ typeof item.album === "object" ? item.album?.name || "未知专辑" : item.album }}
           </n-text>
           <n-text v-else class="album hidden">未知专辑</n-text>
@@ -168,31 +115,16 @@
         <!-- 操作 -->
         <div v-if="type !== 'dj'" class="action">
           <!-- 喜欢歌曲 -->
-          <n-icon
-            :depth="dataStore.getSongIsLike(item?.id) ? 0 : 3"
-            class="favorite"
-            size="20"
-            @click.stop="
-              dataStore.changeLikeList(item?.id, !dataStore.getSongIsLike(item?.id), item?.path)
-            "
-            @dblclick.stop
-          >
-            <SvgIcon
-              :icon="
-                dataStore.getSongIsLike(item?.id) ? 'favorite-rounded' : 'favorite-outline-rounded'
-              "
-            />
+          <n-icon :depth="dataStore.getSongIsLike(item?.id) ? 0 : 3" class="favorite" size="20" @click.stop="
+            dataStore.changeLikeList(item?.id, !dataStore.getSongIsLike(item?.id), item?.path)
+            " @dblclick.stop>
+            <SvgIcon :icon="dataStore.getSongIsLike(item?.id) ? 'favorite-rounded' : 'favorite-outline-rounded'
+              " />
           </n-icon>
           <!-- 更多操作 -->
-          <n-icon
-            class="more mobile"
-            depth="3"
-            size="20"
-            @click.stop="
-              songListDropdownRef?.openDropdown($event, data, item, songsIndex + index, sourceId, type)
-            "
-            @dblclick.stop
-          >
+          <n-icon class="more mobile" depth="3" size="20" @click.stop="
+            songListDropdownRef?.openDropdown($event, data, item, songsIndex + index, sourceId, type)
+            " @dblclick.stop>
             <SvgIcon icon="more" />
           </n-icon>
         </div>
@@ -211,28 +143,14 @@
         <n-text v-if="item.size" class="size hidden" depth="3">{{ item.size }}M</n-text>
       </n-card>
       <!-- 分页 -->
-      <Pagination
-        v-if="data.length >= loadSize && showPagination"
-        :totalCount="data.length"
-        :pageNumber="pageNumber"
-        @pageNumberChange="pageNumberChange"
-      />
+      <Pagination v-if="data.length >= loadSize && showPagination" :totalCount="data.length" :pageNumber="pageNumber"
+        @pageNumberChange="pageNumberChange" />
       <!-- 右键菜单 -->
-      <SongListDropdown
-        ref="songListDropdownRef"
-        @playSong="playSong"
-        @delCloudSong="delCloudSong"
-        @deletePlaylistSong="deletePlaylistSong"
-        @delLocalSong="delLocalSong"
-      />
+      <SongListDropdown ref="songListDropdownRef" @playSong="playSong" @delCloudSong="delCloudSong"
+        @deletePlaylistSong="deletePlaylistSong" @delLocalSong="delLocalSong" />
       <!-- 移动端菜单 -->
-      <SongListDrawer
-        ref="songListDrawerRef"
-        @playSong="playSong"
-        @delCloudSong="delCloudSong"
-        @deletePlaylistSong="deletePlaylistSong"
-        @delLocalSong="delLocalSong"
-      />
+      <SongListDrawer ref="songListDrawerRef" @playSong="playSong" @delCloudSong="delCloudSong"
+        @deletePlaylistSong="deletePlaylistSong" @delLocalSong="delLocalSong" />
       <!--SongListDrawer
         ref="songListDrawerRef"
         @playSong="playSong"
@@ -242,18 +160,12 @@
       /-->
       <!-- 定位歌曲 -->
       <Transition name="shrink" mode="out-in">
-        <n-card
-          v-if="isHasPlayingDom"
-          :bordered="false"
-          :content-style="{
-            padding: '0px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }"
-          class="scroll-to-song"
-          @click="checkHasPlaying('scroll')"
-        >
+        <n-card v-if="isHasPlayingDom" :bordered="false" :content-style="{
+          padding: '0px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }" class="scroll-to-song" @click="checkHasPlaying('scroll')">
           <n-icon size="26">
             <SvgIcon icon="location" />
           </n-icon>
@@ -261,25 +173,17 @@
       </Transition>
     </div>
     <!-- 空列表 -->
-    <n-empty
-      v-else-if="data === 'empty' || data?.[0] === 'empty'"
-      description="空空如也，怎么一首歌都没有啊"
-      style="margin-top: 60px"
-      size="large"
-    />
+    <n-empty v-else-if="data === 'empty' || data?.[0] === 'empty'" description="空空如也，怎么一首歌都没有啊" style="margin-top: 60px"
+      size="large" />
     <!-- 错误 -->
-    <n-empty
-      v-else-if="data === 'error' || data?.[0] === 'error'"
-      description="列表获取出错，请重试"
-      style="margin-top: 60px"
-      size="large"
-    />
+    <n-empty v-else-if="data === 'error' || data?.[0] === 'error'" description="列表获取出错，请重试" style="margin-top: 60px"
+      size="large" />
     <!-- 加载动画 -->
     <div v-else class="loading">
       <n-skeleton :repeat="10" text />
     </div>
   </Transition>
-<SongDetail ref="songDetailRef" />
+  <SongDetail ref="songDetailRef" />
 </template>
 
 <script setup>
@@ -513,49 +417,60 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .song-list {
   width: 100%;
+
   .song-list-header {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 12px;
     padding: 0 16px;
+
     * {
       box-sizing: border-box;
     }
+
     .num {
       width: 30px;
       margin-right: 16px;
       text-align: center;
     }
+
     .info,
     .album {
       flex: 1;
     }
+
     .has-cover {
       margin-right: 66px;
     }
+
     .control {
       width: 40px;
     }
+
     .update {
       width: 80px;
       text-align: center;
       margin-right: auto;
     }
+
     .count {
       width: 120px;
       text-align: center;
     }
+
     .duration {
       width: 50px;
       text-align: center;
     }
+
     .size {
       width: 80px;
       padding-right: 10px;
       text-align: right;
     }
   }
+
   .songs {
     border-radius: 8px;
     margin-bottom: 12px;
@@ -564,6 +479,7 @@ onBeforeUnmount(() => {
       border-color 0.3s,
       box-shadow 0.3s;
     cursor: pointer;
+
     .cover {
       width: 50px;
       height: 50px;
@@ -574,6 +490,7 @@ onBeforeUnmount(() => {
       align-items: center;
       justify-content: center;
       overflow: hidden;
+
       .cover-img {
         width: 100%;
         height: 100%;
@@ -581,6 +498,7 @@ onBeforeUnmount(() => {
         transition:
           filter 0.3s,
           transform 0.3s;
+
         :deep(img) {
           width: 100%;
           opacity: 0;
@@ -588,6 +506,7 @@ onBeforeUnmount(() => {
         }
       }
     }
+
     .num {
       width: 30px;
       height: 30px;
@@ -598,42 +517,51 @@ onBeforeUnmount(() => {
       align-items: center;
       justify-content: center;
     }
+
     .info {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding-right: 20px;
+
       .title {
         display: flex;
         align-items: center;
         flex-direction: row;
+
         .name {
           font-size: 16px;
           font-weight: bold;
           transition: color 0.3s;
           -webkit-line-clamp: 2;
+
           &:hover {
             color: var(--main-color);
           }
         }
+
         .n-tag {
           margin-left: 8px;
           height: 18px;
+
           &.cloud {
             padding: 0 10px;
             align-items: center;
             justify-content: center;
+
             :deep(.n-tag__icon) {
               margin-right: 0;
               width: 100%;
             }
           }
+
           &.mv {
             cursor: pointer;
           }
         }
       }
+
       .artist {
         margin-top: 2px;
         font-size: 13px;
@@ -642,104 +570,128 @@ onBeforeUnmount(() => {
         -webkit-line-clamp: 1;
         overflow: hidden;
         word-break: break-all;
+
         .ar {
           display: inline-flex;
           transition: opacity 0.3s;
           opacity: 0.6;
           cursor: pointer;
+
           &::after {
             content: "/";
             margin: 0 4px;
           }
+
           &:last-child {
             &::after {
               display: none;
             }
           }
+
           &:hover {
             opacity: 0.8;
           }
         }
       }
+
       .alia {
         margin-top: 2px;
         font-size: 12px;
         opacity: 0.8;
       }
     }
+
     .album {
       flex: 1;
       padding-right: 20px;
       transition: color 0.3s;
       -webkit-line-clamp: 2;
+
       &:hover {
         color: var(--main-color);
       }
     }
+
     .action {
       width: 40px;
       display: flex;
       align-items: center;
       justify-content: space-evenly;
+
       .favorite {
         padding-top: 1px;
         transition: transform 0.3s;
         cursor: pointer;
+
         &:hover {
           transform: scale(1.15);
         }
+
         &:active {
           transform: scale(1);
         }
       }
+
       .more {
         display: none;
       }
     }
+
     .update {
       width: 80px;
       text-align: center;
     }
+
     .count {
       width: 120px;
       text-align: center;
     }
+
     .duration {
       width: 50px;
       text-align: center;
     }
+
     .size {
       width: 80px;
       text-align: right;
     }
+
     &.play {
       background-color: var(--main-second-color);
       border-color: var(--main-color);
+
       a,
       span,
       .num {
         color: var(--main-color) !important;
       }
+
       .artist {
         .ar {
           opacity: 0.8;
           transition: opacity 0.3s;
+
           &:hover {
             opacity: 1;
           }
         }
       }
+
       .album {
         opacity: 0.8;
         transition: opacity 0.3s;
+
         &:hover {
           opacity: 1;
         }
       }
     }
+
     &:last-child {
       margin-bottom: 0;
     }
+
     &:hover {
       border-color: var(--main-color);
       box-shadow:
@@ -747,10 +699,12 @@ onBeforeUnmount(() => {
         0 3px 6px 0 var(--main-boxshadow-color),
         0 5px 12px 4px var(--main-boxshadow-hover-color);
     }
+
     &:active {
       transform: scale(0.995);
     }
   }
+
   .scroll-to-song {
     position: absolute;
     width: 44px;
@@ -763,17 +717,21 @@ onBeforeUnmount(() => {
       transform 0.3s,
       opacity 0.3s;
     cursor: pointer;
+
     &:active {
       transform: scale(0.9);
     }
   }
+
   @media (max-width: 700px) {
+
     .song-list-header,
     .songs {
       .hidden {
         display: none;
       }
     }
+
     .songs {
       .num {
         font-size: 12px;
@@ -781,19 +739,23 @@ onBeforeUnmount(() => {
         height: 28px;
         min-width: 28px;
       }
+
       .info {
         .title {
           .name {
             font-size: 15px;
           }
         }
+
         .artist {
           font-size: 12px;
         }
       }
+
       .action {
         width: 60px;
         justify-content: flex-end;
+
         .more {
           display: inline-block;
           margin-left: 12px;
@@ -802,16 +764,16 @@ onBeforeUnmount(() => {
     }
   }
 }
+
 .loading {
   :deep(.n-skeleton) {
     &:nth-of-type(1) {
       margin-top: 0;
     }
+
     height: 80px;
     margin-top: 12px;
     border-radius: 8px;
   }
 }
 </style>
-
-

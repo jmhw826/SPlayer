@@ -1,26 +1,14 @@
 <!-- 播放器 - 底栏 -->
 <template>
-  <n-card
-    :class="{
-      'main-player': true,
-      'show-bar': music.getPlaySongData?.id && showPlayBar,
-      'no-sider': !showSider,
-    }"
-    content-style="padding: 0"
-    @dblclick.stop="openFullPlayer"
-  >
+  <n-card :class="{
+    'main-player': true,
+    'show-bar': music.getPlaySongData?.id && showPlayBar,
+    'no-sider': !showSider,
+  }" content-style="padding: 0" @dblclick.stop="openFullPlayer">
     <!-- 进度条 -->
-    <vue-slider
-      v-model="playTimeData.bar"
-      :use-keyboard="false"
-      tooltip="active"
-      width="100%"
-      height="3px"
-      class="slider"
-      @drag-start="fadePlayOrPause('pause')"
-      @drag-end="sliderDragEnd"
-      @click.stop="songTimeSliderUpdate(playTimeData.bar)"
-    >
+    <vue-slider v-model="playTimeData.bar" :use-keyboard="false" tooltip="active" width="100%" height="3px"
+      class="slider" @drag-start="fadePlayOrPause('pause')" @drag-end="sliderDragEnd"
+      @click.stop="songTimeSliderUpdate(playTimeData.bar)">
       <template #tooltip>
         <div class="slider-tooltip">
           {{ sliderTooltip }}
@@ -32,28 +20,18 @@
       <!-- 歌曲信息 -->
       <div class="info">
         <Transition name="fade" mode="out-in">
-          <div
-            :key="`${music.getPlaySongData?.id}-${playCoverType}`"
-            :class="['cover', playCoverType]"
-            @click.stop="openFullPlayer"
-          >
-            <n-image
-              :src="
-                music.getPlaySongData?.coverSize?.s ||
-                music.getPlaySongData?.cover ||
-                music.getPlaySongData?.localCover
-              "
-              :style="{
+          <div :key="`${music.getPlaySongData?.id}-${playCoverType}`" :class="['cover', playCoverType]"
+            @click.stop="openFullPlayer">
+            <n-image :src="music.getPlaySongData?.coverSize?.s ||
+              music.getPlaySongData?.cover ||
+              music.getPlaySongData?.localCover
+              " :style="{
                 animationPlayState: playState ? 'running' : 'paused',
-              }"
-              class="cover-img"
-              preview-disabled
-              @load="
+              }" class="cover-img" preview-disabled @load="
                 (e) => {
                   e.target.style.opacity = 1;
                 }
-              "
-            >
+              ">
               <template #placeholder>
                 <div class="cover-loading">
                   <img class="loading-img" src="/imgs/pic/song.jpg?assest" alt="loading-img" />
@@ -72,34 +50,21 @@
               {{ music.getPlaySongData?.name || "未知曲目" }}
             </n-text>
             <!-- 喜欢歌曲 -->
-            <n-icon
-              v-if="playMode !== 'dj'"
-              class="favorite"
-              @click.stop="
-                data.changeLikeList(
-                  music.getPlaySongData?.id,
-                  !data.getSongIsLike(music.getPlaySongData?.id),
-                  music.getPlaySongData?.path,
-                )
-              "
-              @dblclick.stop
-            >
-              <SvgIcon
-                :icon="
-                  data.getSongIsLike(music.getPlaySongData?.id)
-                    ? 'favorite-rounded'
-                    : 'favorite-outline-rounded'
-                "
-              />
+            <n-icon v-if="playMode !== 'dj'" class="favorite" @click.stop="
+              data.changeLikeList(
+                music.getPlaySongData?.id,
+                !data.getSongIsLike(music.getPlaySongData?.id),
+                music.getPlaySongData?.path,
+              )
+              " @dblclick.stop>
+              <SvgIcon :icon="data.getSongIsLike(music.getPlaySongData?.id)
+                  ? 'favorite-rounded'
+                  : 'favorite-outline-rounded'
+                " />
             </n-icon>
             <!-- 更多操作 -->
-            <n-dropdown
-              v-if="!music.getPlaySongData?.path"
-              :options="songMoreOptions"
-              :show-arrow="true"
-              placement="top-start"
-              trigger="click"
-            >
+            <n-dropdown v-if="!music.getPlaySongData?.path" :options="songMoreOptions" :show-arrow="true"
+              placement="top-start" trigger="click">
               <n-icon depth="3" size="20" class="more" @click.stop @dblclick.stop>
                 <SvgIcon icon="format-list-bulleted" />
               </n-icon>
@@ -107,25 +72,16 @@
           </div>
           <Transition name="fade" mode="out-in">
             <!-- 歌手 -->
-            <div
-              v-if="
-                ((!playState || !bottomLyricShow || playMode === 'dj') &&
-                  playSongLyric.lrc?.length) ||
-                playSongLyricIndex === -1
-              "
-              class="artist"
-            >
-              <template
-                v-if="
-                  music.getPlaySongData?.artists && Array.isArray(music.getPlaySongData.artists)
-                "
-              >
-                <n-text
-                  v-for="ar in music.getPlaySongData.artists"
-                  :key="ar.id"
-                  class="ar"
-                  @click.stop="router.push(`/artist?id=${ar.id}`)"
-                >
+            <div v-if="
+              ((!playState || !bottomLyricShow || playMode === 'dj') &&
+                playSongLyric.lrc?.length) ||
+              playSongLyricIndex === -1
+            " class="artist">
+              <template v-if="
+                music.getPlaySongData?.artists && Array.isArray(music.getPlaySongData.artists)
+              ">
+                <n-text v-for="ar in music.getPlaySongData.artists" :key="ar.id" class="ar"
+                  @click.stop="router.push(`/artist?id=${ar.id}`)">
                   {{ ar.name }}
                 </n-text>
               </template>
@@ -139,13 +95,10 @@
               <!-- 逐字歌词 -->
               <template v-if="playSongLyric.hasYrc && showYrc">
                 <n-text class="lrc-text" :depth="3">
-                  <span
-                    v-for="(item, index) in playSongLyric.yrc[playSongLyricIndex]?.content || []"
-                    :key="index"
+                  <span v-for="(item, index) in playSongLyric.yrc[playSongLyricIndex]?.content || []" :key="index"
                     :class="{
                       space: item.endsWithSpace,
-                    }"
-                  >
+                    }">
                     {{ item.content }}
                   </span>
                 </n-text>
@@ -162,36 +115,18 @@
       <div class="control" @dblclick.stop>
         <Transition name="fade" mode="out-in">
           <!-- 上一曲 -->
-          <n-icon
-            v-if="playMode !== 'fm'"
-            class="play-prev"
-            size="24"
-            @click.stop="changePlayIndexDebounce('prev')"
-          >
+          <n-icon v-if="playMode !== 'fm'" class="play-prev" size="24" @click.stop="changePlayIndexDebounce('prev')">
             <SvgIcon icon="skip-previous-rounded" />
           </n-icon>
           <!-- 垃圾桶 -->
-          <n-icon
-            v-else
-            class="play-prev"
-            size="24"
-            @click.stop="changePlayIndexDebounce('fmTrash', music.getPlaySongData.id)"
-          >
+          <n-icon v-else class="play-prev" size="24"
+            @click.stop="changePlayIndexDebounce('fmTrash', music.getPlaySongData.id)">
             <SvgIcon size="18" icon="thumb-down" />
           </n-icon>
         </Transition>
         <!-- 播放暂停 -->
-        <n-button
-          :loading="playLoading"
-          :focusable="false"
-          tag="div"
-          type="primary"
-          class="play-control"
-          strong
-          secondary
-          circle
-          @click.stop="playOrPause"
-        >
+        <n-button :loading="playLoading" :focusable="false" tag="div" type="primary" class="play-control" strong
+          secondary circle @click.stop="playOrPause">
           <template #icon>
             <Transition name="fade" mode="out-in">
               <n-icon :key="playState" size="28">
@@ -214,31 +149,17 @@
             <n-text depth="3">{{ playTimeData.durationTime }}</n-text>
           </div>
           <!-- 播放模式 -->
-          <n-dropdown
-            v-if="playMode !== 'fm'"
-            :options="playModeOptions"
-            :show-arrow="true"
-            trigger="hover"
-            @select="playModeChange"
-          >
-            <n-icon
-              class="mode hidden"
-              size="22"
-              @click.stop="playModeChange(false)"
-              @dblclick.stop
-            >
-              <SvgIcon
-                :icon="
-                  playHeartbeatMode
-                    ? 'heartbit'
-                    : playSongMode === 'normal'
-                      ? 'repeat-list'
-                      : playSongMode === 'random'
-                        ? 'shuffle'
-                        : 'repeat-song'
-                "
-                isSpecial
-              />
+          <n-dropdown v-if="playMode !== 'fm'" :options="playModeOptions" :show-arrow="true" trigger="hover"
+            @select="playModeChange">
+            <n-icon class="mode hidden" size="22" @click.stop="playModeChange(false)" @dblclick.stop>
+              <SvgIcon :icon="playHeartbeatMode
+                  ? 'heartbit'
+                  : playSongMode === 'normal'
+                    ? 'repeat-list'
+                    : playSongMode === 'random'
+                      ? 'shuffle'
+                      : 'repeat-song'
+                " isSpecial />
             </n-icon>
           </n-dropdown>
           <!-- 倍速 -->
@@ -253,76 +174,45 @@
             </template>
             <!-- 倍速调整 -->
             <div class="slider-content">
-              <n-slider
-                v-model:value="playRate"
-                :tooltip="false"
-                :min="0.1"
-                :max="2"
-                :step="0.1"
-                :marks="{
-                  0.1: '减速',
-                  1: '正常',
-                  2: '加速',
-                }"
-                style="width: 220px"
-                @update:value="setRate"
-              />
+              <n-slider v-model:value="playRate" :tooltip="false" :min="0.1" :max="2" :step="0.1" :marks="{
+                0.1: '减速',
+                1: '正常',
+                2: '加速',
+              }" style="width: 220px" @update:value="setRate" />
             </div>
           </n-popover>
+          <!-- 重新解析 -->
+          <n-dropdown :options="refreshChange" placement="top" trigger="hover">
+            <div class="refresh hidden">
+              <n-icon size="22">
+                <SvgIcon icon="refresh" />
+              </n-icon>
+            </div>
+          </n-dropdown>
           <!-- 音量 -->
           <n-popover trigger="hover" :show-arrow="false" raw>
             <template #trigger>
-              <n-icon
-                class="volume hidden"
-                size="22"
-                @click.stop="setVolumeMute"
-                @wheel="changeVolume"
-              >
+              <n-icon class="volume hidden" size="22" @click.stop="setVolumeMute" @wheel="changeVolume">
                 <SvgIcon v-if="playVolume === 0" icon="no-sound-rounded" />
-                <SvgIcon
-                  v-else-if="playVolume > 0 && playVolume < 0.4"
-                  icon="volume-mute-rounded"
-                />
-                <SvgIcon
-                  v-else-if="playVolume >= 0.4 && playVolume < 0.7"
-                  icon="volume-down-rounded"
-                />
+                <SvgIcon v-else-if="playVolume > 0 && playVolume < 0.4" icon="volume-mute-rounded" />
+                <SvgIcon v-else-if="playVolume >= 0.4 && playVolume < 0.7" icon="volume-down-rounded" />
                 <SvgIcon v-else icon="volume-up-rounded" />
               </n-icon>
             </template>
             <!-- 音量调整 -->
-            <div
-              :style="{
-                padding: '10px 0',
-                width: '50px',
-              }"
-              class="slider-content hidden"
-              @wheel="changeVolume"
-            >
-              <n-slider
-                v-model:value="playVolume"
-                :tooltip="false"
-                :min="0"
-                :max="1"
-                :step="0.01"
-                vertical
-                style="height: 120px"
-                @update:value="setVolume"
-              />
+            <div :style="{
+              padding: '10px 0',
+              width: '50px',
+            }" class="slider-content hidden" @wheel="changeVolume">
+              <n-slider v-model:value="playVolume" :tooltip="false" :min="0" :max="1" :step="0.01" vertical
+                style="height: 120px" @update:value="setVolume" />
               <n-text class="slider-num" depth="3">{{ (playVolume * 100).toFixed(0) }}%</n-text>
             </div>
           </n-popover>
           <!-- 播放列表 -->
-          <n-badge
-            v-if="playMode !== 'fm'"
-            :value="playList?.length ?? 0"
-            :show="showPlaylistCount"
-            :max="999"
-            :style="{
-              marginRight: showPlaylistCount ? '12px' : null,
-            }"
-            class="playlist"
-          >
+          <n-badge v-if="playMode !== 'fm'" :value="playList?.length ?? 0" :show="showPlaylistCount" :max="999" :style="{
+            marginRight: showPlaylistCount ? '12px' : null,
+          }" class="playlist">
             <n-icon size="22" @click.stop="playListShow = !playListShow">
               <SvgIcon icon="queue-music-rounded" />
             </n-icon>
@@ -410,6 +300,18 @@ const playModeOptions = ref([
   },
 ]);
 
+const refreshChange = ref([
+  {
+    label: "重新解析",
+    key: "refresh",
+    props: {
+      onClick: () => {
+        $message.warning("功能开发中...")
+      }
+    },
+    icon: renderIcon("refresh"),
+  },
+]);
 // 歌曲更多操作
 const songMoreOptions = computed(() => [
   {
@@ -567,6 +469,7 @@ watch(
   padding: 0 15px;
   z-index: 2;
   transition: bottom 0.3s;
+
   .slider {
     position: absolute;
     top: -11px;
@@ -578,6 +481,7 @@ watch(
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+
     .slider-tooltip {
       font-size: 12px;
       white-space: nowrap;
@@ -586,37 +490,45 @@ watch(
       padding: 2px 8px;
       border-radius: 25px;
     }
+
     :deep(.vue-slider-rail) {
       background-color: var(--main-boxshadow-color);
       border-radius: 25px;
+
       .vue-slider-process {
         background-color: var(--main-color);
         // transition: none !important;
       }
+
       .vue-slider-dot {
         width: 12px !important;
         height: 12px !important;
         // transition: none !important;
       }
+
       .vue-slider-dot-handle {
         transition: box-shadow 0.3s;
         background-color: var(--main-color);
       }
+
       .vue-slider-dot-handle-focus {
         box-shadow: 0px 0px 1px 2px var(--main-color);
       }
     }
   }
+
   .player {
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
+
     .info {
       display: flex;
       flex-direction: row;
       align-items: center;
+
       .cover {
         position: relative;
         display: flex;
@@ -629,10 +541,12 @@ watch(
         overflow: hidden;
         margin-right: 12px;
         cursor: pointer;
+
         .cover-img {
           width: 100%;
           height: 100%;
           transition: opacity 0.1s ease-in-out;
+
           :deep(img) {
             width: 100%;
             opacity: 0;
@@ -642,6 +556,7 @@ watch(
               filter 0.3s;
           }
         }
+
         .open {
           position: absolute;
           opacity: 0;
@@ -651,11 +566,13 @@ watch(
             opacity 0.3s,
             transform 0.3s;
         }
+
         &:hover {
           :deep(img) {
             transform: scale(1.1);
             filter: blur(6px) brightness(0.8);
           }
+
           .open {
             position: absolute;
             opacity: 1;
@@ -663,6 +580,7 @@ watch(
             transition: opacity 0.3s ease-in-out;
           }
         }
+
         &.record {
           .cover-img {
             display: flex;
@@ -671,6 +589,7 @@ watch(
             border-radius: 50%;
             animation: playerCoverRotate 18s linear infinite;
             background: no-repeat url("/imgs/pic/record.png?assest") center;
+
             :deep(img) {
               width: 40px;
               height: 40px;
@@ -680,49 +599,59 @@ watch(
               box-shadow: 0px 0px 1px 1px rgba(255, 255, 255, 0.06);
             }
           }
+
           &:hover {
             :deep(img) {
               transform: none;
               filter: brightness(0.5);
             }
+
             .open {
               transform: scale(0.8);
             }
           }
         }
       }
+
       .name {
         display: flex;
         flex-direction: row;
         align-items: center;
+
         .text {
           font-weight: bold;
           font-size: 16px;
           transition: color 0.3s;
           cursor: pointer;
+
           &:hover {
             color: var(--main-color);
           }
         }
+
         .favorite {
           margin-left: 8px;
           font-size: 20px;
           color: var(--main-color);
           transition: transform 0.3s;
           cursor: pointer;
+
           &:hover {
             transform: scale(1.15);
           }
+
           &:active {
             transform: scale(1);
           }
         }
+
         .more {
           margin-left: 8px;
           color: var(--main-color);
           cursor: pointer;
         }
       }
+
       .artist {
         font-size: 13px;
         margin-top: 2px;
@@ -731,42 +660,51 @@ watch(
         -webkit-line-clamp: 1;
         overflow: hidden;
         word-break: break-all;
+
         .ar {
           display: inline-flex;
           transition: color 0.3s;
           cursor: pointer;
+
           &::after {
             content: "/";
             margin: 0 4px;
             transition: none;
           }
+
           &:last-child {
             &::after {
               display: none;
             }
           }
+
           &:hover {
             color: var(--main-color);
+
             &::after {
               color: var(--n-close-icon-color);
             }
           }
         }
       }
+
       .lrc-text {
         margin-top: 2px;
         font-size: 13px;
         transition: opacity 0.1s ease-in-out;
+
         .space {
           margin-right: 4px;
         }
       }
     }
+
     .control {
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
+
       .play-control {
         --n-width: 44px;
         --n-height: 44px;
@@ -774,16 +712,20 @@ watch(
         transition:
           background-color 0.3s,
           transform 0.3s;
+
         .n-icon {
           transition: opacity 0.1s ease-in-out;
         }
+
         &:hover {
           transform: scale(1.1);
         }
+
         &:active {
           transform: scale(1);
         }
       }
+
       .play-prev,
       .play-next {
         padding: 6px;
@@ -793,20 +735,24 @@ watch(
           background-color 0.3s,
           transform 0.3s;
         cursor: pointer;
+
         &:hover {
           transform: scale(1.1);
           background-color: var(--main-second-color);
         }
+
         &:active {
           transform: scale(1);
         }
       }
     }
+
     .menu {
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
       transition: opacity 0.1s;
+
       .n-icon {
         margin-left: 8px;
         padding: 8px;
@@ -817,22 +763,27 @@ watch(
           transform 0.3s,
           opacity 0.1s ease-in-out;
         cursor: pointer;
+
         :deep(.iconify) {
           transition: opacity 0.1s;
         }
+
         &:hover {
           transform: scale(1.1);
           background-color: var(--main-second-color);
         }
+
         &:active {
           transform: scale(1);
         }
       }
+
       .time {
         display: flex;
         align-items: center;
         font-size: 12px;
         margin-right: 4px;
+
         .played {
           &::after {
             content: "/";
@@ -840,15 +791,42 @@ watch(
           }
         }
       }
+
+      .refresh {
+        margin-left: 8px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        .n-icon {
+          margin-left: 0;
+        }
+
+        .refresh-text {
+          width: 38px;
+          height: 38px;
+          color: var(--main-color);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: opacity 0.1s ease-in-out;
+          transform: translateY(-1px);
+          cursor: pointer;
+        }
+      }
+
       .speed {
         margin-left: 8px;
         display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: center;
+
         .n-icon {
           margin-left: 0;
         }
+
         .speed-text {
           width: 38px;
           height: 38px;
@@ -861,20 +839,25 @@ watch(
           cursor: pointer;
         }
       }
+
       .playlist {
         transition: margin 0.3s;
+
         &.count {
           margin-right: 12px;
         }
       }
+
       :deep(.n-badge-sup) {
         background: var(--main-boxshadow-color);
         backdrop-filter: blur(20px);
+
         .n-base-slot-machine {
           color: var(--main-color);
         }
       }
     }
+
     @media (max-width: 900px) {
       .menu {
         .time {
@@ -882,18 +865,22 @@ watch(
         }
       }
     }
+
     @media (max-width: 700px) {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+
       .control {
         margin-left: auto;
+
         .play-prev,
         .play-next {
           display: none;
         }
       }
+
       .menu {
         .hidden {
           display: none;
@@ -901,22 +888,27 @@ watch(
       }
     }
   }
+
   &.show-bar {
     bottom: 0;
   }
+
   &.no-sider {
     padding: 0;
+
     .player {
       width: auto;
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 10vw;
+
       @media (max-width: 1200px) {
         padding: 0 5vw;
       }
     }
   }
 }
+
 // 音量控制
 .slider-content {
   background-color: var(--n-color);
@@ -925,6 +917,7 @@ watch(
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .slider-num {
     margin-top: 4px;
     font-size: 12px;
