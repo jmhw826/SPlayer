@@ -55,7 +55,7 @@
     <n-card class="set-item">
       <div class="name">
         自定义音乐源
-        <n-text class="tip">多个源用逗号分隔，支持 pyncmd, qq, kuwo, migu, kugou</n-text>
+        <n-text class="tip">多个源用逗号分隔，支持 pyncmd, bodian, qq, kuwo, migu, kugou</n-text>
       </div>
       <n-checkbox-group v-model:value="musicSourceChecked" :disabled="!useUnmServer" style="margin-bottom: 8px;">
         <n-checkbox v-for="item in musicSourceOptions" :key="item.value" :value="item.value">{{ item.label }}</n-checkbox>
@@ -197,6 +197,7 @@ const {
 // 音源选项
 const musicSourceOptions = [
   { label: "第三方网易云(pyncmd)", value: "pyncmd" },
+  { label: "Bodian音乐源(bodian)", value: "bodian" },
   { label: "QQ音乐(qq)", value: "qq" },
   { label: "酷我(kuwo)", value: "kuwo" },
   { label: "咪咕(migu)", value: "migu" },

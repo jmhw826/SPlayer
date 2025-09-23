@@ -121,6 +121,7 @@ const checkMobile = () => {
 // 音源选项
 const musicSourceOptions = [
   { label: "第三方网易云(pyncmd)", value: "pyncmd" },
+  { label: "Bodian音乐源(bodian)", value: "bodian" },
   { label: "QQ音乐(qq)", value: "qq" },
   { label: "酷我(kuwo)", value: "kuwo" },
   { label: "咪咕(migu)", value: "migu" },
