@@ -292,18 +292,45 @@ const songLevelData = {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    display: flex !important; /* 强制为 flex 容器 */
+    flex-direction: column !important; /* 强制垂直排列 */
+    align-items: flex-start !important; /* 强制左对齐 */
+
+    :deep(.n-card__content) {
+      display: block !important;
+    }
 
     .name {
+      display: block !important; /* 强制为块级元素 */
+      width: 100% !important; /* 强制占据整行 */
       margin-bottom: 8px;
       font-size: 14px;
+    }
 
-      .tip {
-        display: block;
-        margin-top: 4px;
-        font-size: 12px;
-        opacity: 0.6;
+    .tip {
+      display: block !important;
+      width: 100% !important; /* 强制占据整行 */
+      margin-top: 4px;
+      margin-bottom: 16px; /* 增加与复选框组的间距 */
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .n-checkbox-group {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      width: 100% !important; /* 强制占据整行 */
+      margin-bottom: 16px; /* 增加与输入框的间距 */
+
+      .n-checkbox {
+        margin-right: 16px;
+        margin-bottom: 8px;
       }
+    }
+
+    .n-input {
+      display: block !important; /* 强制为块级元素 */
+      width: 100% !important; /* 强制占据整行 */
     }
 
     .set {
