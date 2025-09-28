@@ -77,7 +77,7 @@
 
     <n-collapse>
       <n-collapse-item title="外观设置">
-        <n-card class="set-item">
+    <n-card class="set-item">
           <div class="name">
             在线播放音质
             <n-text class="tip">
@@ -86,7 +86,7 @@
           </div>
           <n-select v-model:value="songLevel" :options="Object.values(songLevelData)" class="set" />
         </n-card>
-        <n-card class="set-item">
+    <n-card class="set-item" :bordered="false">
           <div class="name">
             播放器样式
             <n-text class="tip"> 播放器左侧区域样式 </n-text>
@@ -106,7 +106,7 @@
             class="set"
           />
         </n-card>
-        <n-card class="set-item">
+    <n-card class="set-item" :bordered="false">
           <div class="name">
             播放背景样式
             <n-text class="tip">
@@ -143,7 +143,7 @@
             class="set"
           />
         </n-card>
-        <n-card class="set-item">
+    <n-card class="set-item" :bordered="false">
           <div class="name">
             <div class="dev">
               显示音乐频谱

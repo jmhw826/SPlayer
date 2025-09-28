@@ -1,21 +1,21 @@
 <template>
   <div class="set-type">
     <n-h3 prefix="bar"> 其他 </n-h3>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         显示版本号
         <n-text class="tip">将会在左上角显示当前版本号, 刷新后或重启软件生效</n-text>
       </div>
       <n-switch v-model:value="showVersion" :round="false" />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         使用真实 IP 地址
         <n-text class="tip">十分推荐开启的功能，尤其是用国外服务器或部署平台的网易云音乐API, 在海外或部分地区可能会受到限制，可开启此处解决</n-text>
       </div>
       <n-switch v-model:value="useRealIP" :round="false" />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         真实 IP 地址
         <n-text class="tip">可在此处输入国内 IP, 可以通过CMD的ping music.163.com获取</n-text>
@@ -27,7 +27,7 @@
       </n-input>
     </n-card>
     <div v-if="checkPlatform.electron()" class="all-porxy" style="margin-bottom: 12px">
-      <n-card class="set-item">
+  <n-card class="set-item">
         <div class="name">
           网络代理
           <n-text class="tip">修改后请点击保存或重启软件以应用</n-text>
@@ -52,7 +52,7 @@
       ]" class="set" @update:value="themeAuto = false" />
         </n-flex>
       </n-card>
-      <n-card class="set-item">
+  <n-card class="set-item">
         <div class="name">
           代理服务器地址
           <n-text class="tip">请填写代理服务器地址，如 127.0.0.1</n-text>
@@ -64,7 +64,7 @@
           </template>
         </n-input>
       </n-card>
-      <n-card class="set-item">
+  <n-card class="set-item">
         <div class="name">
           代理服务器端口
           <n-text class="tip">请填写代理服务器端口，如 80</n-text>
@@ -73,51 +73,51 @@
           :max="65535" class="set" placeholder="请填写代理服务器端口" />
       </n-card>
     </div>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">显示 GitHub 仓库按钮</div>
       <n-switch v-model:value="showGithub" :round="false" />
     </n-card>
     <n-collapse>
       <n-collapse-item title="网易云API设定">
-        <n-card class="set-item">
+  <n-card class="set-item">
           <n-text class="tip">网站当前的默认API有可能随时超出而关闭, 可以通过目前自部署或者目前网络上公开使用的API来解决</n-text>
         </n-card>
-        <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
           <div class="name">
             使用自定义网易云API
             <n-text class="tip">开启后将使用自定义网易云音乐API地址, 切换或刷新页面生效</n-text>
           </div>
           <n-switch v-model:value="useCustomNCMServer" :round="false" />
         </n-card>
-        <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
           <div class="name">
             网易云API地址
             <n-text class="tip">请输入自定义网易云API地址（如 http://localhost:3000 ,后面不带斜杠）</n-text>
           </div>
           <n-input v-model:value="ncmServer" :disabled="!useCustomNCMServer" class="set" type="text" placeholder="请输入网易云API地址" />
         </n-card>
-        <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
           <div class="name">
             使用自定义 UNM 服务器
             <n-text class="tip">开启后将使用自定义 UnblockNeteaseMusic 服务器地址, 切换或刷新页面生效</n-text>
           </div>
           <n-switch v-model:value="useCustomUNMServer" :round="false" />
         </n-card>
-        <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
           <div class="name">
             UNM 服务器地址
             <n-text class="tip">请输入自定义 UNM 服务器地址（如 http://localhost:3000 ,后面不带斜杠）</n-text>
           </div>
           <n-input v-model:value="unmServer" :disabled="!useCustomUNMServer" class="set" type="text" placeholder="请输入 UNM 服务器地址" />
         </n-card>
-        <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
             <n-text class="tip" style="word-break: break-all; white-space: pre-line;">
             提示: 如果您使用NeteaseCloudMusicApi的Reborn版本, 可以在网易云音乐API地址的基础上增加"/song/url"地址, 如 http://localhost:3000/song/url
             </n-text>
         </n-card>
       </n-collapse-item>
     </n-collapse>
-    <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
       <div class="name">
         默认加载数量
         <n-text class="tip">在部分列表页面显示几条数据, 过多数据可能会造成响应过慢</n-text>
@@ -137,7 +137,7 @@
         },
       ]" class="set" @update:value="themeAuto = false" />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
       <div class="name">
         清除PWA缓存
         <n-text class="tip">此操作会清除PWA缓存并拉取新的版本, 适用于同步仓库部署完成后使用</n-text>

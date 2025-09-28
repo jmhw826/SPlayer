@@ -3,7 +3,7 @@
     <n-h3 prefix="bar"> 歌词 </n-h3>
     <n-collapse>
       <n-collapse-item title="字体设置">
-        <n-card class="set-item" :content-style="{
+<n-card class="set-item" :content-style="{
             flexDirection: 'column',
             alignItems: 'flex-start',
           }">
@@ -19,7 +19,7 @@
               56: '最大',
             }" />
         </n-card>
-        <n-card class="set-item">
+<n-card class="set-item">
           <div class="name">
             歌词字体
             <n-text class="tip">选择您偏好的字体</n-text>
@@ -44,7 +44,7 @@
             @update:value="updateLyricsFont"
           />
         </n-card>
-        <n-card class="set-item">
+<n-card class="set-item">
           <div class="name">
             歌词字体加粗
             <n-text class="tip">是否将歌词字体加粗显示，部分字体可能显示异常</n-text>
@@ -53,7 +53,7 @@
         </n-card>
       </n-collapse-item>
       <n-collapse-item title="显示设置">
-        <n-card class="set-item">
+<n-card class="set-item">
           <div class="name">
             歌词位置
             <n-text class="tip">歌词的默认垂直位置</n-text>
@@ -73,7 +73,7 @@
               },
             ]" class="set" />
         </n-card>
-        <n-card class="set-item">
+<n-card class="set-item">
           <div class="name">
             歌词滚动位置
             <n-text class="tip">歌词高亮时所处的位置</n-text>
@@ -97,7 +97,7 @@
             class="set" 
           />
         </n-card>
-        <n-card class="set-item">
+<n-card class="set-item">
           <div class="name">
             智能暂停滚动
             <n-text class="tip">鼠标移入歌词区域是否暂停滚动</n-text>
@@ -106,7 +106,7 @@
         </n-card>
       </n-collapse-item>
     <n-collapse-item title="歌词类型设置">
-      <n-card class="set-item">
+<n-card class="set-item">
         <div class="name">
           <div class="dev">
             显示逐字歌词
@@ -115,7 +115,7 @@
         </div>
         <n-switch v-model:value="showYrc" :disabled="useTTMLFormat" :round="false" />
       </n-card>
-      <n-card class="set-item">
+<n-card class="set-item">
         <div class="name">
           <div class="dev">
             显示逐字歌词动画
@@ -124,14 +124,14 @@
         </div>
         <n-switch v-model:value="showYrcAnimation" :disabled="!showYrc" :round="false" />
       </n-card>
-      <n-card class="set-item">
+<n-card class="set-item">
         <div class="name">
           显示歌词翻译
           <n-text class="tip">是否在具有翻译歌词时显示</n-text>
         </div>
         <n-switch v-model:value="showTransl" :disabled="useAMLyrics" :round="false" />
       </n-card>
-      <n-card class="set-item">
+<n-card class="set-item" :bordered="false">
         <div class="name">
           显示歌词音译
           <n-text class="tip">是否在具有音译歌词时显示</n-text>
@@ -140,7 +140,7 @@
       </n-card>
     </n-collapse-item>
     <n-collapse-item title="歌词渲染设置">
-      <n-card class="set-item">
+<n-card class="set-item" :bordered="false">
         <n-collapse>
           <n-collapse-item title="Apple Music Like Lyrics 设置">
             <div class="name">
@@ -176,7 +176,7 @@
             <n-switch v-model:value="useTTMLFormat" :disabled="!useAMLyrics" :round="false" />
           </n-collapse-item>
         </n-collapse>
-        <n-card class="set-item">
+<n-card class="set-item" :bordered="false">
         <div class="name">
           弹簧动画参数
           <span class="tip">调整歌词动画的弹性效果</span>

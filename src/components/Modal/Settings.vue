@@ -37,8 +37,10 @@
           <n-tab name="setTab2">播放</n-tab>
           <n-tab name="setTab3">系统</n-tab>
           <n-tab name="setTab4">歌词</n-tab>
-          <n-tab name="setTab5">下载</n-tab>
-          <n-tab name="setTab6">其他</n-tab>
+          <!-- 调整顺序：快捷键在歌词之后、下载之前 -->
+          <n-tab name="setTab5">快捷键</n-tab>
+          <n-tab name="setTab6">下载</n-tab>
+          <n-tab name="setTab7">其他</n-tab>
         </n-tabs>
         
         <!-- 添加跳转按钮 -->
@@ -76,6 +78,8 @@
           <System />
           <!-- 歌词 -->
           <Lyrics />
+          <!-- 快捷键（调整到下载之前） -->
+          <KeyboardSetting />
           <!-- 下载 -->
           <Download />
           <!-- 其他 -->
@@ -99,6 +103,7 @@ import System from "@/views/Setting/system.vue";
 import Lyrics from "@/views/Setting/lyrics.vue";
 import Download from "@/views/Setting/download.vue";
 import Other from "@/views/Setting/other.vue";
+import KeyboardSetting from "@/views/Setting/KeyboardSetting.vue";
 
 const router = useRouter();
 const music = musicData();
@@ -125,6 +130,7 @@ onUnmounted(() => {
 const setTabsRef = ref(null);
 const setScrollRef = ref(null);
 const setTabsValue = ref("setTab1");
+const isProgrammaticScrolling = ref(false);
 const showModal = ref(false);
 
 // 标签选项
@@ -133,8 +139,9 @@ const tabOptions = computed(() => [
   { label: '播放', value: 'setTab2' },
   { label: '系统', value: 'setTab3' },
   { label: '歌词', value: 'setTab4' },
-  { label: '下载', value: 'setTab5' },
-  { label: '其他', value: 'setTab6' }
+  { label: '快捷键', value: 'setTab5' },
+  { label: '下载', value: 'setTab6' },
+  { label: '其他', value: 'setTab7' }
 ]);
 
 // 计算滚动区域高度
@@ -152,11 +159,17 @@ const settingTabChange = (name) => {
   const setDom = document.querySelectorAll(".set-type")?.[index - 1];
   if (!setDom) return false;
   // 滚动至设置分类
+  isProgrammaticScrolling.value = true;
+  setTabsValue.value = name;
   setDom.scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => {
+    isProgrammaticScrolling.value = false;
+  }, 700);
 };
 
 // 设置列表滚动
 const allSetScroll = debounce((e) => {
+  if (isProgrammaticScrolling.value) return;
   const distance = e.target.scrollTop + 30;
   const allSetDom = document.querySelectorAll(".set-type");
   allSetDom.forEach((v, i) => {
@@ -250,9 +263,68 @@ defineExpose({ showModal: openModal });
 
     .n-scrollbar {
       padding-right: 12px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 统一弹窗中的设置分组与折叠项的间距与样式 */
+    :deep(.set-type) {
+      .n-collapse {
+        background-color: transparent;
+        border: none;
+
+        .n-collapse-item {
+          margin-bottom: 16px;
+          border: none;
+
+          .n-collapse-item__header {
+            padding: 0 12px;
+            min-height: 44px; /* 与设置页保持一致的点击区域高度 */
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            background-color: transparent;
+          }
+
+          .n-collapse-item__content-wrapper {
+            border: none;
+          }
+
+          .n-collapse-item__content-inner {
+            padding: 8px 0; /* 折叠内容上下留白 */
+          }
+        }
+      }
+
+      .set-item {
+        margin-bottom: 12px;
+        background-color: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 8px;
+
+        .n-card__content {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .name {
+          margin-bottom: 8px;
+          font-size: 14px;
+
+          .tip {
+            display: block;
+            margin-top: 4px;
+            font-size: 12px;
+            opacity: 0.6;
+          }
+        }
+
+        .set {
+          width: 200px; /* 与设置页保持一致，避免滑块占满一行 */
+        }
+      }
+      /* 撤回全局卡片/列表的边框覆盖，保持原项目视觉 */
     }
   }
 }

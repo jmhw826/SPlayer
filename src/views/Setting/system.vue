@@ -1,7 +1,7 @@
 <template>
   <div v-if="checkPlatform.electron()" class="set-type">
     <n-h3 prefix="bar"> 系统 </n-h3>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">关闭软件时</div>
       <n-select
         v-model:value="closeType"
@@ -19,11 +19,11 @@
         class="set"
       />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">每次关闭前都进行提醒</div>
       <n-switch v-model:value="closeTip" :round="false" />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         自定义字体
         <n-text class="tip"> 若有新安装的字体，需要重启后才能生效 </n-text>
@@ -57,7 +57,7 @@
         @update:value="settings.changeSystemFonts(systemFonts)"
       />
     </n-card-->
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">任务栏显示歌曲播放进度</div>
       <n-switch
         v-model:value="showTaskbarProgress"
@@ -66,7 +66,7 @@
         @update:value="closeTaskbarProgress"
       />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         自动检查更新
         <n-text class="tip">暂不支持</n-text>
@@ -76,7 +76,7 @@
   </div>
   <div v-else class="set-type">
     <n-h3 prefix="bar"> 系统 </n-h3>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">该设置项为桌面端独占功能</div>
     </n-card>
   </div>

@@ -134,14 +134,14 @@
           </div>
           <n-switch v-model:value="showSearchHistory" :round="false" />
         </n-card>
-        <n-card class="set-item">
+        <n-card class="set-item" :bordered="false">
           <div class="name">
             自动签到
             <n-text class="tip">在每日首次加载网站时自动签到</n-text>
           </div>
           <n-switch v-model:value="autoSignIn" :round="false" />
         </n-card>
-        <n-card class="set-item">
+        <n-card class="set-item" :bordered="false">
           <div class="name">
             隐藏 VIP 歌曲标签
             <n-text class="tip">是否在歌曲列表中隐藏 VIP 歌曲标签</n-text>
