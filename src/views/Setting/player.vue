@@ -74,18 +74,19 @@
       </div>
       <n-switch v-model:value="bottomLyricShow" :round="false" />
     </n-card>
+    <n-card class="set-item">
+      <div class="name">
+        在线播放音质
+        <n-text class="tip">
+          {{ songLevelData[songLevel].tip }}
+        </n-text>
+      </div>
+      <n-select v-model:value="songLevel" :options="Object.values(songLevelData)" class="set" />
+    </n-card>
 
     <n-collapse>
       <n-collapse-item title="外观设置">
-        <n-card class="set-item">
-          <div class="name">
-            在线播放音质
-            <n-text class="tip">
-              {{ songLevelData[songLevel].tip }}
-            </n-text>
-          </div>
-          <n-select v-model:value="songLevel" :options="Object.values(songLevelData)" class="set" />
-        </n-card>
+        
         <n-card class="set-item">
           <div class="name">
             播放器样式
@@ -105,6 +106,13 @@
             ]"
             class="set"
           />
+        </n-card>
+        <n-card class="set-item">
+          <div class="name">
+            获取歌曲动态封面
+            <n-text class="tip"> 获取指定音乐的动态封面 </n-text>
+            <n-switch v-model:value="showDynamicCover" :round="false" />
+          </div>
         </n-card>
         <n-card class="set-item">
           <div class="name">
@@ -192,6 +200,7 @@ const {
   showPlaylistCount,
   showSpectrums,
   useMusicCache,
+  showDynamicCover,
 } = storeToRefs(settings);
 
 // 音源选项

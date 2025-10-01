@@ -35,6 +35,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       songVolumeFade: true, // 歌曲渐入渐出
       useUnmServer: true, // 是否使用网易云解灰
       countDownShow: true, // 是否显示前奏等待
+      showDynamicCover: true, // 使用动态封面
       bottomLyricShow: true, // 底栏歌词显示
       playerBackgroundType: "blur", // 播放器背景类别  animation 流动 / blur 模糊
       memorySeek: true, // 记忆上次播放位置

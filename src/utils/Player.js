@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrlNew, getSongLyricLegacy, getSongTTML } from "@/api/song";
+import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrlNew, getSongLyricLegacy, getSongTTML, getSongDynamicCover} from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
 import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/time.ts";
@@ -162,7 +162,7 @@ const getNormalSongUrl = async (id, status, playNow) => {
       // 调用解灰
       const unblockUrl = await getFromUnblockMusic({ id }, status, playNow);
       if (unblockUrl) {
-        status.playUseOtherSource = true; // 明确设置状态
+        status.playUseOtherSource = true;
         return unblockUrl;
       } else {
         return null;
@@ -241,6 +241,8 @@ export const createPlayer = async (src, autoPlay = true) => {
     const music = musicData();
     const status = siteStatus();
     const settings = siteSettings();
+    // 发送动态封面信号
+    status.playDynamicCover = null;
     const { playMode } = status;
     const { playSongSource, playList } = music;
     const { showSpectrums, memorySeek, useMusicCache } = settings;
@@ -256,7 +258,7 @@ export const createPlayer = async (src, autoPlay = true) => {
       console.log("开始替换音乐链接域名...");
       finalUrl = songUrl.replace(/m804\.music\.126\.net/g, 'm801.music.126.net')
                        .replace(/m704\.music\.126\.net/g, 'm701.music.126.net');
-      processedUrl = finalUrl;
+      processedUrl = finalUrl; // BYD什么石山
       console.log("替换后的音乐链接：", finalUrl);
     }
     console.log("播放地址：", processedUrl);
@@ -667,7 +669,6 @@ const getSongLyricData = async (islocal, data) => {
           try {
             const ttmlLyric = parseTTMLToAMLL(lyricTTML);
             if (ttmlLyric && ttmlLyric.length > 0) {
-              // 将TTML歌词转换为AMLL格式，由于TTML包含逐字信息，应该存储在yrcAMData中
               amllLyric = {
                 lrcData: [],
                 yrcData: [],

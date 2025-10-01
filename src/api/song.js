@@ -16,6 +16,21 @@ export const getSongDetail = (ids) => {
     },
   });
 };
+
+/**
+ * 获取指定音乐的动态封面
+ * @param {number} id - 要获取动态封面的音乐ID
+ * @returns {Promise<{videoPlayUrl: string, needTransition: boolean, height: number, width: number} | null>} 返回动态封面的信息
+ */
+export const getSongDynamicCover = async (id) => {
+  const response = await axios({
+    method: "GET",
+    url: `/song/dynamic/cover`,
+    params: { id }
+  });
+  return response.data;
+};
+
 /**
  * 获取指定音乐的歌词
  * @param {number} id - 要获取歌词的音乐ID
@@ -180,17 +195,11 @@ export const getSongTTML = async (id) => {
     const url = `https://amll.mirror.dimeta.top/api/db/ncm-lyrics/${id}.ttml`;
     try {
         const response = await fetch(url);
-        
-        if (!response.ok) {
-            const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${response.status} ${response.statusText}, 将会使用默认歌词`;
-            console.error(errorMessage);
-            return null;
-        }
-        
         const data = await response.text();
         return data;
     } catch (error) {
-        console.error("Error fetching TTML:", error);
+        const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${response.status} ${response.statusText}, 将会使用默认歌词`;
+        console.error(errorMessage);
         return null;
     }
 }
