@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { musicData, siteStatus, siteSettings } from "@/stores";
-import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrlNew, getSongLyricLegacy, getSongTTML, getSongDynamicCover} from "@/api/song";
+import { getSongUrl, getSongLyric, songScrobble, getMusicNumUrlNew, getSongLyricLegacy, getSongTTML } from "@/api/song";
 import { checkPlatform, getLocalCoverData, getBlobUrlFromUrl } from "@/utils/helper";
 import { decode as base642Buffer } from "@/utils/base64";
 import { getSongPlayTime } from "@/utils/time.ts";
@@ -241,8 +241,6 @@ export const createPlayer = async (src, autoPlay = true) => {
     const music = musicData();
     const status = siteStatus();
     const settings = siteSettings();
-    // 发送动态封面信号
-    status.playDynamicCover = null;
     const { playMode } = status;
     const { playSongSource, playList } = music;
     const { showSpectrums, memorySeek, useMusicCache } = settings;

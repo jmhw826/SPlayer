@@ -109,13 +109,6 @@
         </n-card>
         <n-card class="set-item">
           <div class="name">
-            获取歌曲动态封面
-            <n-text class="tip"> 获取指定音乐的动态封面 </n-text>
-            <n-switch v-model:value="showDynamicCover" :round="false" />
-          </div>
-        </n-card>
-        <n-card class="set-item">
-          <div class="name">
             播放背景样式
             <n-text class="tip">
               {{
@@ -200,7 +193,6 @@ const {
   showPlaylistCount,
   showSpectrums,
   useMusicCache,
-  showDynamicCover,
 } = storeToRefs(settings);
 
 // 音源选项
