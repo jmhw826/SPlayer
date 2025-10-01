@@ -253,9 +253,11 @@ export const createPlayer = async (src, autoPlay = true) => {
     // 处理音乐链接，将特定域名替换为其他域名
     let finalUrl = processedUrl;
     if (songUrl.includes('m804.music.126.net') || songUrl.includes('m704.music.126.net')) {
+      console.log("开始替换音乐链接域名...");
       finalUrl = songUrl.replace(/m804\.music\.126\.net/g, 'm801.music.126.net')
                        .replace(/m704\.music\.126\.net/g, 'm701.music.126.net');
       processedUrl = finalUrl;
+      console.log("替换后的音乐链接：", finalUrl);
     }
     console.log("播放地址：", processedUrl);
     // 初始化播放器
