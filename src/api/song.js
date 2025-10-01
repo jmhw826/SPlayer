@@ -177,26 +177,17 @@ export const getSimiSong = (id) => {
  * @param {number} id - 要获取歌词的音乐ID
  */
 export const getSongTTML = async (id) => {
-    if (1 === 2 && import.meta.env["RENDERER_VITE_SITE_ROOT"] === "true") {
-        var lyricurl = "/api/ttml";
-    } else {
-        var lyricurl = `${import.meta.env.VITE_TTML_API}`;
-    }
-    if (import.meta.env["VITE_TTML_API"] === '') {
-        return null;
-    }
-    const url = `${lyricurl}/api/search?id=${id}&fixedVersion=ttml`;
+    const url = `https://amll.mirror.dimeta.top/api/db/ncm-lyrics/${id}.ttml`;
     try {
         const response = await fetch(url);
         
         if (!response.ok) {
-            const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${response.status} ${response.statusText}`;
+            const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${response.status} ${response.statusText}, 将会使用默认歌词`;
             console.error(errorMessage);
-            console.log("将会使用默认歌词");
             return null;
         }
         
-        const data = await response.json();
+        const data = await response.text();
         return data;
     } catch (error) {
         console.error("Error fetching TTML:", error);

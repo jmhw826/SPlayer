@@ -655,7 +655,7 @@ const getSongLyricData = async (islocal, data) => {
       const lyricResponse = await getSongLyric(data?.id);
       const lyricLegacy = await getSongLyricLegacy(data?.id);
       const lyricTTML = await getSongTTML(data?.id);
-      if (lyricResponse?.original || lyricLegacy || lyricTTML?.content) {
+      if (lyricResponse?.original || lyricLegacy || lyricTTML) {
         // 使用parseLyric.js处理基础歌词
         const parsedLyric = parseLyric(lyricLegacy);
         // 使用lyric.ts处理AMLL格式
@@ -663,9 +663,9 @@ const getSongLyricData = async (islocal, data) => {
         // 为了使用TTML歌词添加一个开关
         const settings = siteSettings();
         // 处理TTML歌词
-        if (lyricTTML?.content && settings.useTTMLFormat) {
+        if (lyricTTML && settings.useTTMLFormat) {
           try {
-            const ttmlLyric = parseTTMLToAMLL(lyricTTML.content);
+            const ttmlLyric = parseTTMLToAMLL(lyricTTML);
             if (ttmlLyric && ttmlLyric.length > 0) {
               // 将TTML歌词转换为AMLL格式，由于TTML包含逐字信息，应该存储在yrcAMData中
               amllLyric = {

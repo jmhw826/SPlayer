@@ -10,8 +10,8 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       closeType: "hide", // 关闭方式 close 直接关闭 / hide 最小化到任务栏
       showTaskbarProgress: false, // 显示歌曲任务栏进度
       showSearchHistory: true, // 搜索历史
-      autoSignIn: true, // 自动签到
-      showGithub: false, //展示Github仓库
+      autoSignIn: false, // 自动签到
+      showGithub: true, //展示Github仓库
       showSider: true, // 显示侧边栏
       siderShowCover: false, // 侧边栏显示封面
       autoCheckUpdates: true, // 自动检查更新
@@ -48,7 +48,7 @@ const useSiteSettingsStore = defineStore("siteSettings", {
       // 歌词部分
       lrcMousePause: false, // 鼠标移入歌词区域暂停滚动
       lyricsFontSize: 36, // 歌词大小
-      lyricsFont: "LXGW WenKai", // 歌词字体
+      lyricsFont: "HarmonyOS sans", // 歌词字体
       lyricsBlur: true, // 歌词模糊
       lyricsBold: true, // 歌词加粗
       showYrc: true, // 是否显示逐字歌词
