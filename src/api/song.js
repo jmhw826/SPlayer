@@ -192,7 +192,7 @@ export const getSimiSong = (id) => {
  * @param {number} id - 要获取歌词的音乐ID
  */
 export const getSongTTML = async (id) => {
-    const url = `https://amll.mirror.dimeta.top/api/db/ncm-lyrics/${id}.ttml`;
+    const url = `https://amll-ttml-db.stevexmh.net/ncm/${id}`;
     try {
         const response = await fetch(url);
         const data = await response.text();
