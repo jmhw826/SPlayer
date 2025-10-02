@@ -181,15 +181,12 @@ export const getSongTTML = async (id) => {
     try {
         const response = await fetch(url);
         if (response === null || response.status !== 200) {
-            throw new Error(`TTML API请求失败或TTML仓库没有歌词: ${error.message}, 将会使用默认歌词`);
+            console.error(`TTML API请求失败或TTML仓库没有歌词: ${error.message}, 将会使用默认歌词`);
+            return null;
         }
         const data = await response.text();
-        return data;
-    } catch (error) {
-        const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${error.message}, 将会使用默认歌词`;
-        console.log(errorMessage);
-        return null;
-    }
+      return data;
+  } catch (error) {}
 }
 
 /**
