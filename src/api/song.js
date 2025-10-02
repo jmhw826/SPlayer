@@ -180,11 +180,14 @@ export const getSongTTML = async (id) => {
     const url = `https://amll-ttml-db.stevexmh.net/ncm/${id}`;
     try {
         const response = await fetch(url);
+        if (response === null || response.status !== 200) {
+            throw new Error(`TTML API请求失败或TTML仓库没有歌词: ${error.message}, 将会使用默认歌词`);
+        }
         const data = await response.text();
         return data;
     } catch (error) {
-        const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${response.status} ${response.statusText}, 将会使用默认歌词`;
-        console.error(errorMessage);
+        const errorMessage = `TTML API请求失败或TTML仓库没有歌词: ${error.message}, 将会使用默认歌词`;
+        console.log(errorMessage);
         return null;
     }
 }
