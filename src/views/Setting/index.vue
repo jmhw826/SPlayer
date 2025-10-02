@@ -18,8 +18,10 @@
         <n-tab name="setTab2"> 系统 </n-tab>
         <n-tab name="setTab3"> 播放 </n-tab>
         <n-tab name="setTab4"> 歌词 </n-tab>
-        <n-tab name="setTab5"> 下载 </n-tab>
-        <n-tab name="setTab6"> 其他 </n-tab>
+        <!-- 调整顺序：快捷键在歌词之后、下载之前 -->
+        <n-tab name="setTab5"> 快捷键 </n-tab>
+        <n-tab name="setTab6"> 下载 </n-tab>
+        <n-tab name="setTab7"> 其他 </n-tab>
         <!--n-tab name="setTab7"> TestOptions </n-tab-->
       </n-tabs>
     </PageTransition>
@@ -41,6 +43,8 @@
         <Player />
         <!-- 歌词 -->
         <Lyrics />
+        <!-- 快捷键（调整到下载之前） -->
+        <KeyboardSetting />
         <!-- 下载 -->
         <Download />
         <!-- 其他 -->
@@ -64,6 +68,8 @@ import Player from "@/views/Setting/player.vue";
 import Lyrics from "@/views/Setting/lyrics.vue";
 import Download from "@/views/Setting/download.vue";
 import Other from "@/views/Setting/other.vue";
+// 新增：导入快捷键设置组件
+import KeyboardSetting from "@/views/Setting/KeyboardSetting.vue";
 // import TestOptions from "@/views/Setting/testoptions.vue";
 
 const music = musicData();
@@ -76,6 +82,7 @@ const { themeAutoCover } = storeToRefs(settings);
 const setTabsRef = ref(null);
 const setScrollRef = ref(null);
 const setTabsValue = ref("setTab1");
+const isProgrammaticScrolling = ref(false);
 
 // 标签页切换
 const settingTabChange = (name) => {
@@ -83,11 +90,17 @@ const settingTabChange = (name) => {
   const setDom = document.querySelectorAll(".set-type")?.[index - 1];
   if (!setDom) return false;
   // 滚动至设置分类
+  isProgrammaticScrolling.value = true;
+  setTabsValue.value = name;
   setDom.scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => {
+    isProgrammaticScrolling.value = false;
+  }, 700);
 };
 
 // 设置列表滚动
 const allSetScroll = debounce((e) => {
+  if (isProgrammaticScrolling.value) return;
   const distance = e.target.scrollTop + 30;
   const allSetDom = document.querySelectorAll(".set-type");
   allSetDom.forEach((v, i) => {
@@ -186,6 +199,7 @@ const jump = () => {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        padding: 24px;
       }
       .name {
         margin-bottom: 8px;

@@ -1,4 +1,4 @@
-import { globalShortcut } from "electron";
+import { globalShortcut, app } from "electron";
 
 /**
  * 注册全局快捷键
@@ -18,6 +18,15 @@ const createGlobalShortcut = (win) => {
         activate: true,
       });
     }
+  });
+
+  // 退出程序（macOS 默认 Cmd+Q）
+  // 确保触发真正退出而不是仅隐藏窗口
+  globalShortcut.register("Cmd+Q", () => {
+    try {
+      app.isQuiting = true;
+      app.quit();
+    } catch (_) {}
   });
 };
 

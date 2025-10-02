@@ -85,12 +85,13 @@ import { useRouter } from "vue-router";
 import { darkTheme, NButton } from "naive-ui";
 import { musicData, siteStatus, siteSettings } from "@/stores";
 import { checkPlatform } from "@/utils/helper";
-import { initPlayer } from "@/utils/Player";
+import { initPlayer, playOrPause, changePlayIndex, setVolume } from "@/utils/Player";
 import userAgreement from "@/components/Modal/UserAgreement.vue";
 import userSignIn from "@/utils/userSignIn";
 import globalShortcut from "@/utils/globalShortcut";
 import globalEvents from "@/utils/globalEvents";
 import packageJson from "@/../package.json";
+
 
 const router = useRouter();
 const music = musicData();
@@ -99,6 +100,7 @@ const settings = siteSettings();
 const { autoPlay, showSider, autoSignIn, autoCheckUpdates } = storeToRefs(settings);
 const { showPlayBar, asideMenuCollapsed, showFullPlayer } = storeToRefs(status);
 const userAgreementRef = ref(null);
+
 
 // 公告数据
 const annShow =
@@ -126,7 +128,9 @@ if ("serviceWorker" in navigator) {
               text: true,
               type: "primary",
               onClick: () => {
-                electron.ipcRenderer.send("window-relaunch");
+                if (checkPlatform.electron() && window.electron?.ipcRenderer) {
+                  window.electron.ipcRenderer.send("window-relaunch");
+                }
               },
             },
             {
@@ -172,7 +176,9 @@ if ("serviceWorker" in navigator) {
 // 自动检查更新
 const checkUpdates = () => {
   if (!checkPlatform.electron()) return false;
-  electron.ipcRenderer.send("check-updates");
+  if (window.electron?.ipcRenderer) {
+    window.electron.ipcRenderer.send("check-updates");
+  }
 };
 
 // 显示公告
@@ -251,6 +257,67 @@ onMounted(async () => {
   // 键盘监听
   if (!checkPlatform.electron()) {
     window.addEventListener("keyup", handleKeyUp);
+  } else {
+    // ✅ 修复：在 onMounted 中安全地初始化快捷键
+    try {
+      const { useShortcutStore } = await import("@/stores/shortcut");
+      const shortcutStore = useShortcutStore();
+      const { formatForGlobalShortcut } = await import("@/utils/helper");
+      // 先发送列表到主进程，确保主进程缓存到位后再注册
+      if (window.electron?.ipcRenderer) {
+        // 发送前进行格式化，避免主进程第一次 register 失败
+        const normalizedList = JSON.parse(JSON.stringify(shortcutStore.shortcutList));
+        Object.values(normalizedList).forEach((item) => {
+          item.globalShortcut = formatForGlobalShortcut(item.globalShortcut || "");
+        });
+        window.electron.ipcRenderer.send("set-shortcut-list", normalizedList);
+      }
+      // 注册全局快捷键（包含格式化与主进程注册调用）
+      await shortcutStore.registerAllShortcuts();
+
+      // 统一由 Player 初始化全局快捷键监听，内部做防重复保护
+      const playerMod = await import("@/utils/Player.js");
+      if (typeof playerMod.initShortcutListeners === "function") {
+        playerMod.initShortcutListeners();
+      } else {
+        console.warn("initShortcutListeners 不可用，跳过额外初始化（由 initPlayer 负责）");
+      }
+      
+      // 调试：检查关键全局快捷键是否已被主进程成功注册
+      try {
+        if (window.electron?.ipcRenderer) {
+          const toCheck = [
+            formatForGlobalShortcut(shortcutStore.shortcutList.playOrPause.globalShortcut),
+            formatForGlobalShortcut(shortcutStore.shortcutList.playPrev.globalShortcut),
+            formatForGlobalShortcut(shortcutStore.shortcutList.playNext.globalShortcut),
+            formatForGlobalShortcut(shortcutStore.shortcutList.volumeUp.globalShortcut),
+            formatForGlobalShortcut(shortcutStore.shortcutList.volumeDown.globalShortcut),
+          ];
+          const results = await Promise.all(
+            toCheck.map((acc) => window.electron.ipcRenderer.invoke("is-shortcut-registered", acc))
+          );
+          console.info(
+            "全局快捷键注册状态:",
+            toCheck.map((acc, i) => `${acc}: ${results[i] ? "已注册" : "未注册"}`).join(", ")
+          );
+        }
+      } catch (e) {
+        console.warn("检测全局快捷键注册状态失败:", e);
+      }
+      
+      // 监听键盘事件处理本地快捷键（使用捕获阶段，避免内层组件阻止冒泡导致无法触发）
+      window.addEventListener(
+        "keydown",
+        (e) => {
+          globalShortcut(e, router);
+        },
+        { capture: true }
+      );
+      
+      console.log("快捷键初始化完成");
+    } catch (error) {
+      console.warn("快捷键初始化失败:", error);
+    }
   }
   // 自动签到
   if (autoSignIn.value) await userSignIn();

@@ -442,3 +442,64 @@ export const getBlobUrlFromUrl = async (url) => {
     throw error;
   }
 };
+
+// 格式化为 Electron 全局快捷键格式
+export const formatForGlobalShortcut = (shortcut) => {
+  if (!shortcut) return "";
+
+  // 非 ASCII 直接拦截（Electron Accelerator 仅支持 ASCII）
+  if (/[^\x00-\x7F]/.test(shortcut)) {
+    console.warn(`快捷键包含非ASCII字符，无法注册: ${shortcut}`);
+    return "";
+  }
+
+  // 分段处理，尽量贴合 Electron Accelerator 规范
+  const formatted = shortcut
+    .split("+")
+    .map((raw) => raw.trim())
+    .filter(Boolean)
+    .map((part) => {
+      // 修饰键归一化
+      if (/^CmdOrCtrl$/i.test(part)) return "CmdOrCtrl";
+      if (/^Meta$/i.test(part)) return "CmdOrCtrl"; // 兼容 macOS 的 Meta/Command
+      if (/^Command$/i.test(part)) return "CmdOrCtrl";
+      if (/^Cmd$/i.test(part)) return "CmdOrCtrl";
+      if (/^Control$/i.test(part)) return "Ctrl";
+      if (/^Ctrl$/i.test(part)) return "Ctrl";
+      if (/^Alt$/i.test(part)) return "Alt";
+      if (/^Shift$/i.test(part)) return "Shift";
+
+      // 方向键（KeyboardEvent.code: ArrowLeft/Right/Up/Down）
+      if (/^ArrowLeft$/i.test(part)) return "Left";
+      if (/^ArrowRight$/i.test(part)) return "Right";
+      if (/^ArrowUp$/i.test(part)) return "Up";
+      if (/^ArrowDown$/i.test(part)) return "Down";
+
+      // 字母键：KeyA -> A
+      const keyLetter = part.match(/^Key([A-Z])$/i);
+      if (keyLetter) return keyLetter[1].toUpperCase();
+
+      // 数字键：Digit1 -> 1（顶排数字），Numpad1 -> num1（小键盘）
+      const digit = part.match(/^Digit([0-9])$/);
+      if (digit) return digit[1];
+      const numpadDigit = part.match(/^Numpad([0-9])$/);
+      if (numpadDigit) return `num${numpadDigit[1]}`;
+
+      // 空格键保持为 Space（Electron 支持）
+      if (/^Space$/i.test(part)) return "Space";
+
+      // 其它按键（F1-F24、Tab、Enter、Escape、Plus 等）保持原样
+      return part;
+    })
+    .join("+");
+
+  // 检查是否只有修饰键，没有主键
+  const modifiers = ["CmdOrCtrl", "Ctrl", "Alt", "Shift"];
+  const parts = formatted.split("+").map((p) => p.trim());
+  if (!parts.length || parts.every((p) => modifiers.includes(p))) {
+    console.warn(`快捷键不完整，只有修饰键: ${formatted}`);
+    return "";
+  }
+
+  return formatted;
+};

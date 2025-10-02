@@ -11,5 +11,7 @@ if (process.contextIsolated) {
   }
 } else {
   // 如果上下文隔离未启用，将 electronAPI 添加到 DOM 全局对象
-  electron = electronAPI;
+  // 与上游保持一致，确保在所有模式下都可通过 window.electron 访问
+  // @ts-expect-error
+  window.electron = electronAPI;
 }

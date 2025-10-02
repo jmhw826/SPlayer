@@ -173,7 +173,8 @@ class MainProcess {
       // 引入主 Ipc
       mainIpcMain(this.mainWindow, this.store);
       // 系统托盘
-      createSystemTray(this.mainWindow);
+      // 初始化系统托盘，并传入 store 实例以访问持久化的快捷键配置，支持实时更新状态栏菜单
+      createSystemTray(this.mainWindow, this.store);
       // 注册快捷键
       createGlobalShortcut(this.mainWindow);
     });

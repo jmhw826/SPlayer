@@ -60,7 +60,15 @@
       <n-checkbox-group v-model:value="musicSourceChecked" :disabled="!useUnmServer" style="margin-bottom: 8px;">
         <n-checkbox v-for="item in musicSourceOptions" :key="item.value" :value="item.value">{{ item.label }}</n-checkbox>
       </n-checkbox-group>
-      <n-input v-model:value="settings.customMusicSource" :disabled="!useUnmServer" />
+      <n-input
+        v-model:value="settings.customMusicSource"
+        :disabled="!useUnmServer"
+        type="textarea"
+        :autosize="{
+          minRows: 1,
+          maxRows: 5,
+        }"
+      />
     </n-card>
     <n-card class="set-item">
       <div class="name">显示前奏倒计时
@@ -107,7 +115,7 @@
             class="set"
           />
         </n-card>
-        <n-card class="set-item">
+    <n-card class="set-item" :bordered="false">
           <div class="name">
             播放背景样式
             <n-text class="tip">
@@ -144,7 +152,7 @@
             class="set"
           />
         </n-card>
-        <n-card class="set-item">
+    <n-card class="set-item" :bordered="false">
           <div class="name">
             <div class="dev">
               显示音乐频谱
@@ -293,18 +301,45 @@ const songLevelData = {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    display: flex !important; /* 强制为 flex 容器 */
+    flex-direction: column !important; /* 强制垂直排列 */
+    align-items: flex-start !important; /* 强制左对齐 */
+
+    :deep(.n-card__content) {
+      display: block !important;
+    }
 
     .name {
+      display: block !important; /* 强制为块级元素 */
+      width: 100% !important; /* 强制占据整行 */
       margin-bottom: 8px;
       font-size: 14px;
+    }
 
-      .tip {
-        display: block;
-        margin-top: 4px;
-        font-size: 12px;
-        opacity: 0.6;
+    .tip {
+      display: block !important;
+      width: 100% !important; /* 强制占据整行 */
+      margin-top: 4px;
+      margin-bottom: 16px; /* 增加与复选框组的间距 */
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .n-checkbox-group {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      width: 100% !important; /* 强制占据整行 */
+      margin-bottom: 16px; /* 增加与输入框的间距 */
+
+      .n-checkbox {
+        margin-right: 16px;
+        margin-bottom: 8px;
       }
+    }
+
+    .n-input {
+      display: block !important; /* 强制为块级元素 */
+      width: 100% !important; /* 强制占据整行 */
     }
 
     .set {

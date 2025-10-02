@@ -1,4 +1,6 @@
-import { ipcMain, dialog, app, clipboard, shell } from "electron";
+import { ipcMain, dialog, app, clipboard, shell, globalShortcut } from "electron";
+import createGlobalShortcut from "@main/utils/createGlobalShortcut";
+import { updateTrayMenu } from "@main/utils/createSystemTray";
 import { File, Picture, Id3v2Settings } from "node-taglib-sharp";
 import { configureAutoUpdater } from "@main/utils/checkUpdates";
 import { readDirAsync } from "@main/utils/readDirAsync";
@@ -17,6 +19,8 @@ import fs from "fs/promises";
  */
 
 const mainIpcMain = (win, store) => {
+  // 仅追踪“应用内注册”的用户快捷键，避免清空开发快捷键
+  const userRegisteredShortcuts = new Set();
   // 窗口操作部分
   ipcMain.on("window-min", (ev) => {
     // 阻止最小化
@@ -48,6 +52,133 @@ const mainIpcMain = (win, store) => {
   ipcMain.on("check-updates", () => {
     console.info("开始检查更新");
     configureAutoUpdater();
+  });
+
+  // =====================
+  // 全局快捷键管理（新增）
+  // =====================
+  /**
+   * 渲染进程传递快捷键列表缓存
+   */
+  // 统一注册逻辑，供多处调用
+  const registerAll = (list) => {
+    const failed = [];
+    try {
+      // 先彻底清理，避免热更新/多次编辑导致的残留注册项
+      try {
+        globalShortcut.unregisterAll();
+      } catch (_) {}
+      userRegisteredShortcuts.clear();
+
+      const entries = Object.entries(list || {});
+      for (const [key, item] of entries) {
+        const accelerator = item?.globalShortcut;
+        if (!accelerator) continue;
+        try {
+          globalShortcut.register(accelerator, () => {
+            // 将事件转发到渲染进程
+            switch (key) {
+              case "playOrPause":
+                win?.webContents?.send("shortcut-playOrPause");
+                break;
+              case "playPrev":
+                win?.webContents?.send("shortcut-playPrev");
+                break;
+              case "playNext":
+                win?.webContents?.send("shortcut-playNext");
+                break;
+              case "volumeUp":
+                win?.webContents?.send("shortcut-volumeUp");
+                break;
+              case "volumeDown":
+                win?.webContents?.send("shortcut-volumeDown");
+                break;
+              case "hideWindow":
+                // 切换窗口显示/隐藏（与最小化不同）
+                if (!win) break;
+                if (win.isVisible()) {
+                  win.hide();
+                } else {
+                  win.show();
+                  try { win.focus(); } catch (_) {}
+                }
+                break;
+              default:
+                break;
+            }
+          });
+          // 记录已注册的用户快捷键
+          userRegisteredShortcuts.add(accelerator);
+          // 注册失败检测
+          if (!globalShortcut.isRegistered(accelerator)) {
+            failed.push(key);
+          } else {
+            console.info(`已注册全局快捷键: ${key} -> ${accelerator}`);
+          }
+        } catch (err) {
+          failed.push(key);
+          console.warn(`注册快捷键失败: ${key} -> ${accelerator}`, err);
+        }
+      }
+
+      // 重新挂回开发/调试快捷键（如 CmdOrCtrl+Shift+R / I）
+      try {
+        if (win) createGlobalShortcut(win);
+      } catch (_) {}
+    } catch (error) {
+      console.error("注册全局快捷键时出错:", error);
+    }
+    return failed;
+  };
+
+  ipcMain.on("set-shortcut-list", (_, list) => {
+    try {
+      // 存储到内存缓存（如需持久化可使用 store）
+      store?.set?.("shortcutList", list);
+    } catch (e) {
+      // 若无 store，直接挂到全局
+      global.__shortcutList = list;
+    }
+    // 接收列表后立即尝试注册，避免渲染端遗漏显式调用
+    const failed = registerAll(list);
+    if (failed?.length) {
+      console.warn("部分快捷键注册失败(来自 set-shortcut-list):", failed);
+    }
+    win.webContents.send("shortcutListChange", list); // 新增: 向渲染进程发送快捷键列表更新通知，确保渲染进程获取最新数据
+    updateTrayMenu(win, store, list); // 新增: 实时更新系统托盘菜单，以反映最新的快捷键配置
+  });
+
+  /**
+   * 检查系统是否已注册某加速键
+   */
+  ipcMain.handle("is-shortcut-registered", (_, accelerator) => {
+    try {
+      return globalShortcut.isRegistered(accelerator);
+    } catch (e) {
+      return false;
+    }
+  });
+
+  /**
+   * 注册全部全局快捷键
+   * @returns {Promise<string[]>} 失败项 key 列表
+   */
+  ipcMain.handle("register-all-shortcut", async (_, shortcutList) => {
+    const list = shortcutList || store?.get?.("shortcutList") || global.__shortcutList || {};
+    return registerAll(list);
+  });
+
+  /**
+   * 取消全部快捷键注册
+   */
+  ipcMain.on("unregister-all-shortcut", () => {
+    try {
+      // 编辑期间临时禁用：彻底清空，避免残留
+      globalShortcut.unregisterAll();
+      userRegisteredShortcuts.clear();
+    } catch (e) {
+      console.warn("取消注册全局快捷键失败:", e);
+    }
   });
 
   // 显示进度
@@ -279,10 +410,8 @@ const mainIpcMain = (win, store) => {
       console.info("取消网络代理配置");
     });
   });
-  
-};
 
-  
+  };
 
 /**
  * 从 Bilibili 视频中获取文件的 Base64 数据

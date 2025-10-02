@@ -1,7 +1,7 @@
 <template>
   <div class="set-type">
     <n-h3 prefix="bar"> 下载 </n-h3>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         默认下载文件夹
         <n-text class="tip">{{ downloadPath || "不设置则会每次选择保存位置" }}</n-text>
@@ -17,18 +17,18 @@
         </n-button>
       </n-flex>
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         同时下载歌曲元信息
         <n-text class="tip">为当前下载歌曲附加封面及歌词等元信息</n-text>
       </div>
       <n-switch v-model:value="downloadMeta" :round="false" />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">下载歌曲时同时下载封面</div>
       <n-switch v-model:value="downloadCover" :disabled="!downloadMeta" :round="false" />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">下载歌曲时同时下载歌词</div>
       <n-switch v-model:value="downloadLyrics" :disabled="!downloadMeta" :round="false" />
     </n-card>

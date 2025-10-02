@@ -1,14 +1,14 @@
 <template>
   <div class="set-type">
     <n-h3 prefix="bar"> 测试标题Test Title </n-h3>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         Button Switch
         <n-text class="tip">Tips are inputted here</n-text>
       </div>
       <n-switch round="false" />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item">
       <div class="name">
         Input field
         <n-text class="tip">Tips are inputted here</n-text>
@@ -25,7 +25,7 @@
       </n-input>
     </n-card>
     <div v-if="checkPlatform.electron()" class="all-porxy" style="margin-bottom: 12px">
-      <n-card class="set-item">
+  <n-card class="set-item">
         <div class="name">
           Electron测试选项
           <n-text class="tip">修改后请点击保存或重启软件以应用</n-text>
@@ -55,7 +55,7 @@
           />
         </n-flex>
       </n-card>
-      <n-card class="set-item">
+  <n-card class="set-item">
         <div class="name">
           代理服务器地址
           <n-text class="tip">请填写代理服务器地址，如 127.0.0.1</n-text>
@@ -72,7 +72,7 @@
           </template>
         </n-input>
       </n-card>
-      <n-card class="set-item">
+  <n-card class="set-item">
         <div class="name">
           代理服务器端口
           <n-text class="tip">请填写代理服务器端口，如 80</n-text>
@@ -88,7 +88,7 @@
         />
       </n-card>
     </div>
-    <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
       <div class="name">
         列表选项Lists
         <n-text class="tip">在部分列表页面显示几条数据, 过多数据可能会造成响应过慢</n-text>
@@ -109,7 +109,7 @@
         @update:value="themeAuto = false"
       />
     </n-card>
-    <n-card class="set-item">
+  <n-card class="set-item" :bordered="false">
       <div class="name">
         Button
         <n-text class="tip">Tips</n-text>

@@ -16,7 +16,7 @@
     :bordered="false"
     size="huge"
     :segmented="{ content: true }"
-    :mask-closable="false"
+    :mask-closable="true"
   >
     <template #header>
       <div class="modal-title">

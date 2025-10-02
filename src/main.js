@@ -71,7 +71,13 @@ app.use(pinia);
 // router
 app.use(router);
 
-
-
 // app
 app.mount("#app");
+nextTick(() => {
+  if (checkPlatform.electron()) {
+    import("@/stores/shortcut").then(({ useShortcutStore }) => {
+      const shortcutStore = useShortcutStore();
+      shortcutStore.registerAllShortcuts().catch(console.warn);
+    }).catch(console.warn);
+  }
+});
