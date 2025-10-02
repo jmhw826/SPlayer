@@ -213,7 +213,7 @@ const getNormalSongUrl = async (id, status, playNow) => {
       // 调用解灰
       const unblockUrl = await getFromUnblockMusic({ id }, status, playNow);
       if (unblockUrl) {
-        status.playUseOtherSource = true; // 明确设置状态
+        status.playUseOtherSource = true;
         return unblockUrl;
       } else {
         return null;
@@ -304,9 +304,11 @@ export const createPlayer = async (src, autoPlay = true) => {
     // 处理音乐链接，将特定域名替换为其他域名
     let finalUrl = processedUrl;
     if (songUrl.includes('m804.music.126.net') || songUrl.includes('m704.music.126.net')) {
+      console.log("开始替换音乐链接域名...");
       finalUrl = songUrl.replace(/m804\.music\.126\.net/g, 'm801.music.126.net')
                        .replace(/m704\.music\.126\.net/g, 'm701.music.126.net');
-      processedUrl = finalUrl;
+      processedUrl = finalUrl; // BYD什么石山
+      console.log("替换后的音乐链接：", finalUrl);
     }
     console.log("播放地址：", processedUrl);
     // 初始化播放器
@@ -704,7 +706,7 @@ const getSongLyricData = async (islocal, data) => {
       const lyricResponse = await getSongLyric(data?.id);
       const lyricLegacy = await getSongLyricLegacy(data?.id);
       const lyricTTML = await getSongTTML(data?.id);
-      if (lyricResponse?.original || lyricLegacy || lyricTTML?.content) {
+      if (lyricResponse?.original || lyricLegacy || lyricTTML) {
         // 使用parseLyric.js处理基础歌词
         const parsedLyric = parseLyric(lyricLegacy);
         // 使用lyric.ts处理AMLL格式
@@ -712,11 +714,10 @@ const getSongLyricData = async (islocal, data) => {
         // 为了使用TTML歌词添加一个开关
         const settings = siteSettings();
         // 处理TTML歌词
-        if (lyricTTML?.content && settings.useTTMLFormat) {
+        if (lyricTTML && settings.useTTMLFormat) {
           try {
-            const ttmlLyric = parseTTMLToAMLL(lyricTTML.content);
+            const ttmlLyric = parseTTMLToAMLL(lyricTTML);
             if (ttmlLyric && ttmlLyric.length > 0) {
-              // 将TTML歌词转换为AMLL格式，由于TTML包含逐字信息，应该存储在yrcAMData中
               amllLyric = {
                 lrcData: [],
                 yrcData: [],
