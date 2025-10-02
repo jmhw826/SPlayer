@@ -27,13 +27,13 @@ export const useShortcutStore = defineStore("shortcut", {
         globalShortcut: "",
       },
       playPrev: {
-        name: "上一首",
+        name: "上一曲",
         shortcut: "CmdOrCtrl+ArrowLeft",
         // 避免与系统快捷键冲突（macOS 上 Cmd+Shift+Left 可能被系统占用）
         globalShortcut: "",
       },
       playNext: {
-        name: "下一首",
+        name: "下一曲",
         shortcut: "CmdOrCtrl+ArrowRight",
         // 避免与系统快捷键冲突
         globalShortcut: "",
@@ -56,9 +56,21 @@ export const useShortcutStore = defineStore("shortcut", {
     setEditingGlobal(val) {
       this.editingGlobal = !!val;
     },
+    // 此 action 负责更新 Pinia Store 中的 shortcutList，并触发主进程更新状态栏菜单
+    updateShortcutList(newShortcutList) {
+      this.shortcutList = newShortcutList;
+      if (window.electron?.ipcRenderer) {
+        const normalizedList = cloneDeep(newShortcutList);
+        Object.values(normalizedList).forEach((item) => {
+          item.globalShortcut = formatForGlobalShortcut(item.globalShortcut || "");
+        });
+        // 向主进程发送 IPC 消息，携带格式化后的最新快捷键列表，触发状态栏菜单实时更新
+        window.electron.ipcRenderer.send("set-shortcut-list", normalizedList);
+      }
+    },
     // 注册所有全局快捷键，通过 IPC 调用主进程
     async registerAllShortcuts(options = {}) {
-      const { notifySuccess = false, notifyFailure = false } = options;
+      const { notifySuccess = false, notifyFailure = false, message } = options;
       // 全局开关关闭时不进行注册
       if (!this.globalOpen) return [];
       if (!checkPlatform.electron()) return [];
@@ -84,14 +96,14 @@ export const useShortcutStore = defineStore("shortcut", {
 
         if (successTexts.length && notifySuccess) {
           console.info("已注册全局快捷键:", successTexts.join(", "));
-          if (typeof $message !== "undefined") {
-            $message.success(`已注册全局快捷键: ${successTexts.join(", ")}`, { duration: 3000 });
+          if (message) {
+            message.success(`已注册全局快捷键: ${successTexts.join(", ")}`, { duration: 3000 });
           }
         }
         if (failedTexts.length && notifyFailure) {
           console.warn("注册快捷键失败:", failedTexts.join(", "));
-          if (typeof $message !== "undefined") {
-            $message.error(
+          if (message) {
+            message.error(
               `以下快捷键注册失败: ${failedTexts.join(", ")}. 请在“设置-键盘”中修改为不与系统冲突的组合（推荐使用 CmdOrCtrl+Alt+字母 或 CmdOrCtrl+Alt+Up/Down）`,
               { duration: 6000 }
             );

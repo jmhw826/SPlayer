@@ -29,6 +29,17 @@ const globalEvents = (router) => {
     const status = siteStatus();
     status.showFullPlayer = false;
   });
+
+  // 处理主进程发送的应用内消息弹框
+  ipcRenderer.on("show-message-box", (_, { type, message }) => {
+    if (typeof window.$message !== "undefined") {
+      if (type === "success") {
+        window.$message.success(message, { duration: 3000 });
+      } else if (type === "warning") {
+        window.$message.warning(message, { duration: 6000 });
+      }
+    }
+  });
 };
 
 export default globalEvents;

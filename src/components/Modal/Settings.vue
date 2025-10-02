@@ -7,11 +7,11 @@
       width: isMobile ? '100vw' : '800px',
       maxWidth: '90vw',
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      backdropFilter: 'blur(10px)',
-      WebkitBackdropFilter: 'blur(10px)',
+      // backdropFilter: 'blur(10px)',
+      // WebkitBackdropFilter: 'blur(10px)',
       borderRadius: isMobile ? '16px 16px 0 0' : '8px',
       margin: isMobile ? 'auto auto 0 auto' : 'auto',
-      marginBottom: isMobile ? '100px' : '50px',
+      marginBottom: isMobile ? '100px' : '50px'
     }"
   >
     <div class="settings-modal">
@@ -37,7 +37,6 @@
           <n-tab name="setTab2">播放</n-tab>
           <n-tab name="setTab3">系统</n-tab>
           <n-tab name="setTab4">歌词</n-tab>
-          <!-- 调整顺序：快捷键在歌词之后、下载之前 -->
           <n-tab name="setTab5">快捷键</n-tab>
           <n-tab name="setTab6">下载</n-tab>
           <n-tab name="setTab7">其他</n-tab>
@@ -78,7 +77,7 @@
           <System />
           <!-- 歌词 -->
           <Lyrics />
-          <!-- 快捷键（调整到下载之前） -->
+          <!-- 快捷键 -->
           <KeyboardSetting />
           <!-- 下载 -->
           <Download />
@@ -156,7 +155,11 @@ const getScrollHeight = () => {
 // 标签页切换
 const settingTabChange = (name) => {
   const index = Number(name.replace("setTab", ""));
-  const setDom = document.querySelectorAll(".set-type")?.[index - 1];
+  // 获取当前模态框的根元素
+  const currentModalRoot = setTabsRef.value.$el.closest('.settings-modal');
+  if (!currentModalRoot) return false;
+
+  const setDom = currentModalRoot.querySelectorAll(".set-type")?.[index - 1];
   if (!setDom) return false;
   // 滚动至设置分类
   isProgrammaticScrolling.value = true;
@@ -171,7 +174,11 @@ const settingTabChange = (name) => {
 const allSetScroll = debounce((e) => {
   if (isProgrammaticScrolling.value) return;
   const distance = e.target.scrollTop + 30;
-  const allSetDom = document.querySelectorAll(".set-type");
+  // 获取当前模态框的根元素
+  const currentModalRoot = setScrollRef.value.$el.closest('.settings-modal');
+  if (!currentModalRoot) return false;
+
+  const allSetDom = currentModalRoot.querySelectorAll(".set-type");
   allSetDom.forEach((v, i) => {
     if (distance >= v.offsetTop) setTabsValue.value = `setTab${i + 1}`;
   });
@@ -200,6 +207,7 @@ defineExpose({ showModal: openModal });
   height: calc(100vh - 100px);
   background-color: transparent;
   transition: all 0.3s ease;
+  -webkit-app-region: no-drag; // 为可点击性添加
   .n-base-selection {
     border-radius: 8px;
     background-color: transparent;
@@ -225,14 +233,18 @@ defineExpose({ showModal: openModal });
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     background-color: transparent;
     position: relative;
+    -webkit-app-region: no-drag; // 为可点击性添加
 
     :deep(.n-tabs-nav) {
       padding: 0 20px;
+      -webkit-app-region: no-drag; // 为可点击性添加
     }
 
     :deep(.n-tabs-tab) {
-      padding: 12px 16px;
+      padding: 16px 16px 12px 16px; // 为内边距和可点击性修改
       transition: all 0.3s ease;
+      pointer-events: auto; // 为可点击性添加
+      -webkit-app-region: no-drag; // 为可点击性添加
     }
 
     :deep(.n-tabs-tab-active) {

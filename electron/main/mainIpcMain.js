@@ -1,5 +1,6 @@
 import { ipcMain, dialog, app, clipboard, shell, globalShortcut } from "electron";
 import createGlobalShortcut from "@main/utils/createGlobalShortcut";
+import { updateTrayMenu } from "@main/utils/createSystemTray";
 import { File, Picture, Id3v2Settings } from "node-taglib-sharp";
 import { configureAutoUpdater } from "@main/utils/checkUpdates";
 import { readDirAsync } from "@main/utils/readDirAsync";
@@ -143,6 +144,8 @@ const mainIpcMain = (win, store) => {
     if (failed?.length) {
       console.warn("部分快捷键注册失败(来自 set-shortcut-list):", failed);
     }
+    win.webContents.send("shortcutListChange", list); // 新增: 向渲染进程发送快捷键列表更新通知，确保渲染进程获取最新数据
+    updateTrayMenu(win, store, list); // 新增: 实时更新系统托盘菜单，以反映最新的快捷键配置
   });
 
   /**

@@ -60,7 +60,15 @@
       <n-checkbox-group v-model:value="musicSourceChecked" :disabled="!useUnmServer" style="margin-bottom: 8px;">
         <n-checkbox v-for="item in musicSourceOptions" :key="item.value" :value="item.value">{{ item.label }}</n-checkbox>
       </n-checkbox-group>
-      <n-input v-model:value="settings.customMusicSource" :disabled="!useUnmServer" />
+      <n-input
+        v-model:value="settings.customMusicSource"
+        :disabled="!useUnmServer"
+        type="textarea"
+        :autosize="{
+          minRows: 1,
+          maxRows: 5,
+        }"
+      />
     </n-card>
     <n-card class="set-item">
       <div class="name">显示前奏倒计时

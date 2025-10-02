@@ -86,6 +86,7 @@ const isElectron = checkPlatform.electron();
 const selectShortcut = ref(null); // 当前选中的快捷键
 const selectGlobal = ref(false); // 是否为全局快捷键
 const keyHandled = ref(""); // 已处理的按键
+const lastModifiedShortcutKey = ref(null); // 最后一次修改的本地快捷键的 key
 const shortcutListRef = ref(cloneDeep(shortcutStore.shortcutList)); // 列表副本，用于界面显示
 
 // 选择快捷键
@@ -174,14 +175,30 @@ const changeShortcut = async (shortcut) => {
   const field = selectGlobal.value ? "globalShortcut" : "shortcut";
   shortcutListRef.value[selectShortcut.value][field] = shortcut;
   shortcutStore.shortcutList[selectShortcut.value][field] = shortcut;
+  if (!selectGlobal.value) {
+    // 记录最后一次修改的本地快捷键，用于失焦时提供更详细的更新通知
+    lastModifiedShortcutKey.value = selectShortcut.value;
+  }
+  // 调用 Pinia Store 的 action 更新快捷键列表，这将触发 IPC 通信，进而更新主进程的状态栏菜单
+  shortcutStore.updateShortcutList(shortcutStore.shortcutList);
 };
 
 // 输入框失焦：结束编辑并恢复全局注册
 const inputBlur = () => {
   // 若正在编辑全局快捷键且开关开启，则统一注册一次，确保之前临时注销被恢复
   if (selectGlobal.value && shortcutStore.globalOpen && isElectron) {
-    shortcutStore.registerAllShortcuts({ notifySuccess: true, notifyFailure: true });
-  }
+    shortcutStore.registerAllShortcuts({ notifySuccess: true, notifyFailure: true, message });
+  } else if (!selectGlobal.value && lastModifiedShortcutKey.value) {
+      // 本地快捷键失焦时，根据记录的 lastModifiedShortcutKey 提供详细的更新通知，增强用户体验
+      const currentShortcut = shortcutStore.shortcutList[lastModifiedShortcutKey.value];
+      if (currentShortcut && currentShortcut.shortcut) {
+        message.success(`已更新本地快捷键: ${currentShortcut.name}(${currentShortcut.shortcut})`, { duration: 3000 });
+      } else {
+        message.success("本地快捷键已更新");
+      }
+      // 重置 lastModifiedShortcutKey，为下一次本地快捷键修改做准备
+      lastModifiedShortcutKey.value = null;
+    }
   // 结束编辑：恢复渲染层本地快捷键
   shortcutStore.setEditingGlobal(false);
   // 复位本地状态，避免“窗口不再出现/不再生效”的卡住体验
@@ -205,9 +222,11 @@ const isRepeat = (shortcut) => {
 // 恢复默认快捷键
 const resetShortcut = () => {
   shortcutStore.$reset();
+  shortcutStore.updateShortcutList(shortcutStore.shortcutList);
   shortcutListRef.value = cloneDeep(shortcutStore.shortcutList);
+  message.success("快捷键已恢复默认");
   if (isElectron && shortcutStore.globalOpen) {
-    shortcutStore.registerAllShortcuts({ notifySuccess: true, notifyFailure: true });
+    shortcutStore.registerAllShortcuts({ notifySuccess: true, notifyFailure: true, message });
   } else if (isElectron) {
     window.electron.ipcRenderer.send("unregister-all-shortcut");
   }
@@ -218,7 +237,7 @@ watch(
   () => shortcutStore.globalOpen,
   (val) => {
     if (!isElectron) return;
-    if (val) shortcutStore.registerAllShortcuts();
+    if (val) shortcutStore.registerAllShortcuts({ message });
     else window.electron.ipcRenderer.send("unregister-all-shortcut");
   }
 );
