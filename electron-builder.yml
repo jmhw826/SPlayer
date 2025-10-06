@@ -23,7 +23,11 @@ win:
   # 应用程序的图标文件路径
   icon: public/imgs/icons/favicon-512x512.png
   # 构建类型
-  target: nsis
+  target:
+    - portable
+    - zip
+  # 禁用代码签名
+  signAndEditExecutable: false
 # NSIS 安装器配置
 nsis:
   # 一键式安装程序还是辅助安装程序
