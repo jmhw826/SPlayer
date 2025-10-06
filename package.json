@@ -65,6 +65,7 @@
     "nodemon": "^2.0.22",
     "pinia": "^2.3.1",
     "pinia-plugin-persistedstate": "^3.2.3",
+    "lodash-es": "^4.17.21",
     "plyr": "^3.8.3",
     "screenfull": "^6.0.2",
     "tsd": "^0.32.0",
