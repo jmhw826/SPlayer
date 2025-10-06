@@ -44,6 +44,6 @@ jobs:
           tags: |
             moefurina/splayer:latest
             moefurina/splayer:${{ env.VERSION }}
-            ghcr.io/splayer:latest
-            ghcr.io/splayer:${{ env.VERSION }}
+            ghcr.io/moefurina/splayer:latest
+            ghcr.io/moefurina/splayer:${{ env.VERSION }}
           platforms: linux/amd64
