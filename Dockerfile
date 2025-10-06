@@ -26,6 +26,6 @@ COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN apk add --no-cache npm
 
-RUN pnpm install -g @neteaseapireborn/api
+RUN npm install @neteaseapireborn/api -g
 
 CMD nginx && npx @neteaseapireborn/api@latest
