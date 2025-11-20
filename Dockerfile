@@ -26,6 +26,6 @@ COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN apk add --no-cache npm
 
-RUN npm install @neteaseapireborn/api -g
+RUN npm install @neteasecloudmusicapienhanced/api -g
 
-CMD nginx && npx @neteaseapireborn/api@latest
+CMD nginx && npx @neteasecloudmusicapienhanced/api@latest

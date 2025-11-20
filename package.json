@@ -34,7 +34,7 @@
     "@electron-toolkit/utils": "^3.0.0",
     "@jridgewell/set-array": "^1.2.1",
     "@material/material-color-utilities": "^0.2.7",
-    "@neteaseapireborn/api": "^4.29.13",
+    "@neteasecloudmusicapienhanced/api": "^4.29.17",
     "@pixi/app": "^7.4.3",
     "@pixi/core": "^7.4.3",
     "@pixi/display": "^7.4.3",
