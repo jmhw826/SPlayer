@@ -1,5 +1,5 @@
 # 项目重构
-## SPlayer历史遗留bug导致出现大量大量使用体验不好的问题, 经过权衡决定使用[上游](https://github.com/imsyy/splayer)作为新的代码基础进行二次开发, 故项目归档停更
+## SPlayer历史遗留bug导致出现大量使用体验不好的问题, 经过权衡决定使用[上游](https://github.com/imsyy/splayer)作为新的代码基础进行二次开发, 故项目归档停更
 
 # SPlayer
 
